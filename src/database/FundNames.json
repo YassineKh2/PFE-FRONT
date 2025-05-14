@@ -1,0 +1,375 @@
+{
+    "funds" :[
+        {
+            "ISIN": "INF966L01AQ6",
+            "Security Description": "QUANT MUTUAL FUND VALUE FUND REGULAR PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AR4",
+            "Security Description": "QUANT MUTUAL FUND VALUE FUND REGULAR PLAN IDCW PAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AS2",
+            "Security Description": "QUANT MUTUAL FUND VALUE FUND REGULAR PLAN IDCW REINVESTEMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AT0",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND DIRECT PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AU8",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND DIRECT PLAN IDCWPAYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AV6",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND DIRECT PLAN IDCWREINVESTMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AW4",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND REGULAR PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AX2",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND REGULAR PL IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AY0",
+            "Security Description": "QUANT MUTUAL FUND LARGECAP FUND REGULAR PLIDCW REINVESTMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01AZ7",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND DR GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BA8",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND DIRECT PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BB6",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND DIRECT PLAN IDCW REINVESTMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BC4",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND REGULAR PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BD2",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND REGULAR PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BE0",
+            "Security Description": "QUANT MUTUAL FUND OVERNIGHT FUND REGULAR PLAN IDCWREIN",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BF7",
+            "Security Description": "QUANT MUTUAL FUND GILT FUND DIRECT PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BG5",
+            "Security Description": "QUANT MUTUAL FUND GILT FUND DIRECT PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BH3",
+            "Security Description": "QUANT MUTUAL FUND GILTFUND DIRECT PLAN IDCWREI",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BI1",
+            "Security Description": "QUANT MUTUAL FUND QUANT GILT FUND REGULAR PLAN GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BJ9",
+            "Security Description": "QUANT MUTUAL FUND GILT FUND REGULAR PLAN IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BK7",
+            "Security Description": "QUANT MUTUAL FUND GILT FUND REGULAR PLAN IDCWREI",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BL5",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD DRCT GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BM3",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD DRCT IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BN1",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD DRCT IDCWREINVEST",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BO9",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD RGLR GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BP6",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD RGLR IDCWYPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BQ4",
+            "Security Description": "QUANT MUTUAL FUND DYNAMIC ASSET ALLC FD RGLR IDCWREINVEST",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BR2",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND DIRECT PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BS0",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND DIRECT PLAN IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BT8",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND DIRECT PLAN IDCW REINV",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BU6",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND REGULAR PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BV4",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND REGULAR PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BW2",
+            "Security Description": "QUANT MUTUAL FUND BUSINESS CYCLE FUND REGULAR PLAN IDCW REINV",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BX0",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND DIRECT PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BY8",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND DIRECT PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01BZ5",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND DIRECT PLAN IDCW REINVESTMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CA6",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND REGULAR PLAN GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CB4",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND REGULAR PLAN IDCWPAYOUT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CC2",
+            "Security Description": "QUANT MUTUAL FUND BFSI FUND REGULAR PLAN IDCW REINVESTMENT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CD0",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FUND DRCT GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CE8",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FUND DRCT IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CF5",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FUND DRCT IDCWREIN",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CG3",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FUND RGLR GRWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CH1",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FUND RGLR IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CI9",
+            "Security Description": "QUANT MUTUAL FUND HEALTHCARE FD RG IDCWREINV",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CJ7",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND DIRECT GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CK5",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND DIRECT IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CL3",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND DIRECT IDCWREI",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CN9",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND REGULAR GROWTH",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CO7",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND REGULAR IDCWPYT",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CP4",
+            "Security Description": "QUANT MUTUAL FUND MANUFACTURING FUND REGULAR IDCWREIN",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CQ2",
+            "Security Description": "QUANT MUTUAL FUND TECK FD-RG PL -GR",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          },
+          {
+            "ISIN": "INF966L01CR0",
+            "Security Description": "QUANT MUTUAL FUND TECK FD-RG PL -IDCWPY",
+            "Security Type": "QUANT MUTUAL FUND",
+            "Category": "MUTUAL FUND UNIT (TRASE)",
+            "Status": "ACTIVE"
+          }
+    ]
+}

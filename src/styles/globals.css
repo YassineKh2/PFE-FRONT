@@ -1,0 +1,6 @@
+@import './_keyframe-animations.scss';
+@import './_variables.scss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

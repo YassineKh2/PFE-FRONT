@@ -1,0 +1,29 @@
+.typing-container {
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.typing-text {
+  position: relative;
+  color: #fc3c61;
+}
+
+.typing-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-left: 3px solid #fc3c61;
+  background: white;
+  animation: typing 3s steps(30) infinite;
+}
+
+@keyframes typing {
+  40%, 60% {
+    left: calc(100%);
+  }
+  100% {
+    left: 0;
+  }
+}

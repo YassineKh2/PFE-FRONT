@@ -1,0 +1,59 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Getting started"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Welcome to the "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "italic"
+            },
+            {
+              "type": "highlight",
+              "attrs": {
+                "color": "var(--tt-highlight-yellow)"
+              }
+            }
+          ],
+          "text": "Simple Editor"
+        },
+        {
+          "type": "text",
+          "text": " template! You can start writing down "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "your course"
+        }
+      ]
+    }
+    
+  ]
+}

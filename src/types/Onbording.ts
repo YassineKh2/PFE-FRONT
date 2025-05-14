@@ -1,0 +1,18 @@
+import {
+    AdditionalInformationFormSchema,
+  ExperienceFormSchema,
+  FinancialFormSchema,
+  PersonalFormSchema,
+  PreferencesFormSchema,
+} from "@/schemas/onbordingSchema";
+import { z } from "zod";
+
+export type PersonalFormSchemaType = z.infer<typeof PersonalFormSchema>;
+
+export type FinancialFormSchemaType = z.infer<typeof FinancialFormSchema>;
+
+export type ExperienceFormSchemaType = z.infer<typeof ExperienceFormSchema>;
+
+export type PreferencesFormSchemaType = z.infer<typeof PreferencesFormSchema>;
+
+export type AdditionalInformationFormSchemaType = z.infer<typeof AdditionalInformationFormSchema>;
