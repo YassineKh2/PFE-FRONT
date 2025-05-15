@@ -1,11 +1,11 @@
 import { Avatar } from "@heroui/avatar";
 import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
 import { User } from "@heroui/user";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSpring, animated } from "@react-spring/web";
 import { useOpen } from "@/store/SidebarStore";
+import { Accordion, AccordionItem } from "@heroui/accordion";
 
 function Sidebar() {
   const { Open, SetOpen } = useOpen();
@@ -38,8 +38,8 @@ const OpenedSidebar = ({
   SetOpen: (open: boolean) => void;
   currentPath: string;
 }) => {
-  const isActive = (href: string) =>
-    currentPath === href || currentPath.startsWith(href + "/");
+  const isActive = (to: string) =>
+    currentPath === to || currentPath.startsWith(to + "/");
 
   return (
     <aside className="flex flex-col gap-6 pt-5 items-start ms-8 me-5  bg-default-100 rounded-lg h-full">
@@ -47,15 +47,11 @@ const OpenedSidebar = ({
         <Link
           className="flex justify-start items-center gap-1"
           color="foreground"
-          href="/"
+          to="/"
         >
           <img alt="logo" className="w-32" src="/Morgenfund_Logo.png" />
         </Link>
-        <Button
-          onPress={() => SetOpen(false)}
-          variant="light"
-          isIconOnly
-        >
+        <Button onPress={() => SetOpen(false)} variant="light" isIconOnly>
           <Icon
             icon="ei:arrow-up"
             width="28"
@@ -93,7 +89,7 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          href="/home"
+          to="/home"
           size="lg"
           className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/home") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -110,38 +106,88 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          href="/dashboard/funds"
+          to="/dashboard/funds"
           size="lg"
           className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/funds") ? "bg-gray-200 font-bold" : ""}`}
         >
           Funds
         </Button>
-        <Button
-          startContent={
-            <Icon
-              icon="hugeicons:course"
-              width="24"
-              height="24"
-              style={{ color: "#9A9AA0" }}
-            />
-          }
-          endContent={
-            <Icon
-              icon="ei:plus"
-              width="30"
-              height="30"
-              style={{ color: "#9A9AA0" }}
-              className="ms-20 mt-1 items-center hidden xl:block"
-            />
-          }
-          as={Link}
-          variant="light"
-          href="/dashboard/courses"
-          size="lg"
-          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
+
+        <Accordion
+          className={`"bg-gray-200 rounded-xl ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
         >
-          Courses
-        </Button>
+          <AccordionItem
+            startContent={
+              <Icon
+                icon="hugeicons:course"
+                width="24"
+                height="24"
+                style={{ color: "#9A9AA0" }}
+              />
+            }
+            key="1"
+            aria-label="Courses"
+            title="Courses"
+            classNames={{
+              title: "text-gray-500",
+            }}
+          >
+            <div className="flex flex-col gap-2">
+              <Button
+                startContent={
+                  <Icon
+                    icon="material-symbols:all-out-outline-rounded"
+                    width="20"
+                    height="20"
+                    style={{ color: "#9A9AA0" }}
+                  />
+                }
+                as={Link}
+                to="/dashboard/courses/all"
+                variant="light"
+                size="lg"
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/all") ? "bg-gray-100 font-bold" : ""}`}
+              >
+                All Courses
+              </Button>
+
+              <Button
+                startContent={
+                  <Icon
+                    icon="grommet-icons:overview"
+                    width="20"
+                    height="20"
+                    style={{ color: "#9A9AA0" }}
+                  />
+                }
+                as={Link}
+                to="/dashboard/courses/overview"
+                variant="light"
+                size="lg"
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/overview") ? "bg-gray-100 font-bold" : ""}`}
+              >
+                Overview
+              </Button>
+              <Button
+                startContent={
+                  <Icon
+                    icon="tabler:certificate"
+                    width="20"
+                    height="20"
+                    style={{ color: "#9A9AA0" }}
+                  />
+                }
+                as={Link}
+                to="/dashboard/courses/mycertificates"
+                variant="light"
+                size="lg"
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/mycertificates") ? "bg-gray-100 font-bold" : ""}`}
+              >
+                Certificates
+              </Button>
+            </div>
+          </AccordionItem>
+        </Accordion>
         <Button
           startContent={
             <Icon
@@ -153,7 +199,7 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          href="/users"
+          to="/users"
           size="lg"
           className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/users") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -170,7 +216,7 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          href="/dashboard/settings"
+          to="/dashboard/settings"
           size="lg"
           className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/settings") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -190,7 +236,7 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          href="/home"
+          to="/home"
           size="lg"
           className="text-default-500 justify-start !ps-2"
         >
@@ -208,8 +254,8 @@ const ClosedSidebar = ({
   SetOpen: (open: boolean) => void;
   currentPath: string;
 }) => {
-  const isActive = (href: string) =>
-    currentPath === href || currentPath.startsWith(href + "/");
+  const isActive = (to: string) =>
+    currentPath === to || currentPath.startsWith(to + "/");
 
   return (
     <aside className="flex flex-col gap-6 p-4 items-center bg-default-100 rounded-lg h-full">
@@ -217,7 +263,7 @@ const ClosedSidebar = ({
         <Link
           className="flex justify-start items-center gap-1"
           color="foreground"
-          href="/"
+          to="/"
         >
           <img alt="logo" className="w-8" src="/Morgenfund_Logo_4.png" />
         </Link>
@@ -235,7 +281,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/home"
+          to="/home"
           size="lg"
           className={`text-default-500 ${isActive("/dashboard/home") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -250,7 +296,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/dashboard/funds"
+          to="/dashboard/funds"
           size="lg"
           className={`text-default-500 ${isActive("/dashboard/funds") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -265,7 +311,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/dashboard/courses"
+          to="/dashboard/courses"
           size="lg"
           className={`text-default-500 ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -280,7 +326,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/dashboard/users"
+          to="/dashboard/users"
           size="lg"
           className={`text-default-500 ${isActive("/dashboard/users") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -295,7 +341,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/dashboard/settings"
+          to="/dashboard/settings"
           size="lg"
           className={`text-default-500 ${isActive("/dashboard/settings") ? "bg-gray-200 font-bold" : ""}`}
         >
@@ -309,11 +355,7 @@ const ClosedSidebar = ({
       </div>
 
       <div className="flex flex-col w-full items-center mt-auto mb-5">
-        <Button
-          onPress={() => SetOpen(true)}
-          variant="light"
-          isIconOnly
-        >
+        <Button onPress={() => SetOpen(true)} variant="light" isIconOnly>
           <Icon
             icon="ei:arrow-up"
             width="30"
@@ -326,7 +368,7 @@ const ClosedSidebar = ({
           isIconOnly
           as={Link}
           variant="light"
-          href="/home"
+          to="/home"
           size="lg"
           className="text-default-500"
         >

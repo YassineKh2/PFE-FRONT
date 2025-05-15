@@ -13,7 +13,7 @@ export default function DefaultLayout({
         <div className="hidden lg:block h-screen bg-default-100 border-r rounded-lg border-default-200 ">
         <Sidebar />
         </div>
-      <main className="w-full px-10">
+      <main className="w-full p-2 lg:px-10">
         {children}
       </main>
       </div>

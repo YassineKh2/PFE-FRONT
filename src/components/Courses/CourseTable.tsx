@@ -153,7 +153,7 @@ export default function CourseTable({
         return (
           <div className="relative flex justify-end items-center">
             <Tooltip content="Details" color="foreground">
-              <Button as={Link} to={"details/"+course.id} isIconOnly size="sm" variant="light">
+              <Button as={Link} to={"/dashboard/courses/details/"+course.id} isIconOnly size="sm" variant="light">
                 <Icon
                   icon="solar:eye-outline"
                   width="20"
@@ -163,7 +163,7 @@ export default function CourseTable({
               </Button>
             </Tooltip>
             <Tooltip content="Edit" color="foreground">
-              <Button as={Link} to={"edit/"+course.id} isIconOnly size="sm" variant="light">
+              <Button as={Link} to={"/dashboard/courses/edit/"+course.id} isIconOnly size="sm" variant="light">
                 <Icon
                   icon="mynaui:edit"
                   width="20"

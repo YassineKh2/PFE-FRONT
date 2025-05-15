@@ -23,7 +23,8 @@ import { useAuth } from "@/providers/AuthProvider";
 import { doSignOut } from "@/services/Auth";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Progress } from "@heroui/progress";
-export const Navbar = ({ inDashboard }: { inDashboard: boolean }) => {
+import { ProgressType } from "@/types/Courses";
+export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress:ProgressType }) => {
   const { userLoggedIn, currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -63,7 +64,7 @@ export const Navbar = ({ inDashboard }: { inDashboard: boolean }) => {
             ) : (
               <Button
                 as={Link}
-                href="/courses"
+                href="/dashboard/courses/owned"
                 startContent={
                   <Icon
                     className="-rotate-90"
@@ -100,7 +101,7 @@ export const Navbar = ({ inDashboard }: { inDashboard: boolean }) => {
             color="primary"
             label="Your Progress"
             size="sm"
-            value={45}
+            value={progress.progress}
           />
           <ThemeSwitch />
         </NavbarItem>

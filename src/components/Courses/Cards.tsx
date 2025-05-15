@@ -6,12 +6,11 @@ const course = {
   id: "1",
   title: "React for Beginners",
   description: "Learn React from scratch.",
-  duration: "120", // in minutes
-  level: "Beginner",
+  duration: "120", 
+  certificates: "8",
   category: "Web Development",
   image: "",
   status: "published",
-  instructor: "Jane Doe",
   chapters: [
     { id: "c1", title: "Intro", duration: "10" },
     { id: "c2", title: "JSX", duration: "20" },
@@ -37,26 +36,26 @@ const courseStats = [
     value: totalChapters,
     sub: progress + " completed",
     iconName: "solar:book-2-linear",
-    color: "info",
+    color: "secondary",
   },
   {
     title: "Total Duration",
     value: totalDuration + " min",
-    sub: "",
+    sub: "+2.5 hours from last week",
     iconName: "solar:clock-circle-linear",
     color: "warning",
   },
   {
     title: "Completion Rate",
     value: completionRate,
-    sub: "",
+    sub: "+5% from last month",
     iconName: "solar:chart-2-linear",
     color: "success",
   },
   {
-    title: "Level",
-    value: course.level,
-    sub: course.instructor,
+    title: "Certificates",
+    value: course.certificates,
+    sub: "2 pending completion",
     iconName: "solar:ranking-linear",
     color: "primary",
   },
@@ -64,10 +63,10 @@ const courseStats = [
 
 export default function Cards() {
   return (
-    <dl className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
+    <dl className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
       {courseStats.map(({ title, value, sub, iconName, color }, index) => (
         <Card key={index} className="border border-transparent dark:border-default-100">
-          <div className="flex p-4 items-center gap-4">
+          <div className="flex p-4  items-center gap-4">
             <div className={`flex h-10 w-10 items-center justify-center rounded-md bg-${color}-50`}>
               <Icon className={`text-${color}`} icon={iconName} width={24} />
             </div>

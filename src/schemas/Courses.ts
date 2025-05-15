@@ -18,6 +18,7 @@ export const Course = z.object({
   opentoenrollement:z.boolean().default(true),
   studentdisscussions:z.boolean().default(true),
   emailnotifications:z.boolean().default(true),
+  finishedAt:z.string().optional()
 });
 
 export const Chapter = z.object({

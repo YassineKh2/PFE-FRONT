@@ -1,0 +1,24 @@
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* Ensure certificate takes up full page when printing */
+  [aria-label^="Certificate of completion"] {
+    width: 100% !important;
+    height: 100vh !important;
+    border: none !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+}

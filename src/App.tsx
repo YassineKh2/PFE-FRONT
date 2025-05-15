@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import IndexPage from "@/pages/index";
 import MutalFund from "./pages/Mutual Funds/MutalFund";
 import Login from "./pages/Auth/Login";
@@ -20,6 +20,24 @@ import AddChapter from "./pages/Chapters/Backend/AddChapter";
 import EditChapter from "./pages/Chapters/Backend/EditChapter";
 import Chapter from "./pages/Chapters/Frontend/Chapter";
 import Course from "./pages/Courses/Frontend/Course";
+import { useAuth } from "./providers/AuthProvider";
+import MyCourses from "./pages/Courses/Backend/MyCourses";
+import AllMyCourses from "./pages/Courses/Backend/AllMyCourses";
+import Certificates from "./pages/Courses/Backend/Certificates";
+import Certificate from "./pages/Courses/Frontend/Certificate";
+import Congtats from "./pages/Courses/Frontend/Congtats";
+
+const ProtectedRoutes = () => {
+  const { userLoggedIn } = useAuth();
+
+  return userLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+};
+
+const AdminRoutes = () => {
+  const { currentUser } = useAuth();
+  const isAdmin = currentUser.role === "admin";
+  return isAdmin ? <Outlet /> : <Navigate to="/login" />;
+};
 
 function App() {
   return (
@@ -39,16 +57,30 @@ function App() {
       <Route element={<Landing />} path="courses" />
       <Route element={<CoursesFront />} path="courses/all" />
       <Route element={<Course />} path="courses/view/:id" />
-      <Route element={<Chapter />} path="courses/chapter/:id" />
 
-      {/* Dashboard Routes */}
-      <Route element={<Courses />} path="dashboard/courses" />
-      <Route element={<AddCourse />} path="dashboard/courses/add" />
-      <Route element={<EditCourse />} path="dashboard/courses/edit/:id" />
-      <Route element={<ViewCourse />} path="dashboard/courses/details/:id" />
-      <Route element={<AddChapter />} path="dashboard/chapter/add/:id" />
-      <Route element={<EditChapter />} path="dashboard/chapter/edit/:id" />
-      <Route element={<EditChapter />} path="dashboard/chapter/edit/:id" />
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<Chapter />} path="courses/chapter/:id" />
+        <Route element={<MyCourses />} path="dashboard/courses/overview" />
+        <Route element={<AllMyCourses />} path="dashboard/courses/owned" />
+        <Route element={<Certificates />} path="dashboard/courses/mycertificates" />
+        <Route element={<Certificate />} path="courses/Certificate/:id" />
+        <Route element={<Congtats />} path="courses/congrats/:id" />
+
+        {/* Admin Dashboard Routes */}
+        <Route element={<AdminRoutes />}>
+          <Route element={<Courses />} path="dashboard/courses/all" />
+          <Route element={<AddCourse />} path="dashboard/courses/add" />
+          <Route element={<EditCourse />} path="dashboard/courses/edit/:id" />
+          <Route
+            element={<ViewCourse />}
+            path="dashboard/courses/details/:id"
+          />
+          <Route element={<AddChapter />} path="dashboard/chapter/add/:id" />
+          <Route element={<EditChapter />} path="dashboard/chapter/edit/:id" />
+          <Route element={<EditChapter />} path="dashboard/chapter/edit/:id" />
+        </Route>
+      </Route>
     </Routes>
   );
 }

@@ -1,3 +1,5 @@
+import { useAuth } from "@/providers/AuthProvider";
+import { UpdateProgress } from "@/services/User";
 import { ChapterType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
@@ -21,6 +23,18 @@ function Header({
   const navigate = useNavigate();
 
   const { nextId, prevId, hasNext, hasPrev } = Navigation;
+  const { currentUser } = useAuth();
+
+  const GoNext = () => {
+    const progress = {
+      courseId: chapter.courseId,
+      chapterId: chapter.id || "",
+    };
+    UpdateProgress(currentUser.uid, progress).then(() => {
+      navigate(`/courses/chapter/${nextId}`);
+    });
+  };
+
   return (
     <>
       <div className="flex justify-between items-center ">
@@ -31,7 +45,12 @@ function Header({
           <div className="space-x-2">
             {inDashboard && (
               <Tooltip content="Edit">
-                <Button as={Link} to={`/dashboard/chapter/edit/${chapter.id}`} variant="light" isIconOnly>
+                <Button
+                  as={Link}
+                  to={`/dashboard/chapter/edit/${chapter.id}`}
+                  variant="light"
+                  isIconOnly
+                >
                   <Icon icon="mynaui:edit" width="20" height="20" />
                 </Button>
               </Tooltip>
@@ -85,7 +104,7 @@ function Header({
                   />
                 }
                 variant="bordered"
-                onPress={() => navigate(`/courses/chapter/${nextId}`)}
+                onPress={GoNext}
               >
                 Next
               </Button>

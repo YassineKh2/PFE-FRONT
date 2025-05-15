@@ -8,12 +8,13 @@ import { Editor as Editortype } from "@tiptap/react";
 
 import { useEffect, useState } from "react";
 import Resources from "./Frontend/Resources";
-import { ChapterType } from "@/types/Courses";
+import { ChapterType, ProgressType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useNavigate } from "react-router-dom";
 import { GetStaticImages } from "@/services/GetStaticFiles";
-import { set } from "zod";
+import { useAuth } from "@/providers/AuthProvider";
+import { GetSingleProgress, UpdateProgress } from "@/services/User";
 
 function ViewChapter({
   chapter,
@@ -25,6 +26,8 @@ function ViewChapter({
   const [editor, seteditor] = useState<Editortype | null>(null);
   const [image, setimage] = useState<string>();
   const [inDashboard, setinDashboard] = useState(false);
+  const [progress, setProgress] = useState<ProgressType>({} as ProgressType);
+  const { currentUser } = useAuth();
 
   const previousPath =
     window.history.state && window.history.state.idx > 0
@@ -36,6 +39,12 @@ function ViewChapter({
       setinDashboard(true);
     }
   }, []);
+
+  useEffect(() => {
+    GetSingleProgress(currentUser.uid, chapter.courseId).then((res) => {
+      setProgress(res.data);
+    });
+  }, [chapter]);
 
   useEffect(() => {
     setimage(GetStaticImages(chapter.image));
@@ -65,9 +74,22 @@ function ViewChapter({
     hasPrev: hasPrev,
   };
 
+   const GoNext = () => {
+      const progress = {
+        courseId: chapter.courseId,
+        chapterId: chapter.id || "",
+      };
+      UpdateProgress(currentUser.uid, progress).then(() => {
+        navigate(`/courses/chapter/${nextId}`);
+      });
+    };
+
+
+  if(!progress) return <p>Loading..</p>
+
   return (
     <>
-      <Navbar inDashboard={inDashboard} />
+      <Navbar inDashboard={inDashboard} progress={progress} />
       <div className="flex flex-col">
         <div className="w-full h-80 overflow-hidden">
           <img
@@ -82,6 +104,7 @@ function ViewChapter({
               chapter={chapter}
               Navigation={Navigation}
               inDashboard={inDashboard}
+              id={currentUser.uid}
             />
             <div>
               <Tabs aria-label="Options" variant="underlined">
@@ -114,7 +137,7 @@ function ViewChapter({
                             height="20"
                           />
                         }
-                        onPress={() => navigate(`/courses/chapter/${nextId}`)}
+                        onPress={GoNext}
                         variant="bordered"
                       >
                         Next
@@ -132,7 +155,7 @@ function ViewChapter({
             </div>
           </div>
           <div className="flex flex-col justify-between items-start gap-2 w-[20%] sticky top-20">
-            <CourseContent chapters={chapters} />
+            <CourseContent chapters={chapters} progress={progress} />
           </div>
         </div>
       </div>
