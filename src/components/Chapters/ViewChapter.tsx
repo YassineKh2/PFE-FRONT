@@ -1,20 +1,23 @@
-import { Navbar } from "./Frontend/Navbar";
-import CourseContent from "./Frontend/CourseContent";
-import Header from "./Frontend/Header";
 import { Tab, Tabs } from "@heroui/tabs";
-import Discussion from "./Frontend/Discussion";
-import { ReadOnlyEditor } from "../TipTap/tiptap-editor/ReadOnlyEditor";
 import { Editor as Editortype } from "@tiptap/react";
-
 import { useEffect, useState } from "react";
-import Resources from "./Frontend/Resources";
-import { ChapterType, ProgressType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useNavigate } from "react-router-dom";
+
+import { ReadOnlyEditor } from "../TipTap/tiptap-editor/ReadOnlyEditor";
+
+import { Navbar } from "./Frontend/Navbar";
+import CourseContent from "./Frontend/CourseContent";
+import Header from "./Frontend/Header";
+import Discussion from "./Frontend/Discussion";
+import Resources from "./Frontend/Resources";
+
+import { ChapterType, ProgressType } from "@/types/Courses";
 import { GetStaticImages } from "@/services/GetStaticFiles";
 import { useAuth } from "@/providers/AuthProvider";
 import { GetSingleProgress, UpdateProgress } from "@/services/User";
+import { Chapter } from "@/schemas/Courses";
 
 function ViewChapter({
   chapter,
@@ -53,6 +56,7 @@ function ViewChapter({
   useEffect(() => {
     if (editor && chapter.content) {
       const content = JSON.parse(chapter.content as string);
+
       editor.commands.setContent(content);
     }
   }, [editor, chapter.content]);
@@ -64,6 +68,7 @@ function ViewChapter({
   const hasNext = currentIndex < chapters.length - 1;
   let nextId: string = "";
   let prevId: string = "";
+
   if (hasNext) nextId = chapters[currentIndex + 1]?.id || "";
   if (hasPrev) prevId = chapters[currentIndex - 1]?.id || "";
 
@@ -74,18 +79,33 @@ function ViewChapter({
     hasPrev: hasPrev,
   };
 
-   const GoNext = () => {
-      const progress = {
-        courseId: chapter.courseId,
-        chapterId: chapter.id || "",
-      };
-      UpdateProgress(currentUser.uid, progress).then(() => {
-        navigate(`/courses/chapter/${nextId}`);
-      });
+  const GoNext = () => {
+    const progress = {
+      courseId: chapter.courseId,
+      chapterId: chapter.id || "",
     };
 
+    UpdateProgress(currentUser.uid, progress).then(() => {
+      navigate(`/courses/chapter/${nextId}`);
+    });
+  };
 
-  if(!progress) return <p>Loading..</p>
+  if (!progress) return <p>Loading..</p>;
+
+  const isLastChapter = () => {
+    return currentIndex === chapters.length - 1;
+  };
+
+  const FinishCourse = () => {
+    const progress = {
+      courseId: chapter.courseId,
+      chapterId: chapter.id || "",
+    };
+
+    UpdateProgress(currentUser.uid, progress).then(() => {
+      navigate(`/courses/congrats/${chapter.courseId}`);
+    });
+  };
 
   return (
     <>
@@ -94,17 +114,17 @@ function ViewChapter({
         <div className="w-full h-80 overflow-hidden">
           <img
             alt="Chapter Cover"
-            src={image}
             className="size-full object-cover"
+            src={image}
           />
         </div>
         <div className="flex px-12 gap-8 mt-6 items-start">
           <div className="flex flex-col gap-2 w-[80%] ">
             <Header
-              chapter={chapter}
               Navigation={Navigation}
-              inDashboard={inDashboard}
+              chapter={chapter}
               id={currentUser.uid}
+              inDashboard={inDashboard}
             />
             <div>
               <Tabs aria-label="Options" variant="underlined">
@@ -116,13 +136,13 @@ function ViewChapter({
                         startContent={
                           <Icon
                             className="-rotate-90"
+                            height="20"
                             icon="majesticons:arrow-up"
                             width="20"
-                            height="20"
                           />
                         }
-                        onPress={() => navigate(`/courses/chapter/${prevId}`)}
                         variant="solid"
+                        onPress={() => navigate(`/courses/chapter/${prevId}`)}
                       >
                         Previous
                       </Button>
@@ -132,15 +152,31 @@ function ViewChapter({
                         endContent={
                           <Icon
                             className="rotate-90"
+                            height="20"
                             icon="majesticons:arrow-up"
                             width="20"
-                            height="20"
                           />
                         }
-                        onPress={GoNext}
                         variant="bordered"
+                        onPress={GoNext}
                       >
                         Next
+                      </Button>
+                    )}
+                    {isLastChapter() && (
+                      <Button
+                        endContent={
+                          <Icon
+                            className="rotate-90"
+                            height="20"
+                            icon="majesticons:arrow-up"
+                            width="20"
+                          />
+                        }
+                        variant="bordered"
+                        onPress={FinishCourse}
+                      >
+                        Finish
                       </Button>
                     )}
                   </div>

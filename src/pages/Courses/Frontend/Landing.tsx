@@ -1,11 +1,12 @@
-import { subtitle, title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { User } from "@heroui/user";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
+
+import DefaultLayout from "@/layouts/default";
+import { subtitle, title } from "@/components/primitives";
 
 function HeroSection() {
   return (
@@ -25,12 +26,17 @@ function HeroSection() {
           With Expert-Led Online Courses
         </p>
         <p className={subtitle({}) + " text-gray-500"}>
-          Discover a world of knowledge with our curated collection of
-          courses designed to help you master new skills, advance your
-          career, and achieve your goals.
+          Discover a world of knowledge with our curated collection of courses
+          designed to help you master new skills, advance your career, and
+          achieve your goals.
         </p>
         <div className="flex gap-2">
-          <Button as={Link} to={"all"} color="primary" className="w-full max-w-xs ">
+          <Button
+            as={Link}
+            className="w-full max-w-xs "
+            color="primary"
+            to={"all"}
+          >
             Explore Courses{" "}
           </Button>
           <Button variant="bordered">Learn More</Button>
@@ -38,39 +44,38 @@ function HeroSection() {
       </div>
       <div className="w-full">
         <img
-          src="https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"
           alt="hero"
           className="rounded-xl object-cover "
+          src="https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"
         />
       </div>
     </div>
   );
 }
-
 
 function TrustedSection() {
   return (
     <div className="flex justify-around items-end gap-2">
       <div className="relative w-screen max-w-sm">
         <hr className="border-2 w-full" />
-        <div className="absolute top-0 left-0 w-1/12 h-full bg-gradient-to-r from-white to-transparent"></div>
+        <div className="absolute top-0 left-0 w-1/12 h-full bg-gradient-to-r from-white to-transparent" />
       </div>
       <p className="w-max text-sm text-default-600 flex flex-col items-center relative top-2">
         <Icon
-          icon="game-icons:laurel-crown"
           className="size-16 text-green-800"
+          icon="game-icons:laurel-crown"
         />
         Trusted by over 10M users
       </p>
       <div className="relative w-screen max-w-sm">
         <hr className="border-2 w-full" />
-        <div className="absolute top-0 right-0 w-1/12 h-full bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute top-0 right-0 w-1/12 h-full bg-gradient-to-l from-white to-transparent" />
       </div>
     </div>
   );
 }
 
-function FeaturedCoursesSection() {
+export function FeaturedCoursesSection() {
   return (
     <div className="w-full flex flex-col items-center justify-center gap-12 p-6">
       <div className="w-full flex flex-col gap-2 items-center">
@@ -83,7 +88,7 @@ function FeaturedCoursesSection() {
       </div>
       <div className="w-full flex gap-4 flex-col md:flex-row ">
         {[1, 2, 3].map((_, idx) => (
-          <Card className="w-full" key={idx}>
+          <Card key={idx} className="w-full">
             <Image
               alt="Card background"
               className="object-cover rounded-none w-full"
@@ -109,16 +114,16 @@ function FeaturedCoursesSection() {
                 />
                 <div className="flex gap-1">
                   <Icon
-                    icon="mdi-light:clock"
-                    width="20"
                     height="20"
+                    icon="mdi-light:clock"
                     style={{ color: "6b7280" }}
+                    width="20"
                   />
                   <p className="text-sm text-gray-500">4 Weeks</p>
                 </div>
                 <Button
-                  variant="shadow"
                   className="w-full mb-2 bg-black text-white"
+                  variant="shadow"
                 >
                   View Course
                 </Button>
@@ -127,7 +132,7 @@ function FeaturedCoursesSection() {
           </Card>
         ))}
       </div>
-      <Button as={Link} to={"all"} variant="ghost" className="px-6 py-5">
+      <Button as={Link} className="px-6 py-5" to={"all"} variant="ghost">
         View All Courses
       </Button>
     </div>
@@ -150,10 +155,10 @@ function WhyChooseUsSection() {
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="tabler:users"
-              width="24"
               height="24"
+              icon="tabler:users"
               style={{ color: "black" }}
+              width="24"
             />
           </div>
           <p className="font-bold text-lg">Flexible Learning</p>
@@ -164,25 +169,24 @@ function WhyChooseUsSection() {
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="tabler:certificate"
-              width="24"
               height="24"
+              icon="tabler:certificate"
               style={{ color: "black" }}
+              width="24"
             />
           </div>
           <p className="font-bold text-lg">Recognized Certificates</p>
           <p className=" text-gray-500">
-            Earn certificates that enhance your resume and professional
-            profile
+            Earn certificates that enhance your resume and professional profile
           </p>
         </div>
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="ix:project"
-              width="24"
               height="24"
+              icon="ix:project"
               style={{ color: "black" }}
+              width="24"
             />
           </div>
           <p className="font-bold text-lg">Practical Projects</p>
@@ -194,10 +198,10 @@ function WhyChooseUsSection() {
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="tabler:book"
-              width="24"
               height="24"
+              icon="tabler:book"
               style={{ color: "black" }}
+              width="24"
             />
           </div>
           <p className="font-bold text-lg">Portolio Support</p>
@@ -209,25 +213,24 @@ function WhyChooseUsSection() {
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="iconoir:community"
-              width="26"
               height="26"
+              icon="iconoir:community"
               style={{ color: "black" }}
+              width="26"
             />
           </div>
           <p className="font-bold text-lg">Community Access</p>
           <p className=" text-gray-500">
-            Connect with fellow learners and instructors in our active
-            community
+            Connect with fellow learners and instructors in our active community
           </p>
         </div>
         <div className="w-full flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-4 rounded-full">
             <Icon
-              icon="hugeicons:teacher"
-              width="24"
               height="24"
+              icon="hugeicons:teacher"
               style={{ color: "black" }}
+              width="24"
             />
           </div>
           <p className="font-bold text-lg">Expert Instructors</p>
@@ -254,7 +257,7 @@ function TestimonialsSection() {
       </div>
       <div className="w-full flex gap-4 flex-col md:flex-row ">
         {[1, 2, 3].map((_, idx) => (
-          <Card className="w-full p-4" key={idx}>
+          <Card key={idx} className="w-full p-4">
             <CardHeader>
               <User
                 avatarProps={{
@@ -281,13 +284,13 @@ function TestimonialsSection() {
 function CallToActionSection() {
   return (
     <div className="rounded-full h-72 bg-black/90 gap-4 flex flex-col justify-center items-center">
-      <p className="text-white text-5xl font-bold">
-        Ready to Start Learning?
-      </p>
+      <p className="text-white text-5xl font-bold">Ready to Start Learning?</p>
       <p className="text-white text-xl font-semibold">
         Join thousands of students already learning on our platform
       </p>
-      <Button as={Link} to={"all"} size="lg" className="bg-white">Get Started Today</Button>
+      <Button as={Link} className="bg-white" size="lg" to={"all"}>
+        Get Started Today
+      </Button>
     </div>
   );
 }

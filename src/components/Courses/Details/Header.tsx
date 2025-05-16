@@ -1,5 +1,3 @@
-import { CourseType as Course } from "@/types/Courses";
-import { subtitle, title } from "../../primitives";
 import { Button } from "@heroui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
@@ -18,23 +16,28 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
-import { DeleteCourse as DeleteCourseService } from "@/services/Course";
 import { addToast } from "@heroui/toast";
+
+import { subtitle, title } from "../../primitives";
+
+import { DeleteCourse as DeleteCourseService } from "@/services/Course";
+import { CourseType as Course } from "@/types/Courses";
 
 const Header = ({ course }: { course: Course }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const naviagte = useNavigate();
-    const AddedAt = new Date(course.createdAt || "").toLocaleDateString("en-GB", {
+  const AddedAt = new Date(course.createdAt || "").toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
-    const EditedAt = new Date(course.editedAt || "").toLocaleDateString("en-GB", {
+  const EditedAt = new Date(course.editedAt || "").toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
+
   function DeleteCourse(): void {
     DeleteCourseService(course.id as string).then((res) => {
       if (res.status === 200) {
@@ -64,17 +67,17 @@ const Header = ({ course }: { course: Course }) => {
           <div className="flex gap-3 items-center">
             <Button
               as={Link}
-              to={"/dashboard/courses/edit/" + course.id}
-              color="primary"
-              variant="solid"
-              size="md"
               className="text-gray-100"
+              color="primary"
+              size="md"
+              to={"/dashboard/courses/edit/" + course.id}
+              variant="solid"
             >
               <Icon
-                icon="mynaui:edit"
-                width="20"
                 height="20"
+                icon="mynaui:edit"
                 style={{ color: "#f3f4f6" }}
+                width="20"
               />
               Edit Course
             </Button>
@@ -84,10 +87,10 @@ const Header = ({ course }: { course: Course }) => {
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem
-                  startContent={
-                    <Icon icon="bi:archive" width="18" height="18" />
-                  }
                   key="new"
+                  startContent={
+                    <Icon height="18" icon="bi:archive" width="18" />
+                  }
                 >
                   Archive
                 </DropdownItem>
@@ -95,15 +98,15 @@ const Header = ({ course }: { course: Course }) => {
                   key="delete"
                   className="text-danger"
                   color="danger"
-                  onPress={onOpen}
                   startContent={
                     <Icon
+                      className="transition-colors duration-200"
+                      height="20"
                       icon="fluent:delete-48-regular"
                       width="20"
-                      height="20"
-                      className="transition-colors duration-200"
                     />
                   }
+                  onPress={onOpen}
                 >
                   Delete Course
                 </DropdownItem>
@@ -116,46 +119,46 @@ const Header = ({ course }: { course: Course }) => {
         <div className="flex gap-4 justify-start text-sm text-gray-900">
           <p className="flex items-center gap-1">
             <Icon
-              icon="mdi-light:clock"
-              width="20"
               height="20"
+              icon="mdi-light:clock"
               style={{ color: "111827" }}
+              width="20"
             />
-            {course.duration} Hours
+            {Math.round(Number(course.duration) / 60)} Hours
           </p>
           <p className="flex items-center gap-1">
             <Icon
-              icon="material-symbols:star-rounded"
-              width="24"
               height="24"
+              icon="material-symbols:star-rounded"
               style={{ color: "#ffc804" }}
+              width="24"
             />
             4.8 (124 reviews)
           </p>
           <p className="flex items-center gap-1">
             <Icon
-              icon="hugeicons:online-learning-01"
-              width="20"
               height="20"
+              icon="hugeicons:online-learning-01"
               style={{ color: "111827" }}
+              width="20"
             />
-            20 Enrolled
+            {course.enrolledStudents?.length} Enrolled
           </p>
           <p className="flex items-center gap-1">
             <Icon
-              icon="uit:calender"
-              width="20"
               height="20"
+              icon="uit:calender"
               style={{ color: "111827" }}
+              width="20"
             />
             Created: {AddedAt || "N/A"}
           </p>
           <p className="flex items-center gap-1">
             <Icon
-              icon="uis:calender"
-              width="20"
               height="20"
+              icon="uis:calender"
               style={{ color: "111827" }}
+              width="20"
             />
             Last updated: {EditedAt || "N/A"}
           </p>
@@ -168,10 +171,10 @@ const Header = ({ course }: { course: Course }) => {
             <>
               <ModalHeader className="flex justify-center items-center">
                 <Icon
-                  icon="mynaui:danger-triangle"
-                  width="80"
                   height="80"
+                  icon="mynaui:danger-triangle"
                   style={{ color: "#fc3c61" }}
+                  width="80"
                 />
               </ModalHeader>
               <ModalBody className="flex flex-col items-center text-center">
@@ -179,8 +182,9 @@ const Header = ({ course }: { course: Course }) => {
                   Delete Course
                 </h1>
                 <p className="text-default-400 mt-2">
-                  Are you sure you want to delete <strong>{course?.title}</strong> ! This action
-                  cannot be undone.
+                  Are you sure you want to delete{" "}
+                  <strong>{course?.title}</strong> ! This action cannot be
+                  undone.
                 </p>
               </ModalBody>
               <ModalFooter className="flex justify-between items-center gap-2 w-full">

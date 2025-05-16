@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import IndexPage from "@/pages/index";
+
 import MutalFund from "./pages/Mutual Funds/MutalFund";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
@@ -27,6 +27,8 @@ import Certificates from "./pages/Courses/Backend/Certificates";
 import Certificate from "./pages/Courses/Frontend/Certificate";
 import Congtats from "./pages/Courses/Frontend/Congtats";
 
+import IndexPage from "@/pages/index";
+
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
 
@@ -36,6 +38,7 @@ const ProtectedRoutes = () => {
 const AdminRoutes = () => {
   const { currentUser } = useAuth();
   const isAdmin = currentUser.role === "admin";
+
   return isAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
@@ -63,7 +66,10 @@ function App() {
         <Route element={<Chapter />} path="courses/chapter/:id" />
         <Route element={<MyCourses />} path="dashboard/courses/overview" />
         <Route element={<AllMyCourses />} path="dashboard/courses/owned" />
-        <Route element={<Certificates />} path="dashboard/courses/mycertificates" />
+        <Route
+          element={<Certificates />}
+          path="dashboard/courses/mycertificates"
+        />
         <Route element={<Certificate />} path="courses/Certificate/:id" />
         <Route element={<Congtats />} path="courses/congrats/:id" />
 

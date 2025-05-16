@@ -189,7 +189,7 @@ export default function CourseTableToolbar({
           </Dropdown>
           <Link
             className="flex items-center gap-2 px-3 py-2 bg-primary-400 text-gray-100 rounded-xl hover:bg-primary-300"
-            to="add"
+            to="/dashboard/courses/add"
           >
             Add New <PlusIcon />
           </Link>

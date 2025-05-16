@@ -1,8 +1,3 @@
-import { SearchIcon } from "@/components/icons";
-import { useAuth } from "@/providers/AuthProvider";
-import { GetStaticImages } from "@/services/GetStaticFiles";
-import { GetProgress } from "@/services/User";
-import { CourseType, ProgressType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Chip } from "@heroui/chip";
@@ -13,6 +8,12 @@ import { Select, SelectItem } from "@heroui/select";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import { CourseType, ProgressType } from "@/types/Courses";
+import { GetProgress } from "@/services/User";
+import { GetStaticImages } from "@/services/GetStaticFiles";
+import { useAuth } from "@/providers/AuthProvider";
+import { SearchIcon } from "@/components/icons";
 
 function FilterdCourses({
   Courses,
@@ -25,7 +26,7 @@ function FilterdCourses({
 }) {
   const [SearchTerm, setSearchTerm] = useState<string>("");
   const [ProgressList, setProgressList] = useState<ProgressType[]>(
-    [] as ProgressType[]
+    [] as ProgressType[],
   );
 
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function FilterdCourses({
 
   const filteredCourses = Courses.filter((course) => {
     const term = SearchTerm.toLowerCase();
+
     return (
       course.title.toLowerCase().includes(term) ||
       course.description.toLowerCase().includes(term) ||
@@ -43,6 +45,7 @@ function FilterdCourses({
   const Gotocourse = (id: string) => {
     if (!InDashboard) {
       navigate("/courses/view/" + id);
+
       return;
     }
     const progress = ProgressList.filter((prog) => prog.courseId === id);
@@ -65,9 +68,9 @@ function FilterdCourses({
           <div className="flex justify-between gap-6">
             <Input
               aria-label="Search"
+              className="w-full"
               labelPlacement="outside"
               placeholder="Search courses..."
-              className="w-full"
               startContent={
                 <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
               }
@@ -75,7 +78,7 @@ function FilterdCourses({
               variant="bordered"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Select className="max-w-xs self-end" size="md" placeholder="Sort">
+            <Select className="max-w-xs self-end" placeholder="Sort" size="md">
               <SelectItem key="populatary" textValue={"Populatary"}>
                 Populatary
               </SelectItem>
@@ -93,10 +96,15 @@ function FilterdCourses({
           </p>
         </>
       )}
-      {InDashboard && !InAll &&(
+      {InDashboard && !InAll && (
         <div className="flex justify-between items-center">
           <p className="font-semibold text-xl">My Courses</p>
-          <Button as={Link} to={"/dashboard/courses/owned"} size="sm" variant="bordered">
+          <Button
+            as={Link}
+            size="sm"
+            to={"/dashboard/courses/owned"}
+            variant="bordered"
+          >
             View All
           </Button>
         </div>
@@ -113,27 +121,30 @@ function FilterdCourses({
       >
         {filteredCourses.map((course, index) => {
           let percent = 0;
+
           if (InDashboard) {
             const progressObj = ProgressList.find(
-              (p) => p.courseId === course.id
+              (p) => p.courseId === course.id,
             );
+
             percent = progressObj?.progress || 0;
           }
+
           return (
             <Card
+              key={index}
+              isPressable
+              className="w-full"
               onPress={() => {
                 Gotocourse(course?.id || "");
               }}
-              className="w-full"
-              isPressable
-              key={index}
             >
-              {InDashboard && <Progress value={percent} className="p-4" />}
+              {InDashboard && <Progress className="p-4" value={percent} />}
               <Image
                 alt="Card background"
                 className="object-cover rounded-none w-full"
-                src={GetStaticImages(course.image)}
                 height={!InDashboard ? 180 : 200}
+                src={GetStaticImages(course.image)}
               />
               <CardBody className="overflow-visible py-2">
                 <div className="flex flex-col gap-2 items-start">
@@ -143,10 +154,10 @@ function FilterdCourses({
                     </Chip>
                     <div className="flex items-center text-xs">
                       <Icon
-                        icon="material-symbols:star-rounded"
-                        width="24"
                         height="24"
+                        icon="material-symbols:star-rounded"
                         style={{ color: "#ffc804" }}
+                        width="24"
                       />
                       4.8
                     </div>
@@ -166,10 +177,10 @@ function FilterdCourses({
                     {InDashboard && (
                       <div className="flex justify-center items-center gap-1">
                         <Icon
-                          icon="mdi-light:clock"
-                          width="16"
                           height="16"
+                          icon="mdi-light:clock"
                           style={{ color: "#1f2937" }}
+                          width="16"
                         />
                         <p className="text-xs text-gray-800">
                           {Math.round(Number(course.duration) / 60)} Hours
@@ -184,10 +195,10 @@ function FilterdCourses({
                   <div className="flex gap-2">
                     <div className="flex justify-center items-center gap-1">
                       <Icon
-                        icon="mdi-light:clock"
-                        width="16"
                         height="16"
+                        icon="mdi-light:clock"
                         style={{ color: "#1f2937" }}
+                        width="16"
                       />
                       <p className="text-xs text-gray-800">
                         {Math.round(Number(course.duration) / 60)} Hours
@@ -195,10 +206,10 @@ function FilterdCourses({
                     </div>
                     <div className="flex justify-center items-center gap-1">
                       <Icon
-                        icon="tabler:users"
-                        width="16"
                         height="16"
+                        icon="tabler:users"
                         style={{ color: "#1f2937" }}
+                        width="16"
                       />
                       <p className="text-xs text-gray-800">152 Student</p>
                     </div>

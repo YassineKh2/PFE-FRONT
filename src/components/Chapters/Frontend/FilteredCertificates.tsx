@@ -1,89 +1,100 @@
-import { SearchIcon } from "@/components/icons";
-import { GetStaticImages } from "@/services/GetStaticFiles";
-import { CourseType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter } from "@heroui/card";
-import { Chip } from "@heroui/chip";
 import { Image } from "@heroui/image";
-import { Input } from "@heroui/input";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function FilteredCertificates({ Courses }: { Courses: CourseType[] }) {
+import { GetStaticImages } from "@/services/GetStaticFiles";
+import { CertificateType } from "@/types/Courses";
+import { formatDate } from "@/Helpers/Utils";
+
+function FilteredCertificates({
+  Certificates,
+}: {
+  Certificates: CertificateType[];
+}) {
   const [SearchTerm, setSearchTerm] = useState<string>("");
 
-  const filteredCourses = Courses.filter((course) => {
+  const filteredCertificates = Certificates.filter((Certificate) => {
     const term = SearchTerm.toLowerCase();
+
     return (
-      course.title.toLowerCase().includes(term) ||
-      course.description.toLowerCase().includes(term) ||
-      course.instructor.toLowerCase().includes(term)
+      Certificate.courseName.toLowerCase().includes(term) ||
+      Certificate.CourseDescription.toLowerCase().includes(term) ||
+      Certificate.certificateNumber.toLowerCase().includes(term)
     );
   });
 
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {filteredCourses.map((course, index) => (
-          <Card className="w-full" key={index}>
+        {filteredCertificates.map((Certificate, index) => (
+          <Card key={index} className="w-full">
             <Image
               alt="Card background"
               className="object-cover rounded-none w-full"
-              src={GetStaticImages(course.image)}
-              height={180}
+              height={300}
+              src={GetStaticImages(Certificate.courseImage)}
             />
             <CardBody className="overflow-visible py-2">
               <div className="flex flex-col gap-2 items-start">
-                <div className="flex justify-between w-full py-2">
-                  <Chip size="sm" variant="bordered">
-                    {course.level}
-                  </Chip>
-                </div>
                 <div className="py-2">
-                  <p className="text-lg font-semibold">{course.title}</p>
-                  <p className="text-sm text-gray-500">{course.description}</p>
+                  <p className="text-lg font-semibold">
+                    {Certificate.courseName}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {Certificate.CourseDescription}
+                  </p>
                 </div>
 
                 <div className="flex items-end text-xs mb-2 text-gray-500">
                   <div className="flex items-end gap-1">
                     <Icon
-                      icon="uil:calender"
-                      width="16"
                       height="16"
+                      icon="uil:calender"
                       style={{ color: "6b7280" }}
+                      width="16"
                     />
                     <p>Issued On:&nbsp;</p>
                   </div>
-                  <p> {course.finishedAt}</p>
+                  <p> {formatDate(Certificate.completionDate)}</p>
                 </div>
                 <div className="flex items-end text-xs mb-2 text-gray-500">
                   <div className="flex items-end gap-1">
                     <Icon
-                      icon="ix:id"
-                      width="16"
                       height="16"
+                      icon="ix:id"
                       style={{ color: "6b7280" }}
+                      width="16"
                     />
                     <p>Credential ID:&nbsp;</p>
                   </div>
-                  <p> WDF-2023-10-001</p>
+                  <p> {Certificate.certificateNumber}</p>
                 </div>
               </div>
             </CardBody>
             <CardFooter className="bg-gray-100/90 flex justify-between gap-2 p-4">
-              <Button size="sm" variant="bordered">
+              <Button
+                as={Link}
+                size="sm"
+                to={"/courses/congrats/" + Certificate.courseId}
+                variant="bordered"
+              >
                 View
               </Button>
               <Button
+                as={Link}
+                size="sm"
                 startContent={
                   <Icon
+                    className="text-default-700"
+                    height="18"
                     icon="flowbite:download-outline"
                     width="18"
-                    height="18"
-                    className="text-default-700"
                   />
                 }
-                size="sm"
+                to={"/courses/Certificate/" + Certificate.certificateNumber}
               >
                 Download
               </Button>

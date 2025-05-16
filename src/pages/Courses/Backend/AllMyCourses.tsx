@@ -1,13 +1,13 @@
+import { Input } from "@heroui/input";
+import { useEffect, useState } from "react";
+
 import FilterdCourses from "@/components/Chapters/Frontend/FilterdCourses";
-import Cards from "@/components/Courses/Cards";
 import { SearchIcon } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
 import DashboardLayout from "@/layouts/dashboard";
 import { useAuth } from "@/providers/AuthProvider";
 import { GetCourses } from "@/services/User";
 import { CourseType } from "@/types/Courses";
-import { Input } from "@heroui/input";
-import { useEffect, useState } from "react";
 
 function AllMyCourses() {
   const [Courses, setCourses] = useState<CourseType[]>([] as CourseType[]);
@@ -23,7 +23,7 @@ function AllMyCourses() {
   // Filter courses based on SearchTerm
   const filteredCourses = SearchTerm
     ? Courses.filter((course) =>
-        course.title?.toLowerCase().includes(SearchTerm.toLowerCase())
+        course.title?.toLowerCase().includes(SearchTerm.toLowerCase()),
       )
     : Courses;
 
@@ -42,9 +42,9 @@ function AllMyCourses() {
 
         <Input
           aria-label="Search"
+          className="max-w-xs"
           labelPlacement="outside"
           placeholder="Search courses..."
-          className="max-w-xs"
           startContent={
             <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
           }
@@ -54,7 +54,7 @@ function AllMyCourses() {
         />
       </div>
 
-      <FilterdCourses Courses={filteredCourses} InDashboard InAll/>
+      <FilterdCourses InAll InDashboard Courses={filteredCourses} />
     </DashboardLayout>
   );
 }

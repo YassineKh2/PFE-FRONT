@@ -1,33 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import DashboardLayout from "@/layouts/dashboard";
 import { subtitle, title } from "@/components/primitives";
 import FilteredCertificates from "@/components/Chapters/Frontend/FilteredCertificates";
-import { CourseType } from "@/types/Courses";
+import { CertificateType, CourseType } from "@/types/Courses";
+import { GetMyCertificates } from "@/services/Certificate";
+import { useAuth } from "@/providers/AuthProvider";
 
 function Certificates() {
 
-  const [Courses, setCourses] = useState<CourseType[]>([{
-    title: "Node.js Backend Fundamentals",
-    description: "Learn the basics of backend development with Node.js, Express, and MongoDB.",
-    duration: "8 weeks",
-    level: "Beginner",
-    category: "Backend",
-    image: "/images/courses/nodejs-backend.png",
-    status: "published",
-    instructor: "Jane Doe",
-    endrolledStudents: ["student1", "student2", "student3"],
-    visibleToPublic: true,
-    opentoenrollement: true,
-    studentdisscussions: true,
-    emailnotifications: true,
-    id: "course-backend-001",
-    chapters: ["Introduction", "Express Basics", "MongoDB Integration"],
-    createdAt: "2024-06-01T10:00:00Z",
-    editedAt: "2024-06-10T15:30:00Z",
-    finishedAt:"2024-06-10T15:30:00Z"
-  }])
+  const [Certificates, setCertificates] = useState<CertificateType[]>(
+    [] as CertificateType[],
+  );
+  const { currentUser } = useAuth();
 
-
+  useEffect(() => {
+    GetMyCertificates(currentUser.uid).then((response) => {
+      setCertificates(response.data.data);
+    });
+  }, []);
 
   return (
     <>
@@ -38,7 +29,7 @@ function Certificates() {
         <div className={subtitle({ size: "xs" }) + " text-gray-400"}>
           View and download your earned certificates
         </div>
-        <FilteredCertificates Courses={Courses}/>
+        <FilteredCertificates Certificates={Certificates} />
       </DashboardLayout>
     </>
   );

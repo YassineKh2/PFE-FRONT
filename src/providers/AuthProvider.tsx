@@ -1,8 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { ReactNode } from "react";
 import { doc, getDoc } from "firebase/firestore";
+
+import { auth } from "../firebase/firebase";
+
 import { db } from "@/services/Auth";
 
 const AuthContext = createContext({
@@ -12,6 +14,7 @@ const AuthContext = createContext({
     uid: "",
     role: "",
     photoUrl: "",
+    displayName: "",
   },
   loading: true,
 });
@@ -26,12 +29,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     uid: "",
     role: "user",
     photoUrl: "",
+    displayName: "",
   });
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
+
     return unsubscribe;
   }, []);
 
@@ -45,12 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const data = userdata.data();
 
-      user.role = data?.role
+      user.role = data?.role;
 
       setCurrentUser({ ...user });
       setUserLoggedIn(true);
     } else {
-      setCurrentUser({ email: "", uid: "", role: "user", photoUrl: "" });
+      setCurrentUser({
+        email: "",
+        uid: "",
+        role: "user",
+        photoUrl: "",
+        displayName: "",
+      });
       setUserLoggedIn(false);
     }
 

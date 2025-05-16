@@ -13,12 +13,12 @@ export const Course = z.object({
   chapters: z.array(z.string()).optional(),
   createdAt: z.string().optional(),
   editedAt: z.string().optional(),
-  endrolledStudents:z.array(z.string()).default([]),
-  visibleToPublic:z.boolean().default(true),
-  opentoenrollement:z.boolean().default(true),
-  studentdisscussions:z.boolean().default(true),
-  emailnotifications:z.boolean().default(true),
-  finishedAt:z.string().optional()
+  enrolledStudents: z.array(z.string()).default([]),
+  visibleToPublic: z.boolean().default(true),
+  opentoenrollement: z.boolean().default(true),
+  studentdisscussions: z.boolean().default(true),
+  emailnotifications: z.boolean().default(true),
+  finishedAt: z.string().optional(),
 });
 
 export const Chapter = z.object({
@@ -36,9 +36,9 @@ export const Chapter = z.object({
 });
 
 export const CourseState = z.object({
-  courseId : z.string(),
-  completedChapters:z.array(z.string()),
-  progress:z.number(),
-  enrolledAt:z.string(),
-  lastActive:z.string()
-})
+  courseId: z.string(),
+  completedChapters: z.array(z.string()),
+  progress: z.number(),
+  enrolledAt: z.string(),
+  lastActive: z.string(),
+});
