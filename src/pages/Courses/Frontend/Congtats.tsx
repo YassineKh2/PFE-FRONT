@@ -18,6 +18,7 @@ import { GetCourse } from "@/services/Course";
 import { useAuth } from "@/providers/AuthProvider";
 import { AddCertificate, GetMyCertificates } from "@/services/Certificate";
 import { formatDate } from "@/Helpers/Utils";
+import { GetSingleProgress } from "@/services/User";
 
 function CertificatePreview({ certificate }: { certificate: any }) {
   return (
@@ -47,6 +48,14 @@ function Congtats() {
   );
   const { currentUser } = useAuth();
   const { id } = useParams();
+
+  useEffect(() => {
+    if (!Course) return;
+
+    GetSingleProgress(currentUser.uid, Course.id || "").then((res) => {
+      setprogress(res.data);
+    });
+  }, [Course]);
 
   // Trigger confetti
   useEffect(() => {
@@ -129,7 +138,11 @@ function Congtats() {
 
   return (
     <>
-      <Navbar inDashboard={true} progress={progress} />
+      <Navbar
+        CourseTitle={Course.title}
+        inDashboard={true}
+        progress={progress}
+      />
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="flex flex-col items-center gap-12">
           <div className="flex flex-col items-center gap-3">
@@ -145,7 +158,7 @@ function Congtats() {
             </p>
             <p className={subtitle({ size: "sm" })}>
               You&apos;ve successfully completed
-              <strong> Introduction to Mutual Funds</strong>
+              <strong> {Course.title}</strong>
             </p>
           </div>
 

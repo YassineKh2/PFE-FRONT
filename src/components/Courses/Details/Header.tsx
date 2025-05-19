@@ -62,9 +62,9 @@ const Header = ({ course }: { course: Course }) => {
   return (
     <>
       <section className="flex flex-col gap-2">
-        <div className="flex justify-between">
+        <div className="flex gap-2 flex-col xl:flex-row justify-between">
           <p className={title({ size: "sm" })}>{course.title}</p>
-          <div className="flex gap-3 items-center">
+          <div className="flex justify-between gap-3 items-center">
             <Button
               as={Link}
               className="text-gray-100"
@@ -116,7 +116,7 @@ const Header = ({ course }: { course: Course }) => {
         </div>
         <p className={subtitle({ size: "xs" })}>{course.description}</p>
         <Divider />
-        <div className="flex gap-4 justify-start text-sm text-gray-900">
+        <div className="flex flex-wrap gap-4 justify-start text-sm text-gray-900">
           <p className="flex items-center gap-1">
             <Icon
               height="20"

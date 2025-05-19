@@ -4,20 +4,8 @@ import { useEffect, useState } from "react";
 
 import { RecentActivity as RecentActivityType } from "@/types/Courses";
 import { GetRecentActivity } from "@/services/User";
+import { timeAgo } from "@/Helpers/Utils";
 
-// Helper to format time difference
-function timeAgo(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  if (diff < 60) return `${diff} seconds ago`;
-  if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-  if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
-
-  return date.toLocaleDateString();
-}
 
 // Map activity type to icon and color
 const activityIconMap: Record<string, { icon: string; color: string }> = {

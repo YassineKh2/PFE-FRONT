@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "@/layouts/dashboard";
 import { subtitle, title } from "@/components/primitives";
 import FilteredCertificates from "@/components/Chapters/Frontend/FilteredCertificates";
-import { CertificateType, CourseType } from "@/types/Courses";
+import { CertificateType } from "@/types/Courses";
 import { GetMyCertificates } from "@/services/Certificate";
 import { useAuth } from "@/providers/AuthProvider";
 
 function Certificates() {
-
   const [Certificates, setCertificates] = useState<CertificateType[]>(
     [] as CertificateType[],
   );

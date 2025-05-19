@@ -8,9 +8,6 @@ import {
 } from "@heroui/dropdown";
 import { Divider } from "@heroui/divider";
 import { Link } from "react-router-dom";
-
-import { ChapterType as Chapter } from "@/types/Courses";
-import { DeleteChapter } from "@/services/Chapter";
 import { addToast } from "@heroui/toast";
 import {
   Modal,
@@ -21,6 +18,9 @@ import {
   useDisclosure,
 } from "@heroui/modal";
 import { useState } from "react";
+
+import { DeleteChapter } from "@/services/Chapter";
+import { ChapterType as Chapter } from "@/types/Courses";
 
 const Content = ({
   id,
@@ -42,7 +42,7 @@ const Content = ({
           color: "success",
         });
         setChapters((prev) =>
-          prev.filter((chapter) => chapter.id !== selectedChapter?.id)
+          prev.filter((chapter) => chapter.id !== selectedChapter?.id),
         );
       })
       .catch(() => {
@@ -60,19 +60,19 @@ const Content = ({
         <div className="flex justify-between items-center mb-2">
           <p className="text-2xl inline font-semibold ">Course Content</p>
           <Button
-            startContent={
-              <Icon
-                icon="ei:plus"
-                width="25"
-                height="25"
-                style={{ color: "#9A9AA0" }}
-              />
-            }
-            variant="bordered"
+            as={Link}
             color="default"
             size="md"
-            as={Link}
+            startContent={
+              <Icon
+                height="25"
+                icon="ei:plus"
+                style={{ color: "#9A9AA0" }}
+                width="25"
+              />
+            }
             to={"/dashboard/chapter/add/" + id}
+            variant="bordered"
           >
             Add Chapter
           </Button>
@@ -85,15 +85,15 @@ const Content = ({
                   <p className="text-lg font-semibold">
                     Chapter {chapter.order}: {chapter.title}
                   </p>
-                  <p className="text-sm text-gray-500">{chapter.description}</p>
+                  <p className="text-sm hidden lg:block text-gray-500">{chapter.description}</p>
                 </div>
                 <div className="flex gap-3 items-center">
                   <p className="flex items-center gap-1 text-gray-600">
                     <Icon
-                      icon="mdi-light:clock"
-                      width="20"
                       height="20"
+                      icon="mdi-light:clock"
                       style={{ color: "4b5563" }}
+                      width="20"
                     />
                     {chapter.duration}min
                   </p>
@@ -106,18 +106,16 @@ const Content = ({
                         variant="light"
                       >
                         <Icon
-                          icon="pepicons-pencil:dots-y"
-                          width="20"
                           height="20"
+                          icon="pepicons-pencil:dots-y"
                           style={{ color: "#4b5563" }}
+                          width="20"
                         />
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownItem
-                        as={Link}
-                        //@ts-ignore
-                        to={"/courses/chapter/" + chapter.id}
+                        key="view"
                         startContent={
                           <Icon
                             icon="solar:eye-outline"
@@ -126,14 +124,14 @@ const Content = ({
                             style={{ color: "#9A9AA0" }}
                           />
                         }
-                        key="view"
+                        as={Link}
+                        //@ts-ignore
+                        to={"/courses/chapter/" + chapter.id}
                       >
                         View
                       </DropdownItem>
                       <DropdownItem
-                        as={Link}
-                        //@ts-ignore
-                        to={"/dashboard/chapter/edit/" + chapter.id}
+                        key="edit"
                         startContent={
                           <Icon
                             icon="mynaui:edit"
@@ -142,22 +140,24 @@ const Content = ({
                             style={{ color: "#9A9AA0" }}
                           />
                         }
-                        key="edit"
+                        as={Link}
+                        //@ts-ignore
+                        to={"/dashboard/chapter/edit/" + chapter.id}
                       >
                         Edit
                       </DropdownItem>
                       <DropdownItem
-                        startContent={
-                          <Icon
-                            icon="fluent:delete-48-regular"
-                            width="20"
-                            height="20"
-                            className="transition-colors duration-200"
-                          />
-                        }
+                        key="delete"
                         className="text-danger group"
                         color="danger"
-                        key="delete"
+                        startContent={
+                          <Icon
+                            className="transition-colors duration-200"
+                            height="20"
+                            icon="fluent:delete-48-regular"
+                            width="20"
+                          />
+                        }
                         onPress={() => {
                           setSelectedChapter(chapter);
                           onOpen();
@@ -180,10 +180,10 @@ const Content = ({
             <>
               <ModalHeader className="flex justify-center items-center">
                 <Icon
-                  icon="mynaui:danger-triangle"
-                  width="80"
                   height="80"
+                  icon="mynaui:danger-triangle"
                   style={{ color: "#fc3c61" }}
+                  width="80"
                 />
               </ModalHeader>
               <ModalBody className="flex flex-col items-center text-center">

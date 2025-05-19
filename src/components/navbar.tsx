@@ -20,14 +20,15 @@ import {
   DropdownItem,
 } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
+import { useNavigate } from "react-router-dom";
+
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon } from "@/components/icons";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import { doSignOut } from "@/services/Auth";
 export const Navbar = () => {
-  const { userLoggedIn, currentUser} = useAuth();
+  const { userLoggedIn, currentUser } = useAuth();
   const navigate = useNavigate();
   const searchInput = (
     <Input
@@ -53,7 +54,7 @@ export const Navbar = () => {
   const SignOut = async () => {
     await doSignOut();
     navigate("/login");
-  }
+  };
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -73,7 +74,7 @@ export const Navbar = () => {
               <Link
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium",
                 )}
                 color="foreground"
                 href={item.href}
@@ -108,20 +109,42 @@ export const Navbar = () => {
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{currentUser?.email}</p>
               </DropdownItem>
-              <DropdownItem key="savedfunds" onPress={()=>{navigate('/savedfunds')}}>Saved Funds</DropdownItem>
+              <DropdownItem
+                key="savedfunds"
+                onPress={() => {
+                  navigate("/savedfunds");
+                }}
+              >
+                Saved Funds
+              </DropdownItem>
               <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
+              <DropdownItem
+                key="courses"
+                onPress={() => {
+                  navigate("/dashboard/courses/overview");
+                }}
+              >
+                My Courses
+              </DropdownItem>
+              <DropdownItem key="settings">Settings</DropdownItem>
               <DropdownItem key="configurations">Configurations</DropdownItem>
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key="logout" color="danger" onPress={() => SignOut()}>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onPress={() => SignOut()}
+              >
                 Log Out
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         ) : (
-          <Button className="bg-gradient-to-r from-[#E7649C] to-[#fc3c61] text-white" onPress={() => navigate("/login")}>
+          <Button
+            className="bg-gradient-to-r from-[#E7649C] to-[#fc3c61] text-white"
+            onPress={() => navigate("/login")}
+          >
             Login
           </Button>
         )}

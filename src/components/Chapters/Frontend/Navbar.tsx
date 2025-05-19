@@ -16,15 +16,24 @@ import {
   DropdownItem,
 } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/providers/AuthProvider";
-import { doSignOut } from "@/services/Auth";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Progress } from "@heroui/progress";
+
+import { siteConfig } from "@/config/site";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { useAuth } from "@/providers/AuthProvider";
+import { doSignOut } from "@/services/Auth";
 import { ProgressType } from "@/types/Courses";
-export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress:ProgressType }) => {
+export const Navbar = ({
+  inDashboard,
+  progress,
+  CourseTitle
+}: {
+  inDashboard: boolean;
+  progress: ProgressType;
+  CourseTitle:string
+}) => {
   const { userLoggedIn, currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -48,13 +57,13 @@ export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress
             {inDashboard ? (
               <Button
                 as={Link}
-                href="/dashboard/courses"
+                href="/dashboard/courses/all"
                 startContent={
                   <Icon
                     className="-rotate-90"
+                    height="20"
                     icon="majesticons:arrow-up"
                     width="20"
-                    height="20"
                   />
                 }
                 variant="light"
@@ -68,9 +77,9 @@ export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress
                 startContent={
                   <Icon
                     className="-rotate-90"
+                    height="20"
                     icon="majesticons:arrow-up"
                     width="20"
-                    height="20"
                   />
                 }
                 variant="light"
@@ -84,7 +93,7 @@ export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress
 
       <NavbarContent justify="center">
         <NavbarItem className="hidden sm:flex gap-2 font-semibold text-lg">
-          Introduction to Mutual Funds
+          {CourseTitle}
         </NavbarItem>
       </NavbarContent>
 
@@ -97,9 +106,9 @@ export const Navbar = ({ inDashboard,progress }: { inDashboard: boolean,progress
               label: "text-xs mt-2",
               value: "text-xs mt-2",
             }}
-            showValueLabel={true}
             color="primary"
             label="Your Progress"
+            showValueLabel={true}
             size="sm"
             value={progress.progress}
           />

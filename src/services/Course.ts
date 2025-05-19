@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CourseStats, CourseType } from "@/types/Courses";
+import { CourseStats, CourseType, EnrolledUserType } from "@/types/Courses";
 
 const BACKEND = axios.create({
   baseURL: "http://127.0.0.1:5000/course",
@@ -59,6 +59,13 @@ export async function GetCourseStats(id: string) {
   const response: { data: { data: [CourseStats] } } = await BACKEND.get(
     `/stats/${id}`,
   );
+
+  return response.data;
+}
+
+export async function GetEnrolledStudents(id: string) {
+  const response: { data: [{ students: EnrolledUserType[] }] } =
+    await BACKEND.get(`/enrolled/${id}`);
 
   return response.data;
 }

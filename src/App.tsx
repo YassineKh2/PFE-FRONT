@@ -28,6 +28,7 @@ import Certificate from "./pages/Courses/Frontend/Certificate";
 import Congtats from "./pages/Courses/Frontend/Congtats";
 
 import IndexPage from "@/pages/index";
+import Quiz from "./pages/Courses/Frontend/Quiz";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -72,6 +73,8 @@ function App() {
         />
         <Route element={<Certificate />} path="courses/Certificate/:id" />
         <Route element={<Congtats />} path="courses/congrats/:id" />
+        <Route element={<Quiz />} path="courses/quiz/:id" />
+
 
         {/* Admin Dashboard Routes */}
         <Route element={<AdminRoutes />}>

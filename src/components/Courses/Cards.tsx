@@ -15,7 +15,6 @@ export default function Cards({ id }: { id: string }) {
       setProgress(response.data[0]);
     });
   }, []);
-  
 
   const courseStats = [
     {
@@ -49,7 +48,6 @@ export default function Cards({ id }: { id: string }) {
       color: "primary",
     },
   ];
-
 
   return (
     <dl className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">

@@ -17,7 +17,6 @@ import { ChapterType, ProgressType } from "@/types/Courses";
 import { GetStaticImages } from "@/services/GetStaticFiles";
 import { useAuth } from "@/providers/AuthProvider";
 import { GetSingleProgress, UpdateProgress } from "@/services/User";
-import { Chapter } from "@/schemas/Courses";
 
 function ViewChapter({
   chapter,
@@ -109,7 +108,11 @@ function ViewChapter({
 
   return (
     <>
-      <Navbar inDashboard={inDashboard} progress={progress} />
+      <Navbar
+        CourseTitle={chapter.title}
+        inDashboard={inDashboard}
+        progress={progress}
+      />
       <div className="flex flex-col">
         <div className="w-full h-80 overflow-hidden">
           <img
@@ -182,7 +185,10 @@ function ViewChapter({
                   </div>
                 </Tab>
                 <Tab key="discussion" title="Discussion">
-                  <Discussion />
+                  <Discussion
+                    CourseId={chapter.courseId}
+                    currentUser={currentUser}
+                  />
                 </Tab>
                 <Tab key="resources" title="Resources">
                   <Resources />

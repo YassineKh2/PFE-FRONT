@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import { subtitle, title } from "@/components/primitives";
 import DashboardLayout from "@/layouts/dashboard";
 import { GetCourse } from "@/services/Course";
@@ -15,6 +16,7 @@ export default function ViewCourse() {
       if (!id) return;
       const fetchedCourse = await GetCourse(id);
       let data = fetchedCourse.data;
+
       data.id = id;
       setCourse(data);
     }

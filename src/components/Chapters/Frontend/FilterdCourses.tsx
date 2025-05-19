@@ -56,7 +56,6 @@ function FilterdCourses({
   useEffect(() => {
     if (!InDashboard) return;
     GetProgress(currentUser.uid).then((response) => {
-      console.log(response.data);
       setProgressList(response.data);
     });
   }, []);

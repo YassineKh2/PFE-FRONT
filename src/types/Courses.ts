@@ -49,12 +49,51 @@ export type CourseStats = {
 };
 
 export type Comment = {
-  id: string;
+  id?: string;
   userId: string;
   userName: string;
   courseId: string;
   content: string;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
-  replyingTo: string | undefined;
+  replyingTo?: string;
+};
+
+export type EnrolledCourse = {
+  idCourse: string;
+  enrolledAt: string;
+  lastActive: string;
+  completedChapters: string[];
+  progress?: number;
+  finishedAt?: string;
+};
+
+export type EnrolledUserType = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  enrolledCourses?: {
+    [key: string]: EnrolledCourse;
+  };
+  progress: ProgressType;
+};
+
+export type QuizQuestion = {
+  id: string;
+  question: string;
+  options: string[];
+  answer: string;
+  explanation?: string;
+};
+
+export type Quiz = {
+  id: string;
+  courseId: string;
+  chapterId?: string;
+  questions: QuizQuestion[];
+  passingScore: number;
+  createdAt?: string;
+  updatedAt?: string;
 };

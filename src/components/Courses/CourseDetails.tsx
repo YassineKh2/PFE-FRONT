@@ -32,16 +32,16 @@ function CourseDetails({ course }: { course: Course }) {
     <div className="flex flex-col gap-4">
       <Banner imageSrc={course.image} />
       <Header course={course} />
-      <section className="flex gap-4">
-        <div className="w-[65%] self-start space-y-4">
+      <section className="flex flex-col xl:flex-row gap-4">
+        <div className="w-full xl:w-[65%] self-start space-y-4">
           <Content
             chapters={chapters}
             id={course.id || ""}
             setChapters={setChapters}
           />
-          <EnrolledStudents />
+          <EnrolledStudents id={course.id || ""} />
         </div>
-        <div className="w-[35%] self-start space-y-4">
+        <div className="w-full xl:w-[35%] self-start space-y-4">
           <EnrollmentStatistics id={course.id} />
           <Settings />
         </div>

@@ -7,6 +7,7 @@ import {
   ProgressType,
   RecentActivity,
 } from "@/types/Courses";
+import { User } from "@/types/User";
 
 const BACKEND = axios.create({
   baseURL: "http://127.0.0.1:5000/user",
@@ -74,6 +75,12 @@ export async function GetRecentActivity(id: string) {
   const response: { data: { data: [[RecentActivity]] } } = await BACKEND.get(
     "/activity/" + id,
   );
+
+  return response.data;
+}
+
+export async function GetAll() {
+  const response: { data: [User[]] } = await BACKEND.get("/all");
 
   return response.data;
 }
