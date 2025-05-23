@@ -72,7 +72,7 @@ export default function Filter({ setFilters }: FilterProps) {
   ]);
 
   return (
-    <div className="space-y-4 w-[30%]">
+    <div className="space-y-4 w-[30%] hidden lg:block">
       <div className="bg-white rounded-lg border dark:border-none border-[#18181B/0.2] shadow-xl dark:bg-[#18181B] p-4 md:p-6 ">
         <div className="flex justify-between items-center border-b-2 font-semibold">
           <p className="text-gray-700 mb-2">FILTERS</p>

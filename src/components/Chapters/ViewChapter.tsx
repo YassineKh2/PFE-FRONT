@@ -102,7 +102,7 @@ function ViewChapter({
     };
 
     UpdateProgress(currentUser.uid, progress).then(() => {
-      navigate(`/courses/congrats/${chapter.courseId}`);
+      navigate(`/courses/quiz/${chapter.courseId}`);
     });
   };
 

@@ -3,7 +3,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import MutalFund from "./pages/Mutual Funds/MutalFund";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
-import SavedFunds from "./pages/Mutual Funds/SavedFunds";
+import SavedFunds from "./pages/Mutual Funds/Backend/SavedFunds";
 import HomePage from "./pages/Home";
 import Calculators from "./pages/Calculators";
 import TrendingFunds from "./pages/Mutual Funds/TrendingFunds";
@@ -29,6 +29,7 @@ import Congtats from "./pages/Courses/Frontend/Congtats";
 
 import IndexPage from "@/pages/index";
 import Quiz from "./pages/Courses/Frontend/Quiz";
+import CompareFunds from "./pages/Mutual Funds/CompareFunds";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -50,9 +51,9 @@ function App() {
       <Route element={<IndexPage />} path="/" />
       <Route element={<HomePage />} path="home" />
       <Route element={<MutalFund />} path="fund/:id" />
+      <Route element={<CompareFunds />} path="compare" />
       <Route element={<Login />} path="login" />
       <Route element={<Signup />} path="signup" />
-      <Route element={<SavedFunds />} path="savedfunds" />
       <Route element={<Calculators />} path="calculator" />
       <Route element={<TrendingFunds />} path="trending" />
       <Route element={<FilterFunds />} path="filter" />
@@ -64,6 +65,8 @@ function App() {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoutes />}>
+
+        {/* E-Learning Paths */}
         <Route element={<Chapter />} path="courses/chapter/:id" />
         <Route element={<MyCourses />} path="dashboard/courses/overview" />
         <Route element={<AllMyCourses />} path="dashboard/courses/owned" />
@@ -75,6 +78,8 @@ function App() {
         <Route element={<Congtats />} path="courses/congrats/:id" />
         <Route element={<Quiz />} path="courses/quiz/:id" />
 
+          {/* Funds Paths  */}
+        <Route element={<SavedFunds />} path="dashboard/savedfunds" />
 
         {/* Admin Dashboard Routes */}
         <Route element={<AdminRoutes />}>

@@ -41,9 +41,15 @@ const MutualFunds = ({ data }: { data: Fund[] }) => {
             >
               <TableCell>
                 <div className="space-y-2 py-3">
-                  <p className="font-semibold text-gray-800 group-hover:text-primary-500 group-hover:underline">
-                    {fund.name}
-                  </p>
+                  <div className="flex gap-2 items-center">
+                    <p className="text-lg font-semibold text-gray-800 group-hover:text-primary-500 group-hover:underline">
+                      {/* @ts-ignore */}
+                      {fund.compositeScore} |
+                    </p>
+                    <p className="font-semibold text-gray-800 group-hover:text-primary-500 group-hover:underline">
+                      {fund.name}
+                    </p>
+                  </div>
                   <div className="flex gap-2 text-gray-500 text-xs">
                     <p> {fund.amc} ●</p>
                     <p>{fund.risk} Risk ●</p>
@@ -68,9 +74,9 @@ const MutualFunds = ({ data }: { data: Fund[] }) => {
                         <g
                           fill="none"
                           stroke="#6b7280"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                         >
                           <path d="M8.487 21h7.026a4 4 0 0 0 3.808-5.224l-1.706-5.306A5 5 0 0 0 12.855 7h-1.71a5 5 0 0 0-4.76 3.47l-1.706 5.306A4 4 0 0 0 8.487 21M15 3q-1 4-3 4T9 3zm-3 11H9" />
                           <path d="M14 11.172a3 3 0 1 0 0 5.656" />
@@ -138,38 +144,33 @@ function RecommendFundList() {
   const navigate = useNavigate();
   const [SearchFund, setSearchFund] = useState<string>("");
   const [hasData, setHasData] = useState(false);
-  const { userLoggedIn,currentUser } = useAuth();
-  
+  const { userLoggedIn, currentUser } = useAuth();
 
-  const [experienceData, setExperienceData] = useState<ExperienceFormSchemaType>();
-  const [preferencesData, setPreferencesData] = useState<PreferencesFormSchemaType>();
+  const [experienceData, setExperienceData] =
+    useState<ExperienceFormSchemaType>();
+  const [preferencesData, setPreferencesData] =
+    useState<PreferencesFormSchemaType>();
   const [FinancialData, setFinancialData] = useState<FinancialFormSchemaType>();
-  const [AdditionalInformationData, setAdditionalInformationData] = useState<AdditionalInformationFormSchemaType>();
+  const [AdditionalInformationData, setAdditionalInformationData] =
+    useState<AdditionalInformationFormSchemaType>();
 
   useEffect(() => {
     const getData = async () => {
       const data = await getUserPreferences(currentUser.uid);
-      setExperienceData(data[0].experienceData);
-      setPreferencesData(data[0].preferencesData);
-      setFinancialData(data[0].financialData);
-      setAdditionalInformationData(data[0].additionalInformationData);
+      setExperienceData(data.experienceData);
+      setPreferencesData(data.preferencesData);
+      setFinancialData(data.financialData);
+      setAdditionalInformationData(data.additionalInformationData);
       setHasData(true);
-    }
+    };
     getData();
-    
-
   }, []);
 
-
   useEffect(() => {
-        
     if (!experienceData) return;
     if (!preferencesData) return;
     if (!FinancialData) return;
     if (!AdditionalInformationData) return;
-
-    
-   
 
     const funds = rankFundsComposite(
       filteredFunds,
@@ -178,8 +179,10 @@ function RecommendFundList() {
       FinancialData,
       AdditionalInformationData.sectorsRestrictions
     );
-  
-    setFilteredFunds(funds);
+
+    const topFunds = funds.filter((fund) => fund.compositeScore > 80);
+
+    setFilteredFunds(topFunds);
   }, [hasData]);
 
   return (
@@ -216,13 +219,17 @@ function RecommendFundList() {
         </>
       ) : (
         <div className="flex flex-col gap-3 justify-center items-center h-full w-full">
-          <p className="text-gray-500 text-md">It looks like you still haven't completed your onboarding !</p>
-            <Button
+          <p className="text-gray-500 text-md">
+            It looks like you still haven't completed your onboarding !
+          </p>
+          <Button
             color="primary"
-            onPress={() => {navigate("/Onboarding")}} 
->
+            onPress={() => {
+              navigate("/Onboarding");
+            }}
+          >
             Complete it here.
-            </Button>
+          </Button>
         </div>
       )}
     </div>

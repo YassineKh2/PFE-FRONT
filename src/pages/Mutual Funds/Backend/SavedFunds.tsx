@@ -1,4 +1,3 @@
-import DefaultLayout from "@/layouts/default";
 import { useAuth } from "@/providers/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { Card, CardBody, CardHeader } from "@heroui/card";
@@ -15,6 +14,7 @@ import { Tab, Tabs } from "@heroui/tabs";
 import { useEffect, useState } from "react";
 import { Fund } from "@/types/MutualFunds";
 import funds from "@/database/MutualFunds.json";
+import DefaultLayout from "@/layouts/dashboard";
 
 function SavedFunds() {
   const [MutualFunds, setMutualFunds] = useState<Fund[]>([]);
@@ -119,7 +119,7 @@ function SavedFunds() {
           <div className="mt-12 flex flex-col items-center justify-center">
             <span className={title({ size: "sm" })}>No funds found </span>
             <img
-              src="undraw_feeling-blue_8si6.svg"
+              src="/undraw_heartbroken_ocfa.svg"
               alt="sad image"
               className="size-96"
             />
@@ -127,7 +127,7 @@ function SavedFunds() {
         ) : (
           <>
             {MutualFunds.map((fund) => (
-              <div key={fund.isin} className="mt-5 flex flex-col gap-2">
+              <div key={fund.isin} className="mt-5 flex flex-col gap-2 max-w-6xl">
                 <Card>
                   <CardHeader className="flex justify-between">
                     <div className="flex items-center gap-2">

@@ -13,7 +13,7 @@ const AuthContext = createContext({
     email: "",
     uid: "",
     role: "",
-    photoUrl: "",
+    photoURL: "",
     displayName: "",
   },
   loading: true,
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: "",
     uid: "",
     role: "user",
-    photoUrl: "",
+    photoURL: "",
     displayName: "",
   });
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -49,7 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userdata = await getDoc(userRef);
 
       const data = userdata.data();
-
       user.role = data?.role;
 
       setCurrentUser({ ...user });
@@ -59,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: "",
         uid: "",
         role: "user",
-        photoUrl: "",
+        photoURL: "",
         displayName: "",
       });
       setUserLoggedIn(false);

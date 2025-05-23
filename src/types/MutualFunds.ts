@@ -120,6 +120,7 @@ export type Fund = {
   maxInvestment: string;
   expense_ratio: number;
   volatility: number;
+  AUM: number;
   turnover: number;
   NAV_Flow: number; // Calculated by End Period AUM - Start Period AUM - investment Performance
   sector: string;
@@ -138,3 +139,6 @@ export type Fund = {
   tax_period: number;
   latestnav: number;
 };
+
+
+

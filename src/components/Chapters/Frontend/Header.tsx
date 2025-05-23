@@ -1,16 +1,15 @@
+import { UpdateProgress } from "@/services/User";
+import { ChapterType } from "@/types/Courses";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ChapterType } from "@/types/Courses";
-import { UpdateProgress } from "@/services/User";
-
 function Header({
   chapter,
   Navigation,
   inDashboard,
-  id,
+  id
 }: {
   chapter: ChapterType;
   Navigation: {
@@ -20,7 +19,7 @@ function Header({
     hasPrev: boolean;
   };
   inDashboard: boolean;
-  id: string;
+  id:string
 }) {
   const navigate = useNavigate();
 
@@ -31,7 +30,6 @@ function Header({
       courseId: chapter.courseId,
       chapterId: chapter.id || "",
     };
-
     UpdateProgress(id, progress).then(() => {
       navigate(`/courses/chapter/${nextId}`);
     });
@@ -48,33 +46,33 @@ function Header({
             {inDashboard && (
               <Tooltip content="Edit">
                 <Button
-                  isIconOnly
                   as={Link}
                   to={`/dashboard/chapter/edit/${chapter.id}`}
                   variant="light"
+                  isIconOnly
                 >
-                  <Icon height="20" icon="mynaui:edit" width="20" />
+                  <Icon icon="mynaui:edit" width="20" height="20" />
                 </Button>
               </Tooltip>
             )}
             <Tooltip content="Like">
-              <Button isIconOnly variant="light">
-                <Icon height="20" icon="iconamoon:like" width="20" />
+              <Button variant="light" isIconOnly>
+                <Icon icon="iconamoon:like" width="20" height="20" />
               </Button>
             </Tooltip>
             <Tooltip content="Share">
-              <Button isIconOnly variant="light">
-                <Icon height="20" icon="ri:share-line" width="20" />
+              <Button variant="light" isIconOnly>
+                <Icon icon="ri:share-line" width="20" height="20" />
               </Button>
             </Tooltip>
             <Tooltip content="Report an issue">
-              <Button isIconOnly variant="light">
-                <Icon height="20" icon="tabler:flag" width="20" />
+              <Button variant="light" isIconOnly>
+                <Icon icon="tabler:flag" width="20" height="20" />
               </Button>
             </Tooltip>
             <Tooltip content="Mark as completed">
-              <Button isIconOnly variant="light">
-                <Icon height="24" icon="hugeicons:validation" width="24" />
+              <Button variant="light" isIconOnly>
+                <Icon icon="hugeicons:validation" width="24" height="24" />
               </Button>
             </Tooltip>
           </div>
@@ -84,9 +82,9 @@ function Header({
                 startContent={
                   <Icon
                     className="-rotate-90"
-                    height="20"
                     icon="majesticons:arrow-up"
                     width="20"
+                    height="20"
                   />
                 }
                 variant="bordered"
@@ -100,9 +98,9 @@ function Header({
                 endContent={
                   <Icon
                     className="rotate-90"
-                    height="20"
                     icon="majesticons:arrow-up"
                     width="20"
+                    height="20"
                   />
                 }
                 variant="bordered"

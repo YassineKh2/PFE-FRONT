@@ -17,7 +17,7 @@ const Banner = ({ imageSrc }: { imageSrc: string }) => {
       <div className="flex gap-2 items-center">
         <Button
           as={Link}
-          to="/dashboard/courses"
+          to="/dashboard/courses/all"
           size="sm"
           startContent={
             <Icon

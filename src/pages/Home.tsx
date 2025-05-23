@@ -23,10 +23,10 @@ export default function HomePage() {
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-xl text-center justify-center">
-          <span className={title({size:'md'})}>Search a&nbsp;</span>
-          <span className={title({ color: "pink",size:'lg' })}>Mutual Fund</span>
+          <span className={title({size:'md',boldness:'bold'})}>Search a&nbsp;</span>
+          <span className={title({ color: "pink",size:'lg',boldness:'bold' })}>Mutual Fund</span>
           <br />
-          <span className={title({size:'md'})}>and start trading</span>
+          <span className={title({size:'md',boldness:'bold'})}>and start trading</span>
           <div className={subtitle({ class: "mt-4" })}>All in one place</div>
         </div>
 

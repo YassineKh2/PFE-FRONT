@@ -84,7 +84,7 @@ function Discussion({
     email: string;
     uid: string;
     role: string;
-    photoUrl: string;
+    photoURL: string;
     displayName: string;
   };
 }) {
@@ -179,7 +179,7 @@ function Discussion({
             isBordered
             as="button"
             className="transition-transform"
-            src={currentUser.photoUrl}
+            src={currentUser.photoURL}
           />
           <div className="flex flex-col gap-2 w-full">
             <Textarea

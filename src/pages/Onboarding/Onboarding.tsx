@@ -13,6 +13,7 @@ import {
   FinancialFormSchemaType,
   PersonalFormSchemaType,
   PreferencesFormSchemaType,
+  onbordingType
 } from "@/types/Onbording";
 import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
@@ -147,7 +148,6 @@ export default function Onboarding() {
           "additionalInformationData",
           JSON.stringify(AdditionalInformationFormData)
         );
-
         onOpen();
       }
 

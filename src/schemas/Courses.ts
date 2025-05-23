@@ -14,10 +14,10 @@ export const Course = z.object({
   createdAt: z.string().optional(),
   editedAt: z.string().optional(),
   enrolledStudents: z.array(z.string()).default([]),
-  visibleToPublic: z.boolean().default(true),
-  opentoenrollement: z.boolean().default(true),
-  studentdisscussions: z.boolean().default(true),
-  emailnotifications: z.boolean().default(true),
+  visibleToPublic: z.string().default("true"),
+  opentoenrollement: z.string().default("true"),
+  studentdisscussions: z.string().default("true"),
+  emailnotifications: z.string().default("true"),
   finishedAt: z.string().optional(),
 });
 

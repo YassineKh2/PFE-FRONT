@@ -84,9 +84,9 @@ export default function Calculators() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-10 py-8 md:py-10">
-        <h1 className={title()}>
+        <h1 className={title({boldness:"bold"})}>
           Mutual Fund{" "}
-          <text className={title({ color: "pink" })}>Calculator</text>
+          <text className={title({ color: "pink" ,boldness:"bold"})}>Calculator</text>
         </h1>
         <div className="flex gap-10 w-full">
           <div className="w-[70%] bg-white rounded-lg border dark:border-none border-[#18181B/0.2] shadow-xl dark:bg-[#18181B] p-4 md:p-6">

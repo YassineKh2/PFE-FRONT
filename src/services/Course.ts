@@ -36,11 +36,11 @@ export async function GetCourse(id: string) {
 
 export async function UpdateCourse(id: string, Course: CourseType) {
   const formData = new FormData();
-
   Object.entries(Course).forEach(([key, value]) => {
     formData.append(key, value as string | Blob);
   });
 
+  console.log(formData.get("enrolledStudents"));
   const response = await BACKEND.post(`/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -57,7 +57,7 @@ export async function DeleteCourse(id: string) {
 
 export async function GetCourseStats(id: string) {
   const response: { data: { data: [CourseStats] } } = await BACKEND.get(
-    `/stats/${id}`,
+    `/stats/${id}`
   );
 
   return response.data;

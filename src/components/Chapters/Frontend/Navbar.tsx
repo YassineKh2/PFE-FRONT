@@ -28,14 +28,23 @@ import { ProgressType } from "@/types/Courses";
 export const Navbar = ({
   inDashboard,
   progress,
-  CourseTitle
+  CourseTitle,
+  countdown,
 }: {
   inDashboard: boolean;
-  progress: ProgressType;
-  CourseTitle:string
+  progress?: ProgressType;
+  CourseTitle: string;
+  countdown?: number;
 }) => {
   const { userLoggedIn, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  let minutes;
+  let seconds;
+  if (countdown) {
+    minutes = Math.floor(countdown / 60);
+    seconds = countdown % 60;
+  }
 
   const SignOut = async () => {
     await doSignOut();
@@ -99,19 +108,28 @@ export const Navbar = ({
 
       <NavbarContent className="hidden sm:flex  sm:basis-full" justify="end">
         <NavbarItem className="hidden  justify-end sm:flex gap-6 w-full">
-          <Progress
-            aria-label="Progress"
-            classNames={{
-              base: "max-w-[200px]",
-              label: "text-xs mt-2",
-              value: "text-xs mt-2",
-            }}
-            color="primary"
-            label="Your Progress"
-            showValueLabel={true}
-            size="sm"
-            value={progress.progress}
-          />
+          {progress && (
+            <Progress
+              aria-label="Progress"
+              classNames={{
+                base: "max-w-[200px]",
+                label: "text-xs mt-2",
+                value: "text-xs mt-2",
+              }}
+              color="primary"
+              label="Your Progress"
+              showValueLabel={true}
+              size="sm"
+              value={progress.progress}
+            />
+          )}
+          {countdown && (
+            <span className="text-xs font-medium text-gray-500">
+              {countdown > 0
+                ? `Time left: ${minutes}:${seconds?.toString().padStart(2, "0")}`
+                : "Time's up!"}
+            </span>
+          )}
           <ThemeSwitch />
         </NavbarItem>
         {userLoggedIn ? (
@@ -132,7 +150,7 @@ export const Navbar = ({
               <DropdownItem
                 key="savedfunds"
                 onPress={() => {
-                  navigate("/savedfunds");
+                  navigate("/dashboard/savedfunds");
                 }}
               >
                 Saved Funds

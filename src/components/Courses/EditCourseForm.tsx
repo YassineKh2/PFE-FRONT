@@ -27,7 +27,7 @@ function EditCourseForm({ course }: { course: CourseType }) {
     defaultValues: {
       ...course,
       status: course?.status || "draft",
-      duration: course?.duration || "0",
+      duration: String(course?.duration) || "0",
     },
   });
 
@@ -36,13 +36,12 @@ function EditCourseForm({ course }: { course: CourseType }) {
 
   const navigate = useNavigate();
 
-  // Prefill form when course changes
   useEffect(() => {
     if (course) {
       reset({
         ...course,
         status: course.status || "draft",
-        duration: course.duration || "0",
+        duration: String(course?.duration) || "0",
       });
     }
   }, [course, reset]);
@@ -95,7 +94,7 @@ function EditCourseForm({ course }: { course: CourseType }) {
         description: "Course updated successfully",
         color: "success",
       });
-      navigate("/dashboard/courses");
+      navigate(-1);
     }).catch((error) => {
       addToast({
         title: "Error",
@@ -210,7 +209,18 @@ function EditCourseForm({ course }: { course: CourseType }) {
               </span>
             )}
           </div>
+
+           
         </div>
+            {errors &&
+            Object.entries(errors).map(([key, error]) =>
+              error?.message ? (
+              <span key={key} className="text-red-500 text-xs">
+                {error.message as string}
+              </span>
+              ) : null
+            )
+            }
       </div>
 
       <div className="flex justify-between mt-6">

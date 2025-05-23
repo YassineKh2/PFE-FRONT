@@ -59,6 +59,7 @@ const Header = ({ course }: { course: Course }) => {
     });
   }
 
+
   return (
     <>
       <section className="flex flex-col gap-2">

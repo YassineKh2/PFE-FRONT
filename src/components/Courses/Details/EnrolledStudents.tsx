@@ -10,49 +10,21 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
-import { Select, SelectItem } from "@heroui/select";
+import { Select, SelectItem } from "@heroui/react";
 import { Avatar } from "@heroui/avatar";
 import { addToast } from "@heroui/toast";
 
 import StudentTable from "./StudentTable";
 
-import { IconSvgProps } from "@/types";
 import { GetEnrolledStudents } from "@/services/Course";
 import { CourseStateType, EnrolledUserType } from "@/types/Courses";
 import { User } from "@/types/User";
 import { Enroll, GetAll } from "@/services/User";
-
-const SearchIcon = (props: IconSvgProps) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    focusable="false"
-    height="1em"
-    role="presentation"
-    viewBox="0 0 24 24"
-    width="1em"
-    {...props}
-  >
-    <path
-      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-    />
-    <path
-      d="M22 22L20 20"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-    />
-  </svg>
-);
+import { SearchIcon } from "@/components/icons";
 
 const EnrolledStudents = ({ id }: { id: string }) => {
   const [Students, setStudents] = useState<EnrolledUserType[]>(
-    [] as EnrolledUserType[],
+    [] as EnrolledUserType[]
   );
   const [search, setSearch] = useState("");
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -67,17 +39,18 @@ const EnrolledStudents = ({ id }: { id: string }) => {
 
   useEffect(() => {
     GetAll().then((response) => {
+      console.log(Users);
       setUsers(response[0]);
     });
   }, []);
 
   const filteredStudents = Students.filter((student) =>
-    `${student.name}`.toLowerCase().includes(search.toLowerCase()),
+    `${student.name}`.toLowerCase().includes(search.toLowerCase())
   );
 
   const enrolledIds = new Set(Students.map((s) => s.id));
   const availableUsers = Users.filter((u) => !enrolledIds.has(u.id));
-
+  console.log(availableUsers);
   async function AddUser(selectedUser: string | null): Promise<void> {
     if (!selectedUser) return;
     const userToAdd = Users.find((u) => u.id === selectedUser);
@@ -171,106 +144,97 @@ const EnrolledStudents = ({ id }: { id: string }) => {
         </div>
         <StudentTable Students={filteredStudents} id={id} />
       </div>
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex justify-center items-center">
                 <span className="text-lg font-semibold">Add Student</span>
               </ModalHeader>
               <ModalBody className="flex flex-col items-center text-center gap-4">
-                <form
-                  className="w-full flex flex-col gap-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    // TODO: handle add student logic here
-                    onClose();
+                <Select
+                  className="w-full"
+                  items={availableUsers}
+                  label="Assign user"
+                  labelPlacement="outside"
+                  listboxProps={{
+                    itemClasses: {
+                      base: [
+                        "rounded-md ",
+                        "text-default-500",
+                        "transition-opacity",
+                        "data-[hover=true]:text-foreground",
+                        "data-[hover=true]:bg-default-100",
+                        "dark:data-[hover=true]:bg-default-50",
+                        "data-[selectable=true]:focus:bg-default-50",
+                        "data-[pressed=true]:opacity-70",
+                        "data-[focus-visible=true]:ring-default-500",
+                      ],
+                    },
+                  }}
+                  popoverProps={{
+                    classNames: {
+                      base: "before:bg-default-200",
+                      content: "p-0 border-small border-divider bg-background",
+                    },
+                  }}
+                  renderValue={(items) => {
+                    return items.map((item) => (
+                      <div key={item.key} className="flex items-center gap-2">
+                        <Avatar
+                          alt={item.data?.name}
+                          className="flex-shrink-0"
+                          size="sm"
+                          src={""}
+                        />
+                        <div className="flex flex-col">
+                          <span>{item.data?.name}</span>
+                          <span className="text-default-500 text-tiny">
+                            ({item.data?.email})
+                          </span>
+                        </div>
+                      </div>
+                    ));
+                  }}
+                  selectedKeys={selectedUser ? [selectedUser] : []}
+                  variant="bordered"
+                  onSelectionChange={(keys) => {
+                    const keyArr = Array.from(keys);
+
+                    setSelectedUser(
+                      keyArr.length > 0 ? String(keyArr[0]) : null
+                    );
                   }}
                 >
-                  <Select
-                    className="w-full"
-                    items={availableUsers}
-                    label="Assign user"
-                    labelPlacement="outside"
-                    listboxProps={{
-                      itemClasses: {
-                        base: [
-                          "rounded-md ",
-                          "text-default-500",
-                          "transition-opacity",
-                          "data-[hover=true]:text-foreground",
-                          "data-[hover=true]:bg-default-100",
-                          "dark:data-[hover=true]:bg-default-50",
-                          "data-[selectable=true]:focus:bg-default-50",
-                          "data-[pressed=true]:opacity-70",
-                          "data-[focus-visible=true]:ring-default-500",
-                        ],
-                      },
-                    }}
-                    popoverProps={{
-                      classNames: {
-                        base: "before:bg-default-200",
-                        content:
-                          "p-0 border-small border-divider bg-background",
-                      },
-                    }}
-                    renderValue={(items) => {
-                      return items.map((item) => (
-                        <div key={item.key} className="flex items-center gap-2">
-                          <Avatar
-                            alt={item.data?.name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={""}
-                          />
-                          <div className="flex flex-col">
-                            <span>{item.data?.name}</span>
-                            <span className="text-default-500 text-tiny">
-                              ({item.data?.email})
-                            </span>
-                          </div>
+                  {(user) => (
+                    <SelectItem key={user.id} textValue={user.name}>
+                      <div className="flex gap-2 items-center ">
+                        <Avatar
+                          alt={user.name}
+                          className="flex-shrink-0"
+                          size="sm"
+                          src={""}
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-small">{user.name}</span>
+                          <span className="text-tiny text-default-400">
+                            {user.email}
+                          </span>
                         </div>
-                      ));
-                    }}
-                    selectedKeys={selectedUser ? [selectedUser] : []}
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                      const keyArr = Array.from(keys);
-
-                      setSelectedUser(
-                        keyArr.length > 0 ? String(keyArr[0]) : null,
-                      );
-                    }}
-                  >
-                    {(user) => (
-                      <SelectItem key={user.id} textValue={user.name}>
-                        <div className="flex gap-2 items-center ">
-                          <Avatar
-                            alt={user.name}
-                            className="flex-shrink-0"
-                            size="sm"
-                            src={""}
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-small">{user.name}</span>
-                            <span className="text-tiny text-default-400">
-                              {user.email}
-                            </span>
-                          </div>
-                        </div>
-                      </SelectItem>
-                    )}
-                  </Select>
-                  <Button
-                    className="w-full"
-                    color="primary"
-                    isDisabled={!selectedUser}
-                    type="submit"
-                    onPress={() => AddUser(selectedUser)}
-                  >
-                    Add
-                  </Button>
-                </form>
+                      </div>
+                    </SelectItem>
+                  )}
+                </Select>
+                <Button
+                  className="w-full"
+                  color="primary"
+                  isDisabled={!selectedUser}
+                  type="submit"
+                  onPress={() => AddUser(selectedUser)}
+                >
+                  Add
+                </Button>
               </ModalBody>
               <ModalFooter className="flex justify-between items-center gap-2 w-full" />
             </>

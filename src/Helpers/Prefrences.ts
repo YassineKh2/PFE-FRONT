@@ -1,17 +1,15 @@
 import { app } from "@/firebase/firebase";
+import { GetUserInformation, UpdatePreferences } from "@/services/User";
 import {
   AdditionalInformationFormSchemaType,
   ExperienceFormSchemaType,
   FinancialFormSchemaType,
+  onbordingType,
   PersonalFormSchemaType,
   PreferencesFormSchemaType,
 } from "@/types/Onbording";
+import { User } from "@/types/User";
 import { addToast } from "@heroui/toast";
-import { collection, addDoc, initializeFirestore } from "firebase/firestore";
-import { query, where, getDocs } from "firebase/firestore";
-const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-});
 
 export const saveData = async (
   uid: string,
@@ -22,17 +20,16 @@ export const saveData = async (
   AdditionalInformationFormData: AdditionalInformationFormSchemaType
 ): Promise<void> => {
   try {
-    const preferencesCollection = collection(db, "preferences");
-    await addDoc(preferencesCollection, {
-      personalData: PersonalFromData,
-      financialData: FinancialFormData,
-      experienceData: ExperienceFormData,
-      preferencesData: PreferencesFormData,
-      additionalInformationData: AdditionalInformationFormData,
-      userid: uid,
-      createdAt: new Date(),
+    const UserPreferences: onbordingType = {
+      ...PersonalFromData,
+      ...FinancialFormData,
+      ...ExperienceFormData,
+      ...PreferencesFormData,
+      ...AdditionalInformationFormData,
+    };
+    UpdatePreferences(uid, UserPreferences).then(() => {
+      return true;
     });
-    console.log("Data saved successfully!");
   } catch (error) {
     console.error("Error saving data: ", error);
     throw error;
@@ -41,21 +38,42 @@ export const saveData = async (
 
 export const getUserPreferences = async (uid: string): Promise<any> => {
   try {
-    const preferencesCollection = collection(db, "preferences");
-    const q = query(preferencesCollection, where("userid", "==", uid));
-    const querySnapshot = await getDocs(q);
+    let user: User;
+    let preferencesObject = {};
+    const response = await GetUserInformation(uid);
+    user = response;
+    const pref = user.userPreferences;
+    if (!pref) return;
 
-    if (querySnapshot.empty) {
-      console.log("No preferences found for the user.");
-      return null;
-    }
-
-    const preferences = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return preferences;
+    preferencesObject = {
+      financialData: {
+        monthyIncome: pref.monthyIncome,
+        monthlyExpense: pref.monthlyExpense,
+        assets: pref.assets,
+        liabilities: pref.liabilities,
+        estimatedNetWorth: pref.estimatedNetWorth,
+        primaryGoal: pref.primaryGoal,
+        goalTimeFrame: pref.goalTimeFrame,
+      },
+      experienceData: {
+        experienceLevel: pref.experienceLevel,
+        previousInvestment: pref.previousInvestment,
+        marketFluctuation: pref.marketFluctuation,
+        riskPreference: pref.riskPreference,
+      },
+      preferencesData: {
+        assetAllocation: pref.assetAllocation,
+        sectorPreference: pref.sectorPreference,
+        liquidityNeeds: pref.liquidityNeeds,
+        taxConsideration: pref.taxConsideration,
+      },
+      additionalInformationData: {
+        updateFrequency: pref.updateFrequency,
+        notificationPreference: pref.notificationPreference,
+        sectorsRestrictions: pref.sectorsRestrictions,
+      },
+    };
+    return preferencesObject;
   } catch (error) {
     addToast({
       title: "Failed to retrive preferences",
@@ -63,7 +81,7 @@ export const getUserPreferences = async (uid: string): Promise<any> => {
       color: "danger",
       variant: "solid",
       timeout: 5000,
-    })
+    });
     throw error;
   }
 };

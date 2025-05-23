@@ -26,7 +26,7 @@ function FilterdCourses({
 }) {
   const [SearchTerm, setSearchTerm] = useState<string>("");
   const [ProgressList, setProgressList] = useState<ProgressType[]>(
-    [] as ProgressType[],
+    [] as ProgressType[]
   );
 
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ function FilterdCourses({
 
           if (InDashboard) {
             const progressObj = ProgressList.find(
-              (p) => p.courseId === course.id,
+              (p) => p.courseId === course.id
             );
 
             percent = progressObj?.progress || 0;
@@ -146,28 +146,30 @@ function FilterdCourses({
                 src={GetStaticImages(course.image)}
               />
               <CardBody className="overflow-visible py-2">
-                <div className="flex flex-col gap-2 items-start">
-                  <div className="flex justify-between w-full py-2">
-                    <Chip size="sm" variant="bordered">
-                      {course.level}
-                    </Chip>
-                    <div className="flex items-center text-xs">
-                      <Icon
-                        height="24"
-                        icon="material-symbols:star-rounded"
-                        style={{ color: "#ffc804" }}
-                        width="24"
-                      />
-                      4.8
+                <div className="h-full flex flex-col gap-2 justify-between items-start">
+                  <div>
+                    <div className="flex justify-between w-full py-2">
+                      <Chip size="sm" variant="bordered">
+                        {course.level}
+                      </Chip>
+                      <div className="flex items-center text-xs">
+                        <Icon
+                          height="24"
+                          icon="material-symbols:star-rounded"
+                          style={{ color: "#ffc804" }}
+                          width="24"
+                        />
+                        4.8
+                      </div>
+                    </div>
+
+                    <div className="py-2">
+                      <p className="text-lg font-semibold">{course.title}</p>
+                      <p className="text-sm text-gray-500">
+                        {course.description}
+                      </p>
                     </div>
                   </div>
-                  <div className="py-2">
-                    <p className="text-lg font-semibold">{course.title}</p>
-                    <p className="text-sm text-gray-500">
-                      {course.description}
-                    </p>
-                  </div>
-
                   <div className="flex w-full justify-between text-sm mb-2 font-semibold">
                     <div className="flex">
                       <p>Instructor:&nbsp;</p>

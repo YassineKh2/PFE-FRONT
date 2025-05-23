@@ -74,7 +74,7 @@ export const Navbar = () => {
               <Link
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:text-primary data-[active=true]:font-medium"
                 )}
                 color="foreground"
                 href={item.href}
@@ -101,8 +101,12 @@ export const Navbar = () => {
                 isBordered
                 as="button"
                 className="transition-transform"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                src={currentUser.photoURL || ""}
               />
+              {/* <img
+                src={currentUser.photoURL || ""}
+                referrerPolicy="no-referrer"
+              /> */}
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
@@ -112,7 +116,7 @@ export const Navbar = () => {
               <DropdownItem
                 key="savedfunds"
                 onPress={() => {
-                  navigate("/savedfunds");
+                  navigate("/dashboard/savedfunds");
                 }}
               >
                 Saved Funds

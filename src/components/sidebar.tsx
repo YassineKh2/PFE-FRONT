@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSpring, animated } from "@react-spring/web";
 import { useOpen } from "@/store/SidebarStore";
 import { Accordion, AccordionItem } from "@heroui/accordion";
+import { useAuth } from "@/providers/AuthProvider";
 
 function Sidebar() {
   const { Open, SetOpen } = useOpen();
@@ -41,6 +42,9 @@ const OpenedSidebar = ({
   const isActive = (to: string) =>
     currentPath === to || currentPath.startsWith(to + "/");
 
+  const { currentUser } = useAuth();
+
+
   return (
     <aside className="flex flex-col gap-6 pt-5 items-start ms-8 me-5  bg-default-100 rounded-lg h-full">
       <div className="flex gap-24 items-center max-w-fit">
@@ -49,7 +53,7 @@ const OpenedSidebar = ({
           color="foreground"
           to="/"
         >
-          <img alt="logo" className="w-32" src="/Morgenfund_Logo.png" />
+          <img alt="logo" className="w-48" src="/Morgenfund_Logo.png" />
         </Link>
         <Button onPress={() => SetOpen(false)} variant="light" isIconOnly>
           <Icon
@@ -65,12 +69,12 @@ const OpenedSidebar = ({
       <div className="ms-1">
         <User
           avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+            src: currentUser.photoURL,
             isBordered: true,
             size: "sm",
           }}
-          description="Product Designer"
-          name="Jane Doe"
+          description={currentUser.role.toUpperCase()}
+          name={currentUser.displayName}
           classNames={{
             name: "font-semibold ms-1",
             description: "font-semibold text-default-400 ms-1",
@@ -106,15 +110,15 @@ const OpenedSidebar = ({
           }
           as={Link}
           variant="light"
-          to="/dashboard/funds"
+          to="/dashboard/savedfunds"
           size="lg"
-          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/funds") ? "bg-gray-200 font-bold" : ""}`}
+          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/savedfunds") ? "bg-gray-200 font-bold" : ""}`}
         >
-          Funds
+          My Funds
         </Button>
 
         <Accordion
-          className={`"bg-gray-200 rounded-xl ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
+          className={`hover:bg-gray-200 "bg-gray-200 rounded-xl ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
         >
           <AccordionItem
             startContent={

@@ -44,24 +44,27 @@ export default function StudentTable({
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Map Students to the structure expected by the table
   const mappedStudents = useMemo(
     () =>
       Students.map((student) => {
         const course = student.enrolledCourses?.[id];
         let lastActive = "-";
+        let enrolledOn = '-'
 
-        if (course && course.lastActive) {
-          lastActive = new Date(course.lastActive).toLocaleString();
-          lastActive = timeAgo(lastActive);
+        if(!course) return
+
+        if (course.lastActive) {
+          lastActive = timeAgo(course.lastActive);
+        }
+
+         if (course.enrolledAt) {
+          enrolledOn = timeAgo(course.enrolledAt);
         }
 
         return {
           id: student.id,
           name: student.name,
-          enrolledOn: student.createdAt
-            ? new Date(student.createdAt).toLocaleDateString()
-            : "-",
+          enrolledOn: enrolledOn,
           progress:
             typeof student.progress === "object" &&
             student.progress?.progress !== undefined
@@ -238,7 +241,7 @@ export default function StudentTable({
             items={paginatedStudents}
           >
             {(item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item?.id}>
                 {(columnKey) => (
                   <TableCell className="whitespace-nowrap text-xs md:text-sm">
                     {renderCell(item, columnKey)}

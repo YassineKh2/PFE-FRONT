@@ -9,12 +9,12 @@ function RecommendedFunds() {
         <div className="inline-block text-center justify-center">
           <span
             className={title({
-              size: "lg",
+              size: "lg",boldness:'bold'
             })}
           >
             Your
           </span>
-          <span className={title({ color: "pink", size: "lg" })}>
+          <span className={title({ color: "pink", size: "lg",boldness:'bold' })}>
             {" "}
             Recommended Funds
           </span>
