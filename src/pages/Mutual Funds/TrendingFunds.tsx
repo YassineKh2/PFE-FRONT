@@ -10,11 +10,14 @@ export default function TrendingFunds() {
           <span
             className={title({
               size: "lg",
+              boldness: "bold",
             })}
           >
             Trending
           </span>
-          <span className={title({ color: "pink", size: "lg" })}>
+          <span
+            className={title({ color: "pink", size: "lg", boldness: "bold" })}
+          >
             {" "}
             Mutual Funds
           </span>

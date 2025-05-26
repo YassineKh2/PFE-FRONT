@@ -92,11 +92,11 @@ export interface MutualFundDetails {
   volatility: number;
 }
 export interface MutualFund {
-  ISIN: string,
-  name: string,
-  nav: number,
-  date: String,
-  historical_nav: [[string,number]]
+  ISIN: string;
+  name: string;
+  nav: number;
+  date: String;
+  historical_nav: [[string, number]];
 }
 
 export type MFs = MutualFund[];
@@ -109,9 +109,9 @@ export type Fund = {
   category: string;
   fundSize: string;
   returns: {
-      "1Y": string;
-      "3Y": string;
-      "5Y": string;
+    "1Y": string;
+    "3Y": string;
+    "5Y": string;
   };
   taxEfficiencyScore: number;
   suitableGoals: string[];
@@ -139,6 +139,3 @@ export type Fund = {
   tax_period: number;
   latestnav: number;
 };
-
-
-

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ApexCharts from "react-apexcharts";
 import { Tabs, Tab } from "@heroui/tabs";
+
 import { PredictMF, GetPredictions } from "@/services/PredictMF";
 import { Fund } from "@/types/MutualFunds";
 
@@ -11,7 +12,12 @@ const Linebar = ({
   mutualFund: any;
   mutualFundDetails: Fund;
 }) => {
-  const reversedData = mutualFund as any;
+  const [reversedData, setreversedData] = useState([] as any);
+
+  useEffect(() => {
+    setreversedData(mutualFund);
+  }, [mutualFund]);
+
   const [predictions, setPredictions] = useState<{
     min: number[];
     max: number[];
@@ -23,7 +29,7 @@ const Linebar = ({
       max: number[];
       mean: number[];
       date: string[];
-    }
+    },
   );
 
   useEffect(() => {
@@ -31,6 +37,7 @@ const Linebar = ({
       try {
         const predictions = await GetPredictions(mutualFundDetails.isin);
         let data = predictions.data.data.predictions;
+
         setPredictions({
           min: data.map((entry: { min: number }) => entry.min),
           max: data.map((entry: { max: number }) => entry.max),
@@ -49,7 +56,7 @@ const Linebar = ({
                 mean: data.map((entry: { value: number }) => entry.value),
                 date: data.map((entry: { date: string }) => entry.date),
               });
-            }
+            },
           );
         } else {
           console.error("Error fetching predictions:", error);
@@ -58,7 +65,7 @@ const Linebar = ({
     };
 
     fetchPredictions();
-  }, []);
+  }, [reversedData]);
 
   const [options, setOptions] = useState({
     chart: {
@@ -216,14 +223,14 @@ const Linebar = ({
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white pb-4">
           Performance
         </h1>
-        <Tabs aria-label="Tabs sizes" size="sm" color="primary">
+        <Tabs aria-label="Tabs sizes" color="primary" size="sm">
           {items.map((item) => (
             <Tab key={item.key} title={item.label} />
           ))}
         </Tabs>
       </div>
-      <div className="flex justify-between"></div>
-      <ApexCharts options={options} series={series} type="area" height="100%" />
+      <div className="flex justify-between" />
+      <ApexCharts height="100%" options={options} series={series} type="area" />
       <div className="flex justify-around mt-5">
         <div className="flex flex-col  items-center">
           <p className="text-gray-600">1Y Return</p>

@@ -1,6 +1,7 @@
-import DefaultLayout from "@/layouts/default";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import DefaultLayout from "@/layouts/default";
 import "chart.js/auto";
 import Linebar from "@/components/MutualFunds/Linebar";
 import FundInfo from "@/components/MutualFunds/FundInfo";
@@ -10,7 +11,6 @@ import navDetails from "@/database/HistoricalNAV.json";
 import mfDetails from "@/database/MutualFunds.json";
 import { Fund } from "@/types/MutualFunds";
 import { SystemPoints } from "@/types/User";
-import { UpdateSystemPreferences } from "@/services/User";
 import { useAuth } from "@/providers/AuthProvider";
 import FundManagment from "@/components/MutualFunds/FundManagment";
 
@@ -19,18 +19,21 @@ function MutalFund() {
   const [mutualFund, setMutualFund] = useState<any>();
   const [mutualFundDetails, setMutualFundDetails] = useState<Fund>({} as Fund);
   const { currentUser } = useAuth();
+
   useEffect(() => {
     if (!id) {
       return;
     }
     const navDetail = Object.entries(navDetails.historicalNAV).find(
-      ([key]) => key === id
+      ([key]) => key === id,
     )?.[1];
+
     if (navDetail) {
       setMutualFund(navDetail);
     }
 
     const mfDetail = mfDetails.funds.find((mf) => mf.isin === id);
+
     if (mfDetail) {
       //@ts-ignore
       setMutualFundDetails(mfDetail);
@@ -47,11 +50,12 @@ function MutalFund() {
       };
       // UpdateSystemPreferences(currentUser.uid, PointsToAdd);
     }, 60000);
+
     return () => clearTimeout(timer);
   }, [mutualFundDetails]);
 
   return (
-    <DefaultLayout >
+    <DefaultLayout>
       {!mutualFund ? (
         <p>Loading...</p>
       ) : (

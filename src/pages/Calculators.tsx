@@ -1,8 +1,9 @@
-import { title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
 import { Tab, Tabs } from "@heroui/tabs";
 import { useEffect, useState } from "react";
 import { Button } from "@heroui/button";
+
+import DefaultLayout from "@/layouts/default";
+import { title } from "@/components/primitives";
 import DonutChart from "@/components/Calculator/DonutChart";
 import Siders from "@/components/Calculator/Sliders";
 
@@ -36,6 +37,7 @@ export default function Calculators() {
       // Monthly Investment
       const monthlyRate = returnRate / 1200; // Convert annual rate to monthly
       const months = timePeriod * 12;
+
       investedAmount = monthlyInvestment * months;
       totalValue =
         monthlyInvestment *
@@ -84,34 +86,36 @@ export default function Calculators() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-10 py-8 md:py-10">
-        <h1 className={title({boldness:"bold"})}>
+        <h1 className={title({ boldness: "bold" })}>
           Mutual Fund{" "}
-          <text className={title({ color: "pink" ,boldness:"bold"})}>Calculator</text>
+          <text className={title({ color: "pink", boldness: "bold" })}>
+            Calculator
+          </text>
         </h1>
         <div className="flex gap-10 w-full">
           <div className="w-[70%] bg-white rounded-lg border dark:border-none border-[#18181B/0.2] shadow-xl dark:bg-[#18181B] p-4 md:p-6">
             <div className="flex ms-4 flex-col gap-4">
               <Tabs
+                variant="light"
                 onSelectionChange={(key) =>
                   setInvestmentType(Number(key) as 0 | 1)
                 }
-                variant="light"
               >
                 <Tab key={0} title="Monthly" />
                 <Tab key={1} title="One Time" />
               </Tabs>
               <div className="flex justify-between items-start gap-4">
                 <Siders
+                  calculatedValues={calculatedValues}
                   investmentType={investmentType}
                   monthlyInvestment={monthlyInvestment}
                   oneTimeInvestment={oneTimeInvestment}
                   returnRate={returnRate}
-                  timePeriod={timePeriod}
-                  calculatedValues={calculatedValues}
                   setMonthlyInvestment={setMonthlyInvestment}
                   setOneTimeInvestment={setOneTimeInvestment}
                   setReturnRate={setReturnRate}
                   setTimePeriod={setTimePeriod}
+                  timePeriod={timePeriod}
                 />
                 <DonutChart
                   chartOptions={chartOptions}
@@ -122,7 +126,7 @@ export default function Calculators() {
           </div>
           <div className="w-[30%] space-y-4">
             <div className="bg-white flex flex-col gap-4 items-center rounded-lg border dark:border-none border-[#18181B/0.2] shadow-xl dark:bg-[#18181B] p-4 md:p-6">
-              <img src="cointree.png" alt="moneytree" className="w-28" />
+              <img alt="moneytree" className="w-28" src="cointree.png" />
               <h1 className="font-semibold text-gray-800 text-xl">
                 Invest the way you want
               </h1>

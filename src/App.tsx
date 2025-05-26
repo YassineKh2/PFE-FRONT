@@ -30,6 +30,8 @@ import Congtats from "./pages/Courses/Frontend/Congtats";
 import IndexPage from "@/pages/index";
 import Quiz from "./pages/Courses/Frontend/Quiz";
 import CompareFunds from "./pages/Mutual Funds/CompareFunds";
+import Deposit from "./pages/Deposit/Deposit";
+import CreateDeposit from "./pages/Deposit/CreateDeposit";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -62,6 +64,8 @@ function App() {
       <Route element={<Landing />} path="courses" />
       <Route element={<CoursesFront />} path="courses/all" />
       <Route element={<Course />} path="courses/view/:id" />
+      <Route element={<Deposit />} path="deposit" />
+      <Route element={<CreateDeposit />} path="deposit/create" />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoutes />}>

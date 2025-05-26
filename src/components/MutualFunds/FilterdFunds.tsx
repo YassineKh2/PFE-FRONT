@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
+
 import {funds as fakeFundsData} from "@/database/MutualFunds.json"
 
 

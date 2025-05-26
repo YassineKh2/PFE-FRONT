@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+
 import Filter from "@/components/Chapters/Frontend/Filter";
 import FilterdCourses from "@/components/Chapters/Frontend/FilterdCourses";
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 import { GetCourses } from "@/services/Course";
 import { CourseType } from "@/types/Courses";
-import { useEffect, useState } from "react";
 
 function Courses() {
   const [filters, setFilters] = useState<{
@@ -18,19 +19,18 @@ function Courses() {
     durations: [],
     instructors: [],
   });
-  const [Courses, setCourses] = useState<CourseType[]>([] as CourseType[])
+  const [Courses, setCourses] = useState<CourseType[]>([] as CourseType[]);
 
+  useEffect(() => {
+    GetCourses().then((response) => {
+      setCourses(response.data);
+    });
+  }, []);
 
-  useEffect(()=>{
-    GetCourses().then((response)=>{
-        setCourses(response.data)
-    })
-  },[])
+  if (!Courses) return <h1>Loading ...</h1>;
 
-  if(!Courses) return <h1>Loading ...</h1>
-  
   return (
-    <DefaultLayout >
+    <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="self-start">
           <h1 className={title({ size: "sm", boldness: "bold" })}>
@@ -42,7 +42,7 @@ function Courses() {
         </div>
         <div className="flex justify-between w-full gap-6">
           <Filter setFilters={setFilters} />
-          <FilterdCourses Courses={Courses}/>
+          <FilterdCourses Courses={Courses} />
         </div>
       </section>
     </DefaultLayout>

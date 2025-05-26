@@ -1,8 +1,10 @@
-import { Fund } from "@/types/MutualFunds";
 import { Chip } from "@heroui/chip";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Fund } from "@/types/MutualFunds";
 import { useAuth } from "@/providers/AuthProvider";
 import { SystemPoints } from "@/types/User";
 import { UpdateSystemPreferences } from "@/services/User";
@@ -13,27 +15,27 @@ function renderStars(rating: number) {
       return (
         <Icon
           key={i}
+          height="20"
           icon="material-symbols:star-rounded"
           width="20"
-          height="20"
         />
       );
     } else if (rating >= i - 0.5) {
       return (
         <Icon
           key={i}
+          height="20"
           icon="material-symbols:star-half-rounded"
           width="20"
-          height="20"
         />
       );
     } else {
       return (
         <Icon
           key={i}
+          height="20"
           icon="material-symbols:star-outline-rounded"
           width="20"
-          height="20"
         />
       );
     }
@@ -43,19 +45,26 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
   const [IsSaved, setIsSaved] = useState<Boolean>(false);
 
   const { currentUser } = useAuth();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const userUID = currentUser.uid;
+
     if (!userUID) return;
 
     const savedFunds = localStorage.getItem(`savedFunds_${userUID}`);
+
     if (!savedFunds) return;
 
     let savedFundsTable = JSON.parse(savedFunds) as String[];
+
     setIsSaved(savedFundsTable.includes(mutualFund.isin));
   }, []);
 
   const SaveFund = () => {
     const userUID = currentUser.uid;
+
     if (!userUID) return;
 
     const savedFunds = localStorage.getItem(`savedFunds_${userUID}`);
@@ -65,7 +74,7 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
     savedFundsTable.push(mutualFund.isin);
     localStorage.setItem(
       `savedFunds_${userUID}`,
-      JSON.stringify(savedFundsTable)
+      JSON.stringify(savedFundsTable),
     );
     setIsSaved(true);
 
@@ -75,24 +84,28 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
       asset: mutualFund.category.toLowerCase(),
       sector: mutualFund.sector.toLowerCase(),
     };
+
     UpdateSystemPreferences(currentUser.uid, PointsToAdd);
   };
 
   const RemoveFund = () => {
     const userUID = currentUser.uid;
+
     if (!userUID) return;
 
     const savedFunds = localStorage.getItem(`savedFunds_${userUID}`);
+
     if (!savedFunds) return;
 
     let savedFundsTable = JSON.parse(savedFunds) as String[];
+
     savedFundsTable = savedFundsTable.filter(
-      (code) => code !== mutualFund.isin
+      (code) => code !== mutualFund.isin,
     );
 
     localStorage.setItem(
       `savedFunds_${userUID}`,
-      JSON.stringify(savedFundsTable)
+      JSON.stringify(savedFundsTable),
     );
     setIsSaved(false);
 
@@ -102,7 +115,13 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
       asset: mutualFund.category.toLowerCase(),
       sector: mutualFund.sector.toLowerCase(),
     };
+
     UpdateSystemPreferences(currentUser.uid, PointsToAdd);
+  };
+
+  const addToCompare = () => {
+    localStorage.setItem(`CompareFunds`, mutualFund.isin);
+    navigate("/compare");
   };
 
   return (
@@ -123,16 +142,17 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
         </div>
         <div className="flex gap-2">
           <Button
-            startContent={<Icon icon="ix:compare" width="20" height="20" />}
+            startContent={<Icon height="20" icon="ix:compare" width="20" />}
             variant="bordered"
+            onPress={addToCompare}
           >
             Add To Compare
           </Button>
           <Button
-            variant="bordered"
             startContent={
               <Icon className="mr-2 h-4 w-4" icon="mdi:share-variant" />
             }
+            variant="bordered"
           >
             Share
           </Button>
@@ -142,19 +162,19 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
           >
             {IsSaved ? (
               <Icon
+                color="#fdba74"
+                height="24"
                 icon="material-symbols:star-rounded"
                 width="24"
-                height="24"
-                color="#fdba74"
                 onClick={() => {
                   RemoveFund();
                 }}
               />
             ) : (
               <Icon
+                height="24"
                 icon="material-symbols:star-outline-rounded"
                 width="24"
-                height="24"
                 onClick={() => {
                   SaveFund();
                 }}

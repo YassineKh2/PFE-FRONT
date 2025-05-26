@@ -1,5 +1,6 @@
-import { Fund } from "@/types/MutualFunds";
 import { User } from "@heroui/react";
+
+import { Fund } from "@/types/MutualFunds";
 
 function FundManagment({ mutualFund }: { mutualFund: Fund }) {
   return (
@@ -11,7 +12,13 @@ function FundManagment({ mutualFund }: { mutualFund: Fund }) {
         <div className="space-y-2 w-[50%]">
           <p className="font-semibold">Fund Manager</p>
           <User
-            name={mutualFund.fund_manager}
+            avatarProps={{
+              size: "lg",
+            }}
+            classNames={{
+              name: "text-lg",
+              base: "space-x-2",
+            }}
             description={
               <div className="space-y-1">
                 <p>Experience: 15+ years</p>
@@ -20,13 +27,7 @@ function FundManagment({ mutualFund }: { mutualFund: Fund }) {
                 </p>
               </div>
             }
-            avatarProps={{
-              size: "lg",
-            }}
-            classNames={{
-              name: "text-lg",
-              base: "space-x-2",
-            }}
+            name={mutualFund.fund_manager}
           />
         </div>
         <div className="flex justify-between w-[50%]">

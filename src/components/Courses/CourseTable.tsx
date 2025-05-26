@@ -11,10 +11,14 @@ import {
   TableRow,
 } from "@heroui/table";
 import { Tooltip } from "@heroui/tooltip";
-import { ChangeEvent, Key, useCallback, useMemo, useState, useEffect } from "react";
-import CourseTableToolbar from "./CourseTableToolbar";
-import CourseTableFooter from "./CourseTableFooter";
-import { CourseType as Course } from "@/types/Courses";
+import {
+  ChangeEvent,
+  Key,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+} from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   Modal,
@@ -24,9 +28,14 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
-import { DeleteCourse as DeleteCourseService } from "@/services/Course";
 import { addToast } from "@heroui/toast";
 import { Link } from "react-router-dom";
+
+import CourseTableToolbar from "./CourseTableToolbar";
+import CourseTableFooter from "./CourseTableFooter";
+
+import { CourseType as Course } from "@/types/Courses";
+import { DeleteCourse as DeleteCourseService } from "@/services/Course";
 
 const courseStatusOptions = [
   { name: "Published", uid: "published" },
@@ -70,7 +79,7 @@ export default function CourseTable({
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS)
+    new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -86,16 +95,18 @@ export default function CourseTable({
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all") return courseColumns;
+
     return courseColumns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid)
+      Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
     let filtered = [...courses];
+
     if (hasSearchFilter) {
       filtered = filtered.filter((course) =>
-        course.title.toLowerCase().includes(filterValue.toLowerCase())
+        course.title.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (
@@ -103,9 +114,10 @@ export default function CourseTable({
       Array.from(statusFilter).length !== courseStatusOptions.length
     ) {
       filtered = filtered.filter((course) =>
-        Array.from(statusFilter).includes(course.status)
+        Array.from(statusFilter).includes(course.status),
       );
     }
+
     return filtered;
   }, [filterValue, statusFilter]);
 
@@ -114,6 +126,7 @@ export default function CourseTable({
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
@@ -126,13 +139,15 @@ export default function CourseTable({
         const first = a[sortDescriptor.column as keyof Course] as string;
         const second = b[sortDescriptor.column as keyof Course] as string;
         const cmp = first < second ? -1 : first > second ? 1 : 0;
+
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
-      })
+      }),
     );
   }, [items, sortDescriptor]);
 
   const renderCell = useCallback((course: Course, columnKey: Key) => {
     const cellValue = course[columnKey as keyof Course];
+
     switch (columnKey) {
       case "title":
         return <span className="font-semibold">{cellValue}</span>;
@@ -152,42 +167,54 @@ export default function CourseTable({
       case "actions":
         return (
           <div className="relative flex justify-end items-center">
-            <Tooltip content="Details" color="foreground">
-              <Button as={Link} to={"/dashboard/courses/details/"+course.id} isIconOnly size="sm" variant="light">
-                <Icon
-                  icon="solar:eye-outline"
-                  width="20"
-                  height="20"
-                  style={{ color: "#9A9AA0" }}
-                />
-              </Button>
-            </Tooltip>
-            <Tooltip content="Edit" color="foreground">
-              <Button as={Link} to={"/dashboard/courses/edit/"+course.id} isIconOnly size="sm" variant="light">
-                <Icon
-                  icon="mynaui:edit"
-                  width="20"
-                  height="20"
-                  style={{ color: "#9A9AA0" }}
-                />
-              </Button>
-            </Tooltip>
-            <Tooltip content="Delete" color="primary">
+            <Tooltip color="foreground" content="Details">
               <Button
-                onPress={() => {
-                  setSelectedCourse(course);
-                  onOpen();
-                }}
+                isIconOnly
+                as={Link}
+                size="sm"
+                to={"/dashboard/courses/details/" + course.id}
+                variant="light"
+              >
+                <Icon
+                  height="20"
+                  icon="solar:eye-outline"
+                  style={{ color: "#9A9AA0" }}
+                  width="20"
+                />
+              </Button>
+            </Tooltip>
+            <Tooltip color="foreground" content="Edit">
+              <Button
+                isIconOnly
+                as={Link}
+                size="sm"
+                to={"/dashboard/courses/edit/" + course.id}
+                variant="light"
+              >
+                <Icon
+                  height="20"
+                  icon="mynaui:edit"
+                  style={{ color: "#9A9AA0" }}
+                  width="20"
+                />
+              </Button>
+            </Tooltip>
+            <Tooltip color="primary" content="Delete">
+              <Button
                 isIconOnly
                 color="primary"
                 size="sm"
                 variant="light"
+                onPress={() => {
+                  setSelectedCourse(course);
+                  onOpen();
+                }}
               >
                 <Icon
-                  icon="fluent:delete-48-regular"
-                  width="20"
                   height="20"
+                  icon="fluent:delete-48-regular"
                   style={{ color: "#fc3c61" }}
+                  width="20"
                 />
               </Button>
             </Tooltip>
@@ -211,7 +238,7 @@ export default function CourseTable({
       setRowsPerPage(Number(e.target.value));
       setPage(1);
     },
-    []
+    [],
   );
 
   const onSearchChange = useCallback((value?: string) => {
@@ -242,11 +269,12 @@ export default function CourseTable({
         setSelectedCourse(null);
         setSelectedKeys(new Set([]));
         const newCourses = courses.filter(
-          (course) => course.id !== selectedCourse.id
+          (course) => course.id !== selectedCourse.id,
         );
+
         setCourses(newCourses);
         setSortedItems(newCourses);
-        onClose(); 
+        onClose();
       } else {
         addToast({
           title: "Error",
@@ -262,12 +290,12 @@ export default function CourseTable({
     <div>
       <CourseTableToolbar
         filterValue={filterValue}
-        onSearchChange={onSearchChange}
-        onClear={onClear}
-        statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
-        visibleColumns={visibleColumns}
         setVisibleColumns={setVisibleColumns}
+        statusFilter={statusFilter}
+        visibleColumns={visibleColumns}
+        onClear={onClear}
+        onSearchChange={onSearchChange}
       />
       <div className="flex justify-between items-center mt-2 mb-2">
         <span className="text-default-400 text-small">
@@ -290,13 +318,13 @@ export default function CourseTable({
         aria-label="Courses table"
         bottomContent={
           <CourseTableFooter
-            selectedKeys={selectedKeys}
             filteredItemsLength={filteredItems.length}
             page={page}
             pages={pages}
+            selectedKeys={selectedKeys}
             setPage={setPage}
-            onPreviousPage={onPreviousPage}
             onNextPage={onNextPage}
+            onPreviousPage={onPreviousPage}
           />
         }
         bottomContentPlacement="outside"
@@ -337,10 +365,10 @@ export default function CourseTable({
             <>
               <ModalHeader className="flex justify-center items-center">
                 <Icon
-                  icon="mynaui:danger-triangle"
-                  width="80"
                   height="80"
+                  icon="mynaui:danger-triangle"
                   style={{ color: "#fc3c61" }}
+                  width="80"
                 />
               </ModalHeader>
               <ModalBody className="flex flex-col items-center text-center">
