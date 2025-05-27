@@ -1,14 +1,15 @@
 import { Button } from "@heroui/button";
-import { subtitle } from "../primitives";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem } from "@heroui/select";
 import { RadioGroup, Radio } from "@heroui/radio";
 import { cn } from "@heroui/theme";
 import { useEffect, useState } from "react";
+
+import { subtitle } from "../primitives";
+
 import { ExperienceFormSchemaType } from "@/types/Onbording";
 import { ExperienceFormSchema } from "@/schemas/onbordingSchema";
-
 
 function ExperienceForm({
   setStep,
@@ -29,10 +30,10 @@ function ExperienceForm({
     });
 
   const [previousInvestement, setpreviousInvestement] = useState<String>();
+
   useEffect(() => {
     setValue("previousInvestment", previousInvestement === "yes");
   }, [previousInvestement]);
-  
 
   const onSubmit = (data: ExperienceFormSchemaType) => {
     console.log(data);
@@ -43,15 +44,15 @@ function ExperienceForm({
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
       className="max-w-2xl w-full bg-white rounded-lg border dark:border-none border-[#18181B/0.2] shadow-xl dark:bg-[#18181B] p-4 md:p-6"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <p className={subtitle()}>Financial Situation</p>
       <div className="flex flex-col gap-4 mt-5">
         <div className="flex gap-4">
           <Select
-            variant="bordered"
             label="Market Fluctuation"
+            variant="bordered"
             {...register("marketFluctuation")}
             errorMessage={formState.errors.marketFluctuation?.message}
             isInvalid={!!formState.errors.marketFluctuation}
@@ -62,8 +63,8 @@ function ExperienceForm({
             <SelectItem key="very-high">Very High</SelectItem>
           </Select>
           <Select
-            variant="bordered"
             label="Risk Preference"
+            variant="bordered"
             {...register("riskPreference")}
             errorMessage={formState.errors.riskPreference?.message}
             isInvalid={!!formState.errors.riskPreference}
@@ -75,8 +76,8 @@ function ExperienceForm({
           </Select>
         </div>
         <Select
-          variant="bordered"
           label="Experience Level"
+          variant="bordered"
           {...register("experienceLevel")}
           errorMessage={formState.errors.experienceLevel?.message}
           isInvalid={!!formState.errors.experienceLevel}
@@ -89,34 +90,34 @@ function ExperienceForm({
 
         <RadioGroup
           // @ts-ignore
-          value={previousInvestement}
-          onValueChange={setpreviousInvestement}
+          className="w-full left-2"
           defaultValue={experienceFormData?.previousInvestment ? "yes" : "no"}
           isInvalid={!!formState.errors.previousInvestment}
           label="Previous Investments"
-          className="w-full left-2"
           name="previousInvestment"
           orientation="horizontal"
+          value={previousInvestement}
+          onValueChange={setpreviousInvestement}
         >
           <Radio
-            description="I have never invested in Mutual Funds."
-            value="no"
             className={cn(
               "group inline-flex items-center hover:opacity-70 active:opacity-50 justify-between flex-row-reverse tap-highlight-transparent",
               "max-w-[300px] me-5 mt-2 cursor-pointer border-2 border-default rounded-lg gap-4 p-4",
-              "data-[selected=true]:border-primary"
+              "data-[selected=true]:border-primary",
             )}
+            description="I have never invested in Mutual Funds."
+            value="no"
           >
             No
           </Radio>
           <Radio
-            description="I have invested previously in Mutual Funds."
-            value="yes"
             className={cn(
               "group inline-flex items-center hover:opacity-70 active:opacity-50 justify-between flex-row-reverse tap-highlight-transparent",
               "max-w-[300px] cursor-pointer mt-2 border-2 border-default rounded-lg gap-4 p-4",
-              "data-[selected=true]:border-primary"
+              "data-[selected=true]:border-primary",
             )}
+            description="I have invested previously in Mutual Funds."
+            value="yes"
           >
             Yes
           </Radio>
@@ -126,7 +127,7 @@ function ExperienceForm({
         <Button type="button" variant="bordered" onPress={() => setStep(1)}>
           Back
         </Button>
-        <Button type="submit" color="primary" className="">
+        <Button className="" color="primary" type="submit">
           Next
         </Button>
       </div>

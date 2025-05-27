@@ -17,7 +17,7 @@ const BACKEND = axios.create({
 export async function Enroll(id: string, CourseState: CourseStateType) {
   const response: { data: { data: string } } = await BACKEND.post(
     "/enroll/" + id,
-    CourseState
+    CourseState,
   );
 
   return response.data;
@@ -25,7 +25,7 @@ export async function Enroll(id: string, CourseState: CourseStateType) {
 
 export async function GetCourses(id: string) {
   const response: { data: { data: CourseType[] } } = await BACKEND.get(
-    "/enroll/" + id
+    "/enroll/" + id,
   );
 
   return response.data;
@@ -46,11 +46,11 @@ export async function GetProgress(id: string) {
 
 export async function UpdateProgress(
   id: string,
-  progress: { courseId: string; chapterId: string }
+  progress: { courseId: string; chapterId: string },
 ) {
   const response: { data: { data: [] } } = await BACKEND.post(
     "/progress/" + id,
-    progress
+    progress,
   );
 
   return response.data;
@@ -58,7 +58,7 @@ export async function UpdateProgress(
 
 export async function GetSingleProgress(id: string, courseid: string) {
   const response: { data: { data: ProgressType } } = await BACKEND.get(
-    "/progress/single/" + id + "/" + courseid
+    "/progress/single/" + id + "/" + courseid,
   );
 
   return response.data;
@@ -66,7 +66,7 @@ export async function GetSingleProgress(id: string, courseid: string) {
 
 export async function GetOverAllProgress(id: string) {
   const response: { data: { data: [OverAllUserStats] } } = await BACKEND.get(
-    "/progress/overall/" + id
+    "/progress/overall/" + id,
   );
 
   return response.data;
@@ -74,7 +74,7 @@ export async function GetOverAllProgress(id: string) {
 
 export async function GetRecentActivity(id: string) {
   const response: { data: { data: [[RecentActivity]] } } = await BACKEND.get(
-    "/activity/" + id
+    "/activity/" + id,
   );
 
   return response.data;
@@ -88,11 +88,11 @@ export async function GetAll() {
 
 export async function UpdatePreferences(
   id: string,
-  preferences: onbordingType
+  preferences: onbordingType,
 ) {
   const response: { data: {} } = await BACKEND.post(
     "/preferences/" + id,
-    preferences
+    preferences,
   );
 
   return response.data;
@@ -106,11 +106,11 @@ export async function GetUserInformation(id: string) {
 
 export async function UpdateSystemPreferences(
   id: string,
-  SystemPoints: SystemPoints
+  SystemPoints: SystemPoints,
 ) {
   const response: { data: {} } = await BACKEND.post(
     "/systempreferences/" + id,
-    SystemPoints
+    SystemPoints,
   );
 
   return response.data;
@@ -118,7 +118,7 @@ export async function UpdateSystemPreferences(
 
 export async function RefuseCourse(id: string) {
   const response: { data: {} } = await BACKEND.post(
-    "/systempreferences/refuse/" + id
+    "/systempreferences/refuse/" + id,
   );
 
   return response.data;

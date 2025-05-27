@@ -16,7 +16,7 @@ export const onbordingSchema = z.object({
   // Experience & Knowledge
   experienceLevel: z.string().min(1, "Experience level is required"),
   previousInvestment: z.boolean(),
-  marketFluctuation : z.string().min(1, "Market fluctuation is required"),
+  marketFluctuation: z.string().min(1, "Market fluctuation is required"),
   riskPreference: z.string().min(1, "Risk tolerance is required"),
   // Preferences
   assetAllocation: z.array(z.string()).min(1, "Asset allocation is required"),
@@ -26,7 +26,9 @@ export const onbordingSchema = z.object({
   // Additional Information
   updateFrequency: z.string().min(1, "Update frequency is required"),
   notificationPreference: z.array(z.string()),
-  sectorsRestrictions: z.array(z.string()).min(1, "Sector restrictions is required"),
+  sectorsRestrictions: z
+    .array(z.string())
+    .min(1, "Sector restrictions is required"),
 });
 
 export const PersonalFormSchema = onbordingSchema.pick({
@@ -34,7 +36,6 @@ export const PersonalFormSchema = onbordingSchema.pick({
   dateOfBirth: true,
   phoneNumber: true,
 });
-
 
 export const FinancialFormSchema = onbordingSchema.pick({
   monthyIncome: true,

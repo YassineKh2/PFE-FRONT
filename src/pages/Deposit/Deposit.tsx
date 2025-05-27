@@ -563,8 +563,11 @@ const FQA = () => (
       <div className="border rounded-lg shadow-sm p-6">
         <h3 className="font-semibold mb-2">How secure are my deposits?</h3>
         <p className="text-sm text-gray-600">
-          All deposits are held in segregated accounts with SEBI-registered
-          custodians and are fully insured up to ₹5 lakhs per account.
+          All deposits are held in segregated accounts with custodians
+          authorised by the relevant financial regulators in the EU/EEA.
+          Additionally, deposits are protected under the applicable national
+          deposit guarantee schemes, which insure eligible funds up to €100,000
+          per account
         </p>
       </div>
 

@@ -1,44 +1,41 @@
-import { RefuseCourse } from "@/services/User";
-import { CourseType } from "@/types/Courses";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Chip,
-  Divider,
-  Image,
-  Progress,
-} from "@heroui/react";
+import { Button, Card, CardBody, Chip, Divider, Image } from "@heroui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { CourseType } from "@/types/Courses";
+import { RefuseCourse } from "@/services/User";
+
 interface PopupProps {
-  id:string
+  id: string;
   Course: CourseType;
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
 
-const Popup: React.FC<PopupProps> = ({id, Course, isOpen, onClose, children }) => {
+const Popup: React.FC<PopupProps> = ({
+  id,
+  Course,
+  isOpen,
+  onClose,
+  children,
+}) => {
   if (!isOpen || !Course) return null;
 
-
-  const ClosePop = ()=>{
-    RefuseCourse(id)
-    onClose()
-  }
+  const ClosePop = () => {
+    RefuseCourse(id);
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <Card className="w-full max-w-sm md:max-w-xl ">
         <div>
           <Chip
-            size="sm"
-            color="warning"
             className="absolute z-50 text-white top-4 left-2"
+            color="warning"
+            size="sm"
           >
             98% Match
           </Chip>
@@ -47,26 +44,26 @@ const Popup: React.FC<PopupProps> = ({id, Course, isOpen, onClose, children }) =
           </p>
 
           <Button
-            onPress={ClosePop}
             isIconOnly
-            variant="light"
             className="absolute z-50 right-2 top-2 text-gray-300"
+            variant="light"
+            onPress={ClosePop}
           >
-            <Icon icon="carbon:close-outline" width="32" height="32" />
+            <Icon height="32" icon="carbon:close-outline" width="32" />
           </Button>
           <Image
-            src="https://heroui.com/images/hero-card.jpeg"
             alt="Card background"
             className="object-cover rounded-none w-full"
-            width={800}
             height={200}
+            src="https://heroui.com/images/hero-card.jpeg"
+            width={800}
           />
         </div>
         <CardBody className="overflow-visible py-2 px-6">
           <div className="h-full flex flex-col gap-4 justify-between items-start">
             <div className="flex flex-col w-full py-2">
               <p className="font-semibold">
-                We've Found the Perfect Course for You!
+                We&apos;ve Found the Perfect Course for You!
               </p>
               <p className="text-sm text-gray-500">
                 Based on your interests and learning history, we think this
@@ -142,8 +139,17 @@ const Popup: React.FC<PopupProps> = ({id, Course, isOpen, onClose, children }) =
             <div className="pb-4 flex justify-between w-full mt-2 items-center">
               <p className="font-bold text-2xl">€69.99</p>
               <div className="space-x-2">
-                <Button onPress={ClosePop} variant="bordered">Maybe Later</Button>
-                <Button onPress={ClosePop} as={Link} to={"/courses/view/"+Course.id} color="primary">Enroll Now</Button>
+                <Button variant="bordered" onPress={ClosePop}>
+                  Maybe Later
+                </Button>
+                <Button
+                  as={Link}
+                  color="primary"
+                  to={"/courses/view/" + Course.id}
+                  onPress={ClosePop}
+                >
+                  Enroll Now
+                </Button>
               </div>
             </div>
           </div>

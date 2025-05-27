@@ -5,7 +5,9 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+
 import Popup from "./Popup";
+
 import { useAuth } from "@/providers/AuthProvider";
 import { GetUserInformation } from "@/services/User";
 import { RecommendCourse } from "@/Helpers/RecommendCourse";
@@ -22,9 +24,11 @@ const PopupContext = createContext<PopupContextType | undefined>(undefined);
 
 export const usePopup = () => {
   const context = useContext(PopupContext);
+
   if (!context) {
     throw new Error("usePopup must be used within a PopupProvider");
   }
+
   return context;
 };
 
@@ -39,7 +43,9 @@ export const PopupProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const today = new Date();
-    if (today.getDay() !== 3) return;
+
+    // if today is not Wednesday, do not show the popup
+    // if (today.getDay() !== 3) return;
 
     GetUserInformation(currentUser.uid).then((response) => {
       if (!response.userPreferences) return;
@@ -53,30 +59,48 @@ export const PopupProvider: React.FC<{ children: ReactNode }> = ({
       // if user never refused and has reached a milestone
       if (SysRec.refusedCounter === 0) {
         const hasNeededScore = Object.values(SysRec.Assets).some(
-          (score) => score === 2
+          (score) => score == 10,
         );
-        if (!hasNeededScore) return;
+
+        if (hasNeededScore) {
+          RecommendCourse(UserPref, SysRec).then((res) => {
+            setCourse(res as CourseType);
+            setIsOpen(true);
+
+            return;
+          });
+        }
       }
 
       const oneWeekAgo = new Date();
+
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       const WasMoreThanOneWeek =
         new Date(SysRec.lastRefused || "") < oneWeekAgo;
 
-      if(!WasMoreThanOneWeek) return  
-        
+      if (!WasMoreThanOneWeek) return;
+
       // else if refused is lower than 2 and he refused less than 1 week ago
       if (SysRec.refusedCounter <= 2 && WasMoreThanOneWeek) {
         const hasNeededScore = Object.values(SysRec.Assets).some(
-          (score) => score === 30
+          (score) => score === 30,
         );
-        if (!hasNeededScore) return;
+
+        if (hasNeededScore) {
+          RecommendCourse(UserPref, SysRec).then((res) => {
+            setCourse(res as CourseType);
+            setIsOpen(true);
+
+            return;
+          });
+        }
       }
-      
+
       if (SysRec.refusedCounter > 2 && WasMoreThanOneWeek) {
         const hasNeededScore = Object.values(SysRec.Assets).some(
-          (score) => score === 80
+          (score) => score === 80,
         );
+
         if (!hasNeededScore) return;
       }
 
@@ -101,8 +125,8 @@ export const PopupProvider: React.FC<{ children: ReactNode }> = ({
     <PopupContext.Provider value={{ showPopup, closePopup }}>
       {children}
       <Popup
-        id={currentUser.uid}
         Course={Course}
+        id={currentUser.uid}
         isOpen={isOpen}
         onClose={closePopup}
       >

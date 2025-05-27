@@ -63,7 +63,7 @@ export default function Onboarding() {
   ] = useState(false);
   const [AdditionalInformationFormData, setAdditionalInformationFormData] =
     useState<AdditionalInformationFormSchemaType>(
-      {} as AdditionalInformationFormSchemaType
+      {} as AdditionalInformationFormSchemaType,
     );
 
   const handleStepChange = (newStep: number) => {
@@ -118,7 +118,7 @@ export default function Onboarding() {
           FinancialFormData,
           ExperienceFormData,
           PreferencesFormData,
-          AdditionalInformationFormData
+          AdditionalInformationFormData,
         ).then(() => {
           addToast({
             title: "Success !",
@@ -131,19 +131,19 @@ export default function Onboarding() {
         localStorage.setItem("personalData", JSON.stringify(PersonalFromData));
         localStorage.setItem(
           "financialData",
-          JSON.stringify(FinancialFormData)
+          JSON.stringify(FinancialFormData),
         );
         localStorage.setItem(
           "experienceData",
-          JSON.stringify(ExperienceFormData)
+          JSON.stringify(ExperienceFormData),
         );
         localStorage.setItem(
           "preferencesData",
-          JSON.stringify(PreferencesFormData)
+          JSON.stringify(PreferencesFormData),
         );
         localStorage.setItem(
           "additionalInformationData",
-          JSON.stringify(AdditionalInformationFormData)
+          JSON.stringify(AdditionalInformationFormData),
         );
         onOpen();
       }

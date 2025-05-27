@@ -270,7 +270,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
                 <Button
                   className="bg-gradient-to-r from-[#E7649C] to-[#fc3c61] text-white w-full"
                   onPress={() => {
-                    navigate("/depost/create");
+                    navigate("/deposit/create");
                   }}
                 >
                   Create a depost
