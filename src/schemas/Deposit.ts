@@ -20,7 +20,7 @@ export const DepositSchema = z.object({
   fullName: z.string().min(2, "Deposit amount is required"),
   fatherName: z.string().min(1, "Father Name is required"),
   motherName: z.string().min(1, "Mother Name is required"),
-  birthDate: z.date().max(eighteenYearsAgo, {
+  dateOfBirth: z.date().max(eighteenYearsAgo, {
     message: "You must be at least 18 years old",
   }),
 
@@ -54,14 +54,14 @@ export const DepositSchema = z.object({
     })
     .optional(),
 
-  uploadedDocuments: z
-    .object({
-      personalId: z.string().nullable().optional(),
-      addressProof: z.string().nullable().optional(),
-      bankStatement: z.string().nullable().optional(),
-      incomeProof: z.string().nullable().optional(),
-    })
-    .optional(),
+  uploadedDocuments: z.object({
+    personalId: z.string().min(1, "Personal Id Document is required"),
+    addressProof: z.string().min(1, "Address Proof Document  is required"),
+    bankStatement: z.string().min(1, "Bank Statement Document  is required"),
+    incomeProof: z.string().min(1, "Income Proof Document  is required"),
+  }),
+
+  status: z.string().optional(),
 });
 
 export const DepositDetailsSchema = DepositSchema.pick({

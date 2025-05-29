@@ -1,7 +1,7 @@
 import type React from "react";
 
-import { useState } from "react";
-import { Progress } from "@heroui/react";
+import { useEffect, useState } from "react";
+import { addToast, Progress } from "@heroui/react";
 
 import Section1 from "../../components/Deposit/Create/Section1";
 
@@ -10,9 +10,12 @@ import Section3 from "@/components/Deposit/Create/Section3";
 import Section2 from "@/components/Deposit/Create/Section2";
 import FormSectionsSidebar from "@/components/Deposit/Create/FormSectionsSidebar";
 import {
+  Deposit,
   Section1 as Section1Type,
   Section2 as Section2Type,
 } from "@/types/Deposit";
+import { SaveDeposit } from "@/services/Deposit";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function DepositFormPage() {
   const [formData, setFormData] = useState({
@@ -68,11 +71,12 @@ export default function DepositFormPage() {
 
   const [Section1Data, setSection1Data] = useState({} as Section1Type);
   const [Section2Data, setSection2Data] = useState({} as Section2Type);
+  const [Deposit, setDeposit] = useState({} as Deposit);
 
   const [currentSection, setCurrentSection] = useState(1);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isProcessing, setIsProcessing] = useState(false);
   const [formProgress, setFormProgress] = useState(0);
+
+  const { currentUser } = useAuth();
 
   // Calculate form completion progress
   const calculateProgress = () => {
@@ -88,13 +92,28 @@ export default function DepositFormPage() {
     return Math.min((filledFields / totalFields) * 100, 100);
   };
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setFormProgress(calculateProgress());
+  useEffect(() => {
+    const depo = { ...Section1Data, ...Section2Data };
 
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    }
+    setDeposit(depo);
+  }, [Section1Data, Section2Data]);
+
+  const SubmitData = () => {
+    SaveDeposit(currentUser.uid, Deposit).then((res) => {
+      if (res.status === 200) {
+        addToast({
+          title: "Chapter Created",
+          description: "Chapter created successfully",
+          color: "success",
+        });
+      } else {
+        addToast({
+          title: "Error",
+          description: "Error creating chapter",
+          color: "danger",
+        });
+      }
+    });
   };
 
   return (
@@ -146,10 +165,8 @@ export default function DepositFormPage() {
               {/* Section 3*/}
               {currentSection === 3 && (
                 <Section3
-                  errors={errors}
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                  isProcessing={isProcessing}
+                  Deposit={Deposit}
+                  SubmitData={SubmitData}
                   setCurrentSection={setCurrentSection}
                 />
               )}

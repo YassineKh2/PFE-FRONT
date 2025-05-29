@@ -1,5 +1,6 @@
-import { ChapterType as Chapter } from "@/types/Courses";
 import axios from "axios";
+
+import { ChapterType as Chapter } from "@/types/Courses";
 
 const BACKEND = axios.create({
   baseURL: "http://127.0.0.1:5000/chapter",
@@ -7,9 +8,11 @@ const BACKEND = axios.create({
 
 export async function SaveChapter(Chapter: Chapter) {
   const formData = new FormData();
+
   Object.entries(Chapter).forEach(([key, value]) => {
     if (key === "content") {
       formData.append(key, JSON.stringify(value));
+
       return;
     }
     formData.append(key, value as string | Blob);
@@ -26,28 +29,33 @@ export async function SaveChapter(Chapter: Chapter) {
 
 export async function GetAllChapters() {
   const response: { data: { data: Chapter[] } } = await BACKEND.get("");
+
   return response.data;
 }
 
 export async function GetChapters(courseId: string) {
   const response: { data: { data: Chapter[] } } = await BACKEND.get(
-    `/${courseId}`
+    `/${courseId}`,
   );
+
   return response.data;
 }
 
 export async function GetChapter(id: string) {
   const response: { data: { data: Chapter } } = await BACKEND.get(
-    `/single/${id}`
+    `/single/${id}`,
   );
+
   return response.data;
 }
 
 export async function UpdateChapter(id: string, Chapter: Chapter) {
   const formData = new FormData();
+
   Object.entries(Chapter).forEach(([key, value]) => {
     if (key === "content") {
       formData.append(key, JSON.stringify(value));
+
       return;
     }
     formData.append(key, value as string | Blob);
@@ -64,5 +72,6 @@ export async function UpdateChapter(id: string, Chapter: Chapter) {
 
 export async function DeleteChapter(id: string) {
   const response = await BACKEND.delete(`/${id}`);
+
   return response;
 }

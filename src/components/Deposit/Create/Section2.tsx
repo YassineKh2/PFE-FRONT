@@ -18,7 +18,7 @@ import {
   Calendar,
 } from "@heroui/react";
 import { cn } from "@heroui/react";
-import { fromDate } from "@internationalized/date";
+import { fromDate, getLocalTimeZone, today } from "@internationalized/date";
 import { useDropzone } from "react-dropzone";
 
 import { Section2 as Section2Type } from "@/types/Deposit";
@@ -62,6 +62,7 @@ const Section2: React.FC<Section2Props> = ({
       const file = acceptedFiles[0];
 
       setAddressProofFile(file);
+      setValue("uploadedDocuments.addressProof", file.name);
     },
     [setAddressProofFile],
   );
@@ -72,6 +73,7 @@ const Section2: React.FC<Section2Props> = ({
       const file = acceptedFiles[0];
 
       setPersonalIdFile(file);
+      setValue("uploadedDocuments.personalId", file.name);
     },
     [setPersonalIdFile],
   );
@@ -82,6 +84,7 @@ const Section2: React.FC<Section2Props> = ({
       const file = acceptedFiles[0];
 
       setBankStatementFile(file);
+      setValue("uploadedDocuments.bankStatement", file.name);
     },
     [setBankStatementFile],
   );
@@ -92,6 +95,7 @@ const Section2: React.FC<Section2Props> = ({
       const file = acceptedFiles[0];
 
       setIncomeProofFile(file);
+      setValue("uploadedDocuments.incomeProof", file.name);
     },
     [setIncomeProofFile],
   );
@@ -166,9 +170,16 @@ const Section2: React.FC<Section2Props> = ({
   };
 
   const onSubmit = (data: Section2Type) => {
-    // setSection2Data(data);
-    // setCurrentSection(3);
-    console.log(data);
+    //@ts-ignore Temporary time for transfering files to the backend
+    data.attachedFiles = {
+      personalid: PersonalIdFile,
+      bankstatemet: BankStatementFile,
+      AddressProof: AddressProofFile,
+      IncomeProof: IncomeProofFile,
+    };
+
+    setSection2Data(data);
+    setCurrentSection(3);
   };
 
   return (
@@ -213,6 +224,7 @@ const Section2: React.FC<Section2Props> = ({
                           className={cn(
                             "justify-start text-left font-normal ",
                             !field.value && "text-gray-500",
+                            errors.dateOfBirth && "bg-danger-50",
                           )}
                           variant="flat"
                         >
@@ -223,8 +235,12 @@ const Section2: React.FC<Section2Props> = ({
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
+                          showMonthAndYearPickers
                           errorMessage={errors.dateOfBirth?.message}
                           isInvalid={!!errors.dateOfBirth}
+                          maxValue={today(getLocalTimeZone()).subtract({
+                            years: 18,
+                          })}
                           value={
                             field.value ? fromDate(field.value, "UTC") : null
                           }
@@ -240,6 +256,11 @@ const Section2: React.FC<Section2Props> = ({
                     </Popover>
                   )}
                 />
+                {errors.dateOfBirth && (
+                  <p className="text-xs text-primary-500">
+                    {errors.dateOfBirth.message}
+                  </p>
+                )}
               </div>
               <div className="grid gap-2">
                 <label htmlFor="fatherName">Father&apos;s Name</label>
@@ -255,12 +276,11 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="motherName">Mother&apos;s Name</label>
                 <Input
-                  id="motherName"
-                  
                   errorMessage={errors.motherName?.message}
+                  id="motherName"
                   isInvalid={!!errors.motherName}
                   placeholder="Enter mother's name"
-                  variant="flat"  
+                  variant="flat"
                   {...register("motherName")}
                 />
               </div>
@@ -275,7 +295,7 @@ const Section2: React.FC<Section2Props> = ({
                 <label htmlFor="mobileNumber">Mobile Number *</label>
                 <Input
                   id="mobileNumber"
-                  maxLength={10}
+                  maxLength={8}
                   placeholder="e.g., 98841216"
                   type="tel"
                   variant="flat"
@@ -285,13 +305,23 @@ const Section2: React.FC<Section2Props> = ({
                 />
                 <Button
                   color="secondary"
-                  disabled={otpSent || watch("mobileNumber")?.length !== 10}
+                  disabled={otpSent || watch("mobileNumber")?.length !== 8}
                   size="sm"
                   type="button"
                   onPress={sendOTP}
                 >
                   {otpSent ? "Confirmation Sent!" : "Send Confirmation"}
                 </Button>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="mobileNumber">OTP Number </label>
+                <Input
+                  id="mobileNumber"
+                  maxLength={10}
+                  placeholder="Enter the number received by sms"
+                  type="tel"
+                  variant="flat"
+                />
               </div>
             </div>
           </div>
@@ -302,7 +332,9 @@ const Section2: React.FC<Section2Props> = ({
             <div className="grid gap-2">
               <label htmlFor="address">Address Line</label>
               <Textarea
+                errorMessage={errors.address?.message}
                 id="address"
+                isInvalid={!!errors.address}
                 placeholder="Street, Building, Apartment"
                 variant="flat"
                 {...register("address")}
@@ -312,7 +344,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="city">City</label>
                 <Input
+                  errorMessage={errors.city?.message}
                   id="city"
+                  isInvalid={!!errors.city}
                   placeholder="City"
                   variant="flat"
                   {...register("city")}
@@ -321,7 +355,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="state">State</label>
                 <Input
+                  errorMessage={errors.state?.message}
                   id="state"
+                  isInvalid={!!errors.state}
                   placeholder="State"
                   variant="flat"
                   {...register("state")}
@@ -330,7 +366,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="pincode">Pincode</label>
                 <Input
+                  errorMessage={errors.pincode?.message}
                   id="pincode"
+                  isInvalid={!!errors.pincode}
                   maxLength={6}
                   placeholder="Pincode"
                   variant="flat"
@@ -380,7 +418,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="sourceOfIncome">Source of Income</label>
                 <Input
+                  errorMessage={errors.sourceOfIncome?.message}
                   id="sourceOfIncome"
+                  isInvalid={!!errors.sourceOfIncome}
                   placeholder="e.g., Salary, Business"
                   variant="flat"
                   {...register("sourceOfIncome")}
@@ -396,9 +436,14 @@ const Section2: React.FC<Section2Props> = ({
                   placeholder="Select tax status"
                   variant="flat"
                 >
-                  <SelectItem key="resident">Resident Individual</SelectItem>
-                  <SelectItem key="nri">NRI</SelectItem>
-                  <SelectItem key="huf">HUF</SelectItem>
+                  <SelectItem key="resident">Resident Taxpayer</SelectItem>
+                  <SelectItem key="non-resident">
+                    Non-Resident Taxpayer
+                  </SelectItem>
+                  <SelectItem key="company">Corporate Entity</SelectItem>
+                  <SelectItem key="self-employed">
+                    Self-Employed / Sole Trader
+                  </SelectItem>
                 </Select>
               </div>
             </div>
@@ -413,7 +458,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="bankName">Bank name</label>
                 <Input
+                  errorMessage={errors.bankName?.message}
                   id="bankName"
+                  isInvalid={!!errors.bankName}
                   placeholder="Bank Name"
                   variant="flat"
                   {...register("bankName")}
@@ -422,7 +469,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="ibanCode">IBAN Code</label>
                 <Input
+                  errorMessage={errors.ibanCode?.message}
                   id="ibanCode"
+                  isInvalid={!!errors.ibanCode}
                   maxLength={11}
                   placeholder="e.g., GB88MIDL0700..."
                   variant="flat"
@@ -432,7 +481,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="bicId">BIC ID</label>
                 <Input
+                  errorMessage={errors.bicId?.message}
                   id="bicId"
+                  isInvalid={!!errors.bicId}
                   placeholder="e.g., DABADEMMXXX"
                   variant="flat"
                   {...register("bicId")}
@@ -441,7 +492,9 @@ const Section2: React.FC<Section2Props> = ({
               <div className="grid gap-2">
                 <label htmlFor="personalId">National ID / Passport</label>
                 <Input
+                  errorMessage={errors.personalId?.message}
                   id="personalId"
+                  isInvalid={!!errors.personalId}
                   maxLength={11}
                   placeholder="e.g., 4b2k3a9n"
                   variant="flat"
@@ -539,7 +592,7 @@ const Section2: React.FC<Section2Props> = ({
                   }`}
                 >
                   <input
-                    {...register("uploadedDocuments.personalId")}
+                    name="uploadedDocuments.personalId"
                     {...getInputPropsPersonalId()}
                   />
                   <div className="grid gap-1">
@@ -602,7 +655,7 @@ const Section2: React.FC<Section2Props> = ({
                   }`}
                 >
                   <input
-                    {...register("uploadedDocuments.addressProof")}
+                    name="uploadedDocuments.addressProof"
                     {...getInputPropsAddressProof()}
                   />
                   <div className="grid gap-1">
@@ -665,7 +718,7 @@ const Section2: React.FC<Section2Props> = ({
                   }`}
                 >
                   <input
-                    {...register("uploadedDocuments.bankStatement")}
+                    name="uploadedDocuments.bankStatement"
                     {...getInputPropsBankStatement()}
                   />
                   <div className="grid gap-1">
@@ -728,7 +781,7 @@ const Section2: React.FC<Section2Props> = ({
                   }`}
                 >
                   <input
-                    {...register("uploadedDocuments.incomeProof")}
+                    name="uploadedDocuments.incomeProof"
                     {...getInputPropsIncomeProof()}
                   />
                   <div className="grid gap-1">
@@ -775,15 +828,10 @@ const Section2: React.FC<Section2Props> = ({
             </div>
           </div>
 
-          {Object.entries(errors).map(([key, error]) =>
-            error?.message ? (
-              <p key={key} className="text-sm text-red-500">
-                {error.message}
-                {key}
-              </p>
-            ) : (
-              <p  key={key}>yoles00000</p>
-            ),
+          {errors.uploadedDocuments && (
+            <p className="text-xs text-primary-500">
+              Some Required Documents are missing
+            </p>
           )}
         </CardBody>
       </Card>

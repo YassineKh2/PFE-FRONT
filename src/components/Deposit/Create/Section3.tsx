@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -10,21 +10,46 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
+import { Deposit } from "@/types/Deposit";
+
 interface Section3Props {
-  formData: any;
-  errors: Record<string, string>;
-  isProcessing: boolean;
+  Deposit: Deposit;
+  SubmitData: () => void;
   setCurrentSection: (section: number) => void;
-  handleInputChange: (field: string, value: any) => void;
 }
 
 const Section3: React.FC<Section3Props> = ({
-  formData,
-  errors,
-  isProcessing,
+  Deposit,
+  SubmitData,
   setCurrentSection,
-  handleInputChange,
 }) => {
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [riskAcknowledged, setRiskAcknowledged] = useState(false);
+  const [fatcaDeclaration, setFatcaDeclaration] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [hasAccepted, sethasAccepted] = useState(false);
+  const [hasSubmit, sethasSubmit] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    if (
+      termsAccepted &&
+      riskAcknowledged &&
+      fatcaDeclaration &&
+      marketingConsent
+    )
+      sethasAccepted(true);
+    else sethasAccepted(false);
+  }, [termsAccepted, riskAcknowledged, fatcaDeclaration, marketingConsent]);
+
+  const Submit = () => {
+    sethasSubmit(true);
+    if (hasAccepted) {
+      // setIsProcessing(true);
+      SubmitData();
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Card className="p-4">
@@ -42,13 +67,13 @@ const Section3: React.FC<Section3Props> = ({
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">Deposit Amount:</div>
-                <div className="font-bold">€{formData.amount}</div>
+                <div className="font-bold">€{Deposit.amount}</div>
               </div>
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">Payment Method:</div>
                 <div className="font-bold">
-                  {formData.paymentMethod
-                    ? formData.paymentMethod.toUpperCase()
+                  {Deposit.paymentMethod
+                    ? Deposit.paymentMethod.toUpperCase()
                     : "N/A"}
                 </div>
               </div>
@@ -57,42 +82,30 @@ const Section3: React.FC<Section3Props> = ({
                   Recurring Interval:
                 </div>
                 <div className="font-bold">
-                  {formData.recurringInterval
-                    ? formData.recurringInterval
-                    : "No"}
+                  {Deposit.recurringInterval ? Deposit.recurringInterval : "No"}
                 </div>
               </div>
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">Full Name:</div>
-                <div className="font-bold">{formData.fullName}</div>
+                <div className="font-bold">{Deposit.fullName}</div>
               </div>
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">
                   Personal ID Number:
                 </div>
-                <div className="font-bold">{formData.personalIdNumber}</div>
+                <div className="font-bold">{Deposit.personalId}</div>
               </div>
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">Mobile Number:</div>
-                <div className="font-bold">{formData.mobileNumber}</div>
+                <div className="font-bold">{Deposit.mobileNumber}</div>
               </div>
               <div className="flex justify-between">
                 <div className="font-medium text-gray-500">Address:</div>
-                <div className="font-bold">{formData.address || "N/A"}</div>
+                <div className="font-bold">{Deposit.address || "N/A"}</div>
               </div>
               <div className="flex justify-between">
-                <div className="font-medium text-gray-500">Risk Tolerance:</div>
-                <div className="font-bold">
-                  {/* {formData.riskTolerance[0] === 1
-                    ? "Very Conservative"
-                    : formData.riskTolerance[0] === 2
-                      ? "Conservative"
-                      : formData.riskTolerance[0] === 3
-                        ? "Moderate"
-                        : formData.riskTolerance[0] === 4
-                          ? "Aggressive"
-                          : "Very Aggressive"} */}
-                </div>
+                <div className="font-medium text-gray-500">IBAN:</div>
+                <div className="font-bold">{Deposit.ibanCode}</div>
               </div>
             </div>
           </div>
@@ -124,10 +137,8 @@ const Section3: React.FC<Section3Props> = ({
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="termsAccepted"
-                  isSelected={formData.termsAccepted}
-                  onValueChange={(checked) =>
-                    handleInputChange("termsAccepted", checked)
-                  }
+                  isSelected={termsAccepted}
+                  onValueChange={() => setTermsAccepted((prev) => !prev)}
                 />
                 <label
                   className="text-sm cursor-pointer"
@@ -140,17 +151,12 @@ const Section3: React.FC<Section3Props> = ({
                   and Privacy Policy.
                 </label>
               </div>
-              {errors.termsAccepted && (
-                <p className="text-sm text-red-500">{errors.termsAccepted}</p>
-              )}
 
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="riskAcknowledged"
-                  isSelected={formData.riskAcknowledged}
-                  onValueChange={(checked) =>
-                    handleInputChange("riskAcknowledged", checked)
-                  }
+                  isSelected={riskAcknowledged}
+                  onValueChange={() => setRiskAcknowledged((prev) => !prev)}
                 />
                 <label
                   className="text-sm cursor-pointer"
@@ -160,19 +166,12 @@ const Section3: React.FC<Section3Props> = ({
                   with this deposit.
                 </label>
               </div>
-              {errors.riskAcknowledged && (
-                <p className="text-sm text-red-500">
-                  {errors.riskAcknowledged}
-                </p>
-              )}
 
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="fatcaDeclaration"
-                  isSelected={formData.fatcaDeclaration}
-                  onValueChange={(checked) =>
-                    handleInputChange("fatcaDeclaration", checked)
-                  }
+                  isSelected={fatcaDeclaration}
+                  onValueChange={() => setFatcaDeclaration((prev) => !prev)}
                 />
                 <label
                   className="text-sm cursor-pointer"
@@ -181,19 +180,11 @@ const Section3: React.FC<Section3Props> = ({
                   I confirm I am not a U.S. person and make FATCA declaration.
                 </label>
               </div>
-              {errors.fatcaDeclaration && (
-                <p className="text-sm text-red-500">
-                  {errors.fatcaDeclaration}
-                </p>
-              )}
-
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="marketingConsent"
-                  isSelected={formData.marketingConsent}
-                  onValueChange={(checked) =>
-                    handleInputChange("marketingConsent", checked)
-                  }
+                  isSelected={marketingConsent}
+                  onValueChange={() => setMarketingConsent((prev) => !prev)}
                 />
                 <label
                   className="text-sm cursor-pointer"
@@ -205,6 +196,11 @@ const Section3: React.FC<Section3Props> = ({
               </div>
             </div>
           </div>
+          {!hasAccepted && hasSubmit && (
+            <p className="text-xs text-primary-500">
+              You have to accept the terms and conditions !
+            </p>
+          )}
         </CardBody>
       </Card>
       <div className="flex justify-between">
@@ -221,7 +217,12 @@ const Section3: React.FC<Section3Props> = ({
           />
           Previous: Personal Information
         </Button>
-        <Button color="primary" disabled={isProcessing} type="submit">
+        <Button
+          color="primary"
+          // disabled={isProcessing}
+          type="submit"
+          onPress={Submit}
+        >
           {isProcessing ? "Processing..." : "Confirm & Deposit"}
         </Button>
       </div>
