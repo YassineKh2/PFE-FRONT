@@ -4,8 +4,9 @@ import { User } from "@heroui/user";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, useLocation } from "react-router-dom";
 import { useSpring, animated } from "@react-spring/web";
-import { useOpen } from "@/store/SidebarStore";
 import { Accordion, AccordionItem } from "@heroui/accordion";
+
+import { useOpen } from "@/store/SidebarStore";
 import { useAuth } from "@/providers/AuthProvider";
 
 function Sidebar() {
@@ -19,7 +20,7 @@ function Sidebar() {
 
   return (
     <>
-      <animated.div style={sidebarSpring} className="h-full">
+      <animated.div className="h-full" style={sidebarSpring}>
         {Open ? (
           <OpenedSidebar SetOpen={SetOpen} currentPath={location.pathname} />
         ) : (
@@ -44,7 +45,6 @@ const OpenedSidebar = ({
 
   const { currentUser } = useAuth();
 
-
   return (
     <aside className="flex flex-col gap-6 pt-5 items-start ms-8 me-5  bg-default-100 rounded-lg h-full">
       <div className="flex gap-24 items-center max-w-fit">
@@ -55,13 +55,13 @@ const OpenedSidebar = ({
         >
           <img alt="logo" className="w-48" src="/Morgenfund_Logo.png" />
         </Link>
-        <Button onPress={() => SetOpen(false)} variant="light" isIconOnly>
+        <Button isIconOnly variant="light" onPress={() => SetOpen(false)}>
           <Icon
-            icon="ei:arrow-up"
-            width="28"
-            height="28"
-            style={{ color: "#9A9AA0" }}
             className="-rotate-90"
+            height="28"
+            icon="ei:arrow-up"
+            style={{ color: "#9A9AA0" }}
+            width="28"
           />
         </Button>
       </div>
@@ -73,46 +73,63 @@ const OpenedSidebar = ({
             isBordered: true,
             size: "sm",
           }}
-          description={currentUser.role.toUpperCase()}
-          name={currentUser.displayName}
           classNames={{
             name: "font-semibold ms-1",
             description: "font-semibold text-default-400 ms-1",
           }}
+          description={currentUser.role.toUpperCase()}
+          name={currentUser.displayName}
         />
       </div>
       <div className="flex flex-col gap-0.5 w-full">
         <Button
+          as={Link}
+          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/home") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
           startContent={
             <Icon
-              icon="mynaui:home"
-              width="24"
               height="24"
+              icon="mynaui:home"
               style={{ color: "#9A9AA0" }}
+              width="24"
             />
           }
-          as={Link}
-          variant="light"
           to="/home"
-          size="lg"
-          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/home") ? "bg-gray-200 font-bold" : ""}`}
+          variant="light"
         >
           Home
         </Button>
         <Button
+          as={Link}
+          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/manager") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
           startContent={
             <Icon
-              icon="hugeicons:apple-stocks"
-              width="24"
               height="24"
+              icon="carbon:ibm-consulting-advantage-assistant"
               style={{ color: "#9A9AA0" }}
+              width="24"
             />
           }
-          as={Link}
+          to="/dashboard/manager"
           variant="light"
-          to="/dashboard/savedfunds"
-          size="lg"
+        >
+          Manager
+        </Button>
+        <Button
+          as={Link}
           className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/savedfunds") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          startContent={
+            <Icon
+              height="24"
+              icon="hugeicons:apple-stocks"
+              style={{ color: "#9A9AA0" }}
+              width="24"
+            />
+          }
+          to="/dashboard/savedfunds"
+          variant="light"
         >
           My Funds
         </Button>
@@ -121,71 +138,71 @@ const OpenedSidebar = ({
           className={`hover:bg-gray-200 "bg-gray-200 rounded-xl ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
         >
           <AccordionItem
-            startContent={
-              <Icon
-                icon="hugeicons:course"
-                width="24"
-                height="24"
-                style={{ color: "#9A9AA0" }}
-              />
-            }
             key="1"
             aria-label="Courses"
-            title="Courses"
             classNames={{
               title: "text-gray-500",
             }}
+            startContent={
+              <Icon
+                height="24"
+                icon="hugeicons:course"
+                style={{ color: "#9A9AA0" }}
+                width="24"
+              />
+            }
+            title="Courses"
           >
             <div className="flex flex-col gap-2">
               <Button
+                as={Link}
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/all") ? "bg-gray-100 font-bold" : ""}`}
+                size="lg"
                 startContent={
                   <Icon
-                    icon="material-symbols:all-out-outline-rounded"
-                    width="20"
                     height="20"
+                    icon="material-symbols:all-out-outline-rounded"
                     style={{ color: "#9A9AA0" }}
+                    width="20"
                   />
                 }
-                as={Link}
                 to="/dashboard/courses/all"
                 variant="light"
-                size="lg"
-                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/all") ? "bg-gray-100 font-bold" : ""}`}
               >
                 All Courses
               </Button>
 
               <Button
+                as={Link}
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/overview") ? "bg-gray-100 font-bold" : ""}`}
+                size="lg"
                 startContent={
                   <Icon
-                    icon="grommet-icons:overview"
-                    width="20"
                     height="20"
+                    icon="grommet-icons:overview"
                     style={{ color: "#9A9AA0" }}
+                    width="20"
                   />
                 }
-                as={Link}
                 to="/dashboard/courses/overview"
                 variant="light"
-                size="lg"
-                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/overview") ? "bg-gray-100 font-bold" : ""}`}
               >
                 Overview
               </Button>
               <Button
+                as={Link}
+                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/mycertificates") ? "bg-gray-100 font-bold" : ""}`}
+                size="lg"
                 startContent={
                   <Icon
-                    icon="tabler:certificate"
-                    width="20"
                     height="20"
+                    icon="tabler:certificate"
                     style={{ color: "#9A9AA0" }}
+                    width="20"
                   />
                 }
-                as={Link}
                 to="/dashboard/courses/mycertificates"
                 variant="light"
-                size="lg"
-                className={`w-full text-default-500 justify-start ${isActive("/dashboard/courses/mycertificates") ? "bg-gray-100 font-bold" : ""}`}
               >
                 Certificates
               </Button>
@@ -193,36 +210,36 @@ const OpenedSidebar = ({
           </AccordionItem>
         </Accordion>
         <Button
+          as={Link}
+          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/users") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
           startContent={
             <Icon
-              icon="prime:users"
-              width="24"
               height="24"
+              icon="prime:users"
               style={{ color: "#9A9AA0" }}
+              width="24"
             />
           }
-          as={Link}
-          variant="light"
           to="/users"
-          size="lg"
-          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/users") ? "bg-gray-200 font-bold" : ""}`}
+          variant="light"
         >
           Users
         </Button>
         <Button
+          as={Link}
+          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/settings") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
           startContent={
             <Icon
-              icon="mage:settings"
-              width="24"
               height="24"
+              icon="mage:settings"
               style={{ color: "#9A9AA0" }}
+              width="24"
             />
           }
-          as={Link}
-          variant="light"
           to="/dashboard/settings"
-          size="lg"
-          className={`text-default-500 justify-start !ps-2 ${isActive("/dashboard/settings") ? "bg-gray-200 font-bold" : ""}`}
+          variant="light"
         >
           Settings
         </Button>
@@ -230,19 +247,19 @@ const OpenedSidebar = ({
 
       <div className="flex flex-col w-full justify-end mt-auto mb-5">
         <Button
+          as={Link}
+          className="text-default-500 justify-start !ps-2"
+          size="lg"
           startContent={
             <Icon
-              icon="lsicon:minus-outline"
-              width="24"
               height="24"
+              icon="lsicon:minus-outline"
               style={{ color: "#9A9AA0" }}
+              width="24"
             />
           }
-          as={Link}
-          variant="light"
           to="/home"
-          size="lg"
-          className="text-default-500 justify-start !ps-2"
+          variant="light"
         >
           Log Out
         </Button>
@@ -275,112 +292,127 @@ const ClosedSidebar = ({
 
       <div className="ms-1">
         <Avatar
-          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
           isBordered
           size="sm"
+          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
         />
       </div>
       <div className="flex flex-col  w-full">
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/home"
-          size="lg"
           className={`text-default-500 ${isActive("/dashboard/home") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          to="/home"
+          variant="light"
         >
           <Icon
+            height="24"
             icon="mynaui:home"
-            width="24"
-            height="24"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/dashboard/funds"
+          className={`text-default-500 ${isActive("/dashboard/manager") ? "bg-gray-200 font-bold" : ""}`}
           size="lg"
+          to="/dashboard/manager"
+          variant="light"
+        >
+          <Icon
+            height="24"
+            icon="carbon:ibm-consulting-advantage-assistant"
+            style={{ color: "#9A9AA0" }}
+            width="24"
+          />
+        </Button>
+        <Button
+          isIconOnly
+          as={Link}
           className={`text-default-500 ${isActive("/dashboard/funds") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          to="/dashboard/funds"
+          variant="light"
         >
           <Icon
+            height="24"
             icon="hugeicons:apple-stocks"
-            width="24"
-            height="24"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/dashboard/courses"
-          size="lg"
           className={`text-default-500 ${isActive("/dashboard/courses") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          to="/dashboard/courses"
+          variant="light"
         >
           <Icon
+            height="24"
             icon="hugeicons:course"
-            width="24"
-            height="24"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/dashboard/users"
-          size="lg"
           className={`text-default-500 ${isActive("/dashboard/users") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          to="/dashboard/users"
+          variant="light"
         >
           <Icon
-            icon="prime:users"
-            width="24"
             height="24"
+            icon="prime:users"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/dashboard/settings"
-          size="lg"
           className={`text-default-500 ${isActive("/dashboard/settings") ? "bg-gray-200 font-bold" : ""}`}
+          size="lg"
+          to="/dashboard/settings"
+          variant="light"
         >
           <Icon
-            icon="mage:settings"
-            width="24"
             height="24"
+            icon="mage:settings"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
       </div>
 
       <div className="flex flex-col w-full items-center mt-auto mb-5">
-        <Button onPress={() => SetOpen(true)} variant="light" isIconOnly>
+        <Button isIconOnly variant="light" onPress={() => SetOpen(true)}>
           <Icon
-            icon="ei:arrow-up"
-            width="30"
-            height="30"
-            style={{ color: "#9A9AA0" }}
             className="rotate-90"
+            height="30"
+            icon="ei:arrow-up"
+            style={{ color: "#9A9AA0" }}
+            width="30"
           />
         </Button>
         <Button
           isIconOnly
           as={Link}
-          variant="light"
-          to="/home"
-          size="lg"
           className="text-default-500"
+          size="lg"
+          to="/home"
+          variant="light"
         >
           <Icon
-            icon="lsicon:minus-outline"
-            width="24"
             height="24"
+            icon="lsicon:minus-outline"
             style={{ color: "#9A9AA0" }}
+            width="24"
           />
         </Button>
       </div>

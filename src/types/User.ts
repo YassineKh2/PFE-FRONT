@@ -23,8 +23,8 @@ export type SystemRecommedations = {
     materials: number;
   };
   updatedAt?: string;
-  refusedCounter?:number;
-  lastRefused?:string;
+  refusedCounter?: number;
+  lastRefused?: string;
 };
 
 export type User = {
@@ -37,13 +37,12 @@ export type User = {
     [courseId: string]: EnrolledCourse;
   };
   userPreferences?: onbordingType;
-  SystemRecommedations : SystemRecommedations
+  SystemRecommedations: SystemRecommedations;
 };
 
-
 export type SystemPoints = {
-  method:'add'|'remove'
-  asset:string,
-  sector:string,
-  amount:number
-}
+  method: "add" | "remove";
+  asset: string;
+  sector: string;
+  amount: number;
+};

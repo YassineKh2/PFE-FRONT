@@ -74,7 +74,7 @@ export const Navbar = () => {
               <Link
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium",
                 )}
                 color="foreground"
                 href={item.href}
@@ -95,55 +95,71 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         {userLoggedIn ? (
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                src={currentUser.photoURL || ""}
-              />
-              {/* <img
+          <div className="flex items-center gap-2">
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  src={currentUser.photoURL || ""}
+                />
+                {/* <img
                 src={currentUser.photoURL || ""}
                 referrerPolicy="no-referrer"
               /> */}
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{currentUser?.email}</p>
-              </DropdownItem>
-              <DropdownItem
-                key="savedfunds"
-                onPress={() => {
-                  navigate("/dashboard/savedfunds");
-                }}
-              >
-                Saved Funds
-              </DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem
-                key="courses"
-                onPress={() => {
-                  navigate("/dashboard/courses/overview");
-                }}
-              >
-                My Courses
-              </DropdownItem>
-              <DropdownItem key="settings">Settings</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">
-                Help & Feedback
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
-                color="danger"
-                onPress={() => SignOut()}
-              >
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{currentUser?.email}</p>
+                </DropdownItem>
+                <DropdownItem
+                  key="savedfunds"
+                  onPress={() => {
+                    navigate("/dashboard/savedfunds");
+                  }}
+                >
+                  Saved Funds
+                </DropdownItem>
+                <DropdownItem key="analytics">Analytics</DropdownItem>
+                <DropdownItem
+                  key="courses"
+                  onPress={() => {
+                    navigate("/dashboard/courses/overview");
+                  }}
+                >
+                  My Courses
+                </DropdownItem>
+                <DropdownItem key="settings">Settings</DropdownItem>
+                <DropdownItem key="configurations">Configurations</DropdownItem>
+                <DropdownItem key="help_and_feedback">
+                  Help & Feedback
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  onPress={() => SignOut()}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            {currentUser.depositTier &&
+              (currentUser.depositTier === "Platinum" ? (
+                <p className="font-bold text-sm bg-clip-text text-transparent inline-block bg-gradient-to-r from-purple-400 to-purple-600">
+                  Platinum
+                </p>
+              ) : currentUser.depositTier === "Gold" ? (
+                <p className="font-bold text-sm bg-clip-text text-transparent inline-block bg-gradient-to-r from-yellow-400 to-yellow-600">
+                  Gold
+                </p>
+              ) : (
+                <p className="font-bold text-sm bg-clip-text text-transparent inline-block bg-gradient-to-r from-gray-400 to-gray-600">
+                  Silver
+                </p>
+              ))}
+          </div>
         ) : (
           <Button
             className="bg-gradient-to-r from-[#E7649C] to-[#fc3c61] text-white"

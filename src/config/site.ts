@@ -21,6 +21,10 @@ export const siteConfig = {
       href: "/recommended",
     },
     {
+      label: "Deposit",
+      href: "/deposit",
+    },
+    {
       label: "Learn",
       href: "/courses",
     },

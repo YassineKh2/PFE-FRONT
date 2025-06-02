@@ -26,12 +26,13 @@ import AllMyCourses from "./pages/Courses/Backend/AllMyCourses";
 import Certificates from "./pages/Courses/Backend/Certificates";
 import Certificate from "./pages/Courses/Frontend/Certificate";
 import Congtats from "./pages/Courses/Frontend/Congtats";
-
-import IndexPage from "@/pages/index";
 import Quiz from "./pages/Courses/Frontend/Quiz";
 import CompareFunds from "./pages/Mutual Funds/CompareFunds";
 import Deposit from "./pages/Deposit/Deposit";
 import CreateDeposit from "./pages/Deposit/CreateDeposit";
+import Manager from "./pages/Manager/Manager";
+
+import IndexPage from "@/pages/index";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -69,7 +70,6 @@ function App() {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoutes />}>
-
         {/* E-Learning Paths */}
         <Route element={<Chapter />} path="courses/chapter/:id" />
         <Route element={<MyCourses />} path="dashboard/courses/overview" />
@@ -82,8 +82,11 @@ function App() {
         <Route element={<Congtats />} path="courses/congrats/:id" />
         <Route element={<Quiz />} path="courses/quiz/:id" />
 
-          {/* Funds Paths  */}
+        {/* Funds Paths  */}
         <Route element={<SavedFunds />} path="dashboard/savedfunds" />
+
+        {/* Manager Paths  */}
+        <Route element={<Manager />} path="dashboard/manager" />
 
         {/* Admin Dashboard Routes */}
         <Route element={<AdminRoutes />}>
