@@ -472,7 +472,7 @@ const Section2: React.FC<Section2Props> = ({
                   errorMessage={errors.ibanCode?.message}
                   id="ibanCode"
                   isInvalid={!!errors.ibanCode}
-                  maxLength={11}
+                  maxLength={23}
                   placeholder="e.g., GB88MIDL0700..."
                   variant="flat"
                   {...register("ibanCode")}

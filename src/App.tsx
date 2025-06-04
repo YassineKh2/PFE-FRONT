@@ -33,6 +33,7 @@ import CreateDeposit from "./pages/Deposit/CreateDeposit";
 import Manager from "./pages/Manager/Manager";
 
 import IndexPage from "@/pages/index";
+import MyDeposit from "./pages/Deposit/Backend/MyDeposit";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -87,6 +88,9 @@ function App() {
 
         {/* Manager Paths  */}
         <Route element={<Manager />} path="dashboard/manager" />
+
+        {/* Deposit Paths  */}
+        <Route element={<MyDeposit />} path="dashboard/mydeposit" />
 
         {/* Admin Dashboard Routes */}
         <Route element={<AdminRoutes />}>

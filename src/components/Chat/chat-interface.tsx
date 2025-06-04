@@ -23,7 +23,7 @@ export const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[80vh] max-h-[80vh]">
+    <div className="flex flex-col h-[87vh] max-h-[87vh]">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-default-200 bg-content1 px-4 py-3">
         <div className="flex items-center gap-3">

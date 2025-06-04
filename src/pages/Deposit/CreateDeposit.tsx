@@ -2,6 +2,7 @@ import type React from "react";
 
 import { useEffect, useState } from "react";
 import { addToast, Progress } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
 
 import Section1 from "../../components/Deposit/Create/Section1";
 
@@ -77,6 +78,7 @@ export default function DepositFormPage() {
   const [formProgress, setFormProgress] = useState(0);
 
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   // Calculate form completion progress
   const calculateProgress = () => {
@@ -106,6 +108,7 @@ export default function DepositFormPage() {
           description: "Chapter created successfully",
           color: "success",
         });
+        navigate("/dashboard/mydeposit");
       } else {
         addToast({
           title: "Error",

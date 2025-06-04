@@ -59,7 +59,7 @@ export const PopupProvider: React.FC<{ children: ReactNode }> = ({
       // if user never refused and has reached a milestone
       if (SysRec.refusedCounter === 0) {
         const hasNeededScore = Object.values(SysRec.Assets).some(
-          (score) => score == 10,
+          (score) => score == 2,
         );
 
         if (hasNeededScore) {

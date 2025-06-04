@@ -9,7 +9,7 @@ export default function Manager() {
       <div className={subtitle({ size: "xs" }) + " text-gray-400"}>
         Connect with your manager here
       </div>
-      <div className="w-4/5">
+      <div className="lg:w-4/5">
         <ChatInterface />
       </div>
     </DashboardLayout>
