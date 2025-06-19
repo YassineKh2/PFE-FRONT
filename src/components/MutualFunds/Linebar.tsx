@@ -195,8 +195,16 @@ const Linebar = ({
           color: "#FF8042",
         },
       ]);
+    } else {
+      setSeries([
+        {
+          name: "NAV Price",
+          data: reversedData.map((data: any) => data[1]),
+          color: "#1A56DB",
+        },
+      ]);
     }
-  }, [predictions]);
+  }, [predictions, reversedData]);
 
   const items = [
     {

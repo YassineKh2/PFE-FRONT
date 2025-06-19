@@ -282,7 +282,7 @@ const InvestmentTiers = ({
           {depositTiers.map((tier) => (
             <div
               key={tier.id}
-              className={`border rounded-lg shadow-sm ${tier.popular ? "ring-2 ring-primary-500" : ""}`}
+              className={`border flex flex-col justify-between rounded-lg shadow-sm ${tier.popular ? "ring-2 ring-primary-500" : ""}`}
             >
               <div className={`text-center p-6 ${tier.bgColor} rounded-t-lg`}>
                 <div

@@ -7,6 +7,13 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
+import { Kbd } from "@heroui/kbd";
+import { Input } from "@heroui/input";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@heroui/button";
+
+import { SearchIcon } from "../icons";
+
 import { funds as fakeFundsData } from "@/database/MutualFunds.json";
 import { rankFundsComposite } from "@/Helpers/RecommendMF";
 import { Fund } from "@/types/MutualFunds";
@@ -16,11 +23,6 @@ import {
   FinancialFormSchemaType,
   PreferencesFormSchemaType,
 } from "@/types/Onbording";
-import { SearchIcon } from "../icons";
-import { Kbd } from "@heroui/kbd";
-import { Input } from "@heroui/input";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@heroui/button";
 import { useAuth } from "@/providers/AuthProvider";
 import { getUserPreferences } from "@/Helpers/Prefrences";
 
@@ -66,10 +68,10 @@ const MutualFunds = ({ data }: { data: Fund[] }) => {
                   <div className="flex gap-2 text-gray-500 text-xs">
                     <p className="flex">
                       <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
                         height="16"
                         viewBox="0 0 24 24"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <g
                           fill="none"
@@ -90,14 +92,14 @@ const MutualFunds = ({ data }: { data: Fund[] }) => {
                     {fund.lockInPeriod !== 0 && (
                       <p className="flex">
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
                           height="16"
                           viewBox="0 0 24 24"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill="#6b7280"
                             d="M12 17a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2a2 2 0 0 1-2 2m6 3V10H6v10zm0-12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10c0-1.11.89-2 2-2h1V6a5 5 0 0 1 5-5a5 5 0 0 1 5 5v2zm-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3"
+                            fill="#6b7280"
                           />
                         </svg>
                         {fund.lockInPeriod}M
@@ -139,7 +141,7 @@ const MutualFunds = ({ data }: { data: Fund[] }) => {
 function RecommendFundList() {
   const [filteredFunds, setFilteredFunds] = useState<Fund[]>(
     //@ts-ignore
-    fakeFundsData as Fund[]
+    fakeFundsData as Fund[],
   );
   const navigate = useNavigate();
   const [SearchFund, setSearchFund] = useState<string>("");
@@ -157,12 +159,14 @@ function RecommendFundList() {
   useEffect(() => {
     const getData = async () => {
       const data = await getUserPreferences(currentUser.uid);
+
       setExperienceData(data.experienceData);
       setPreferencesData(data.preferencesData);
       setFinancialData(data.financialData);
       setAdditionalInformationData(data.additionalInformationData);
       setHasData(true);
     };
+
     getData();
   }, []);
 
@@ -177,9 +181,10 @@ function RecommendFundList() {
       experienceData,
       preferencesData,
       FinancialData,
-      AdditionalInformationData.sectorsRestrictions
+      AdditionalInformationData.sectorsRestrictions,
     );
 
+    //@ts-ignore composite score is only for the recommendation part 
     const topFunds = funds.filter((fund) => fund.compositeScore > 80);
 
     setFilteredFunds(topFunds);
@@ -192,13 +197,11 @@ function RecommendFundList() {
           <div className="flex justify-between items-center">
             <Input
               aria-label="Search"
+              className="max-w-xs hidden lg:inline-block"
               classNames={{
                 inputWrapper: "bg-default-100",
                 input: "text-sm",
               }}
-              value={SearchFund}
-              onChange={(e) => setSearchFund(e.target.value)}
-              className="max-w-xs hidden lg:inline-block"
               endContent={
                 <Kbd className="hidden lg:inline-block" keys={["command"]}>
                   M
@@ -210,6 +213,8 @@ function RecommendFundList() {
                 <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
               }
               type="search"
+              value={SearchFund}
+              onChange={(e) => setSearchFund(e.target.value)}
             />
             <p className="text-gray-500 text-sm">
               {filteredFunds.length} funds found
@@ -220,7 +225,7 @@ function RecommendFundList() {
       ) : (
         <div className="flex flex-col gap-3 justify-center items-center h-full w-full">
           <p className="text-gray-500 text-md">
-            It looks like you still haven't completed your onboarding !
+            It looks like you still haven&apos;t completed your onboarding !
           </p>
           <Button
             color="primary"

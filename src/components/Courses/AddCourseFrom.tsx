@@ -209,7 +209,7 @@ function AddCourseFrom() {
           as={Link}
           color="default"
           isLoading={isSubmitting}
-          to="/dashboard/courses"
+          to="/dashboard/courses/all"
           type="submit"
         >
           Go Back

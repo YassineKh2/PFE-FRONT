@@ -331,9 +331,9 @@ const ClosedSidebar = ({
         <Button
           isIconOnly
           as={Link}
-          className={`text-default-500 ${isActive("/dashboard/funds") ? "bg-gray-200 font-bold" : ""}`}
+          className={`text-default-500 ${isActive("/dashboard/savedfunds") ? "bg-gray-200 font-bold" : ""}`}
           size="lg"
-          to="/dashboard/funds"
+          to="/dashboard/savedfunds"
           variant="light"
         >
           <Icon

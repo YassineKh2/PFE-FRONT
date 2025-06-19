@@ -23,7 +23,7 @@ export const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[87vh] max-h-[87vh]">
+    <div className="flex flex-col h-[87vh] max-h-[87vh] w-full">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-default-200 bg-content1 px-4 py-3">
         <div className="flex items-center gap-3">
@@ -34,9 +34,12 @@ export const ChatInterface: React.FC = () => {
           />
           <div>
             <h2 className="text-medium font-semibold">Sarah Johnson</h2>
-            <p className="text-tiny text-default-500">
-              {isTyping ? "Typing..." : "Online"}
-            </p>
+            <div className="flex items-baseline gap-1">
+              <div className="p-1 rounded-full bg-green-500" />
+              <p className="text-tiny text-default-500">
+                {isTyping ? "Typing..." : "Online"}
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex gap-2">

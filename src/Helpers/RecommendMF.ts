@@ -1,5 +1,4 @@
 import {
-  Fund,
   ByRating,
   By1YReturns,
   By3YReturns,
@@ -12,7 +11,12 @@ import {
   computePreferenceScore,
   computeFinancialScore,
 } from "@/Helpers/FilterFunds";
-import { ExperienceFormSchemaType, FinancialFormSchemaType, PreferencesFormSchemaType } from "@/types/Onbording";
+import { Fund } from "@/types/MutualFunds";
+import {
+  ExperienceFormSchemaType,
+  FinancialFormSchemaType,
+  PreferencesFormSchemaType,
+} from "@/types/Onbording";
 
 export function RankByQuality(funds: Fund[]): Fund[] {
   // Assign a quality score to each fund
@@ -21,6 +25,7 @@ export function RankByQuality(funds: Fund[]): Fund[] {
 
     // Rating score (0-50 points)
     const ratingFilter = ByRating([fund]);
+
     if (ratingFilter(5).length)
       score += 50; // 5-star rating
     else if (ratingFilter(4).length)
@@ -38,6 +43,7 @@ export function RankByQuality(funds: Fund[]): Fund[] {
 
     // Expense ratio score (0-20 points)
     const expenseRatioFilter = ByExpenseRatio([fund]);
+
     if (expenseRatioFilter(0.5).length)
       score += 20; // Expense ratio <= 0.5%
     else if (expenseRatioFilter(1).length) score += 10; // Expense ratio <= 1%
@@ -59,6 +65,7 @@ export function RankByTrending(funds: Fund[]): Fund[] {
 
     // Fund Size score (0-50 points)
     const fundSizeFilter = ByFundSize([fund]);
+
     if (fundSizeFilter(10000).length)
       score += 50; // Fund Size >= 10,000
     else if (fundSizeFilter(5000).length)
@@ -67,6 +74,7 @@ export function RankByTrending(funds: Fund[]): Fund[] {
 
     // NAV Flow score (0-50 points)
     const navFlowFilter = ByNAVFlow([fund]);
+
     if (navFlowFilter(20).length)
       score += 50; // NAV Flow >= 20%
     else if (navFlowFilter(10).length)
@@ -113,41 +121,64 @@ export function FinalRanking(funds: Fund[]): Fund[] {
   return fundsWithFinalScores.sort((a, b) => b.finalScore - a.finalScore);
 }
 
-
 export function RankByRisk(
   funds: Fund[],
-  Data: ExperienceFormSchemaType
+  Data: ExperienceFormSchemaType,
 ): Fund[] {
   const fundsWithScores = funds.map((fund) => {
     let score = 0;
 
     // --- Risk Preference Scoring ---
 
-    const risk = fund.risk
+    const risk = fund.risk;
+
     if (Data.riskPreference === "low") {
-      score += risk === "Low" ? 20
-              : risk === "Moderate" ? 10
-              : risk === "High" ? 5
-              : risk === "Very-High" ? 2 : 0;
+      score +=
+        risk === "Low"
+          ? 20
+          : risk === "Moderate"
+            ? 10
+            : risk === "High"
+              ? 5
+              : risk === "Very-High"
+                ? 2
+                : 0;
     } else if (Data.riskPreference === "moderate") {
-      score += risk === "Moderate" ? 20
-              : risk === "Low" ? 10
-              : risk === "High" ? 5
-              : risk === "Very-High" ? 2 : 0;
+      score +=
+        risk === "Moderate"
+          ? 20
+          : risk === "Low"
+            ? 10
+            : risk === "High"
+              ? 5
+              : risk === "Very-High"
+                ? 2
+                : 0;
     } else if (Data.riskPreference === "high") {
       //then treat both "Moderate" and "Very-High" equally.
-      score += risk === "High" ? 20
-              : (risk === "Moderate" || risk === "Very-High") ? 10
-              : risk === "Low" ? 2 : 0;
+      score +=
+        risk === "High"
+          ? 20
+          : risk === "Moderate" || risk === "Very-High"
+            ? 10
+            : risk === "Low"
+              ? 2
+              : 0;
     } else if (Data.riskPreference === "very-high") {
-      score += risk === "Very-High" ? 20
-              : risk === "High" ? 10
-              : risk === "Moderate" ? 5
-              : risk === "Low" ? 2 : 0;
+      score +=
+        risk === "Very-High"
+          ? 20
+          : risk === "High"
+            ? 10
+            : risk === "Moderate"
+              ? 5
+              : risk === "Low"
+                ? 2
+                : 0;
     }
 
     // --- Volatility Scoring ---
-    const fundVol =  fund.volatility;
+    const fundVol = fund.volatility;
 
     if (Data.marketFluctuation === "low") {
       if (fundVol <= 5) score += 20;
@@ -157,7 +188,7 @@ export function RankByRisk(
     } else if (Data.marketFluctuation === "moderate") {
       if (fundVol <= 10) score += 20;
       else if (fundVol <= 15) score += 10;
-      else if (fundVol <= 5) score += 5; 
+      else if (fundVol <= 5) score += 5;
       else score += 2;
     } else if (Data.marketFluctuation === "high") {
       if (fundVol > 15) score += 20;
@@ -171,19 +202,16 @@ export function RankByRisk(
       else if (fundVol <= 10) score += 2;
     }
 
-  
-  // --- Experience Level Scoring ---
+    // --- Experience Level Scoring ---
     const experienceLevel = Data.experienceLevel;
 
     if (experienceLevel === "beginner") {
-      score -= risk === "High" ? 5 : risk === "Moderate" ? 3 : 2; 
-        } else if (experienceLevel === "intermediate") {
-      score -= risk === "High" ? 3 : risk === "Moderate" ? 1 : 0; 
-        } else if (experienceLevel === "advanced" || experienceLevel === "expert") {
+      score -= risk === "High" ? 5 : risk === "Moderate" ? 3 : 2;
+    } else if (experienceLevel === "intermediate") {
+      score -= risk === "High" ? 3 : risk === "Moderate" ? 1 : 0;
+    } else if (experienceLevel === "advanced" || experienceLevel === "expert") {
       score += risk === "High" ? 5 : risk === "Moderate" ? 3 : 2;
     }
-    
-  
 
     return { ...fund, riskScore: score };
   });
@@ -195,16 +223,22 @@ export function RankByRisk(
 export function RankByPreferences(
   funds: Fund[],
   preferences: PreferencesFormSchemaType,
-  sectorToAvoid : String[]
+  sectorToAvoid: String[],
 ): Fund[] {
   const fundsWithScores = funds.map((fund) => {
     let score = 0;
 
     // --- Asset Allocation Scoring ---
-    if (preferences.assetAllocation.includes("equity") && fund.category === "Equity") {
+    if (
+      preferences.assetAllocation.includes("equity") &&
+      fund.category === "Equity"
+    ) {
       score += 20;
     }
-    if (preferences.assetAllocation.includes("debt") && fund.category === "Debt") {
+    if (
+      preferences.assetAllocation.includes("debt") &&
+      fund.category === "Debt"
+    ) {
       score += 20;
     }
     if (
@@ -239,16 +273,28 @@ export function RankByPreferences(
     }
 
     // --- Sector Preference Scoring ---
-    if (preferences.sectorPreference.includes("technology") && fund.sector === "Technology") {
+    if (
+      preferences.sectorPreference.includes("technology") &&
+      fund.sector === "Technology"
+    ) {
       score += 10;
     }
-    if (preferences.sectorPreference.includes("healthcare") && fund.sector === "Healthcare") {
+    if (
+      preferences.sectorPreference.includes("healthcare") &&
+      fund.sector === "Healthcare"
+    ) {
       score += 10;
     }
-    if (preferences.sectorPreference.includes("finance") && fund.sector === "Finance") {
+    if (
+      preferences.sectorPreference.includes("finance") &&
+      fund.sector === "Finance"
+    ) {
       score += 10;
     }
-    if (preferences.sectorPreference.includes("energy") && fund.sector === "Energy") {
+    if (
+      preferences.sectorPreference.includes("energy") &&
+      fund.sector === "Energy"
+    ) {
       score += 10;
     }
     if (
@@ -257,7 +303,10 @@ export function RankByPreferences(
     ) {
       score += 10;
     }
-    if (preferences.sectorPreference.includes("utilities") && fund.sector === "Utilities") {
+    if (
+      preferences.sectorPreference.includes("utilities") &&
+      fund.sector === "Utilities"
+    ) {
       score += 10;
     }
     if (
@@ -278,7 +327,10 @@ export function RankByPreferences(
     ) {
       score += 10;
     }
-    if (preferences.sectorPreference.includes("materials") && fund.sector === "Materials") {
+    if (
+      preferences.sectorPreference.includes("materials") &&
+      fund.sector === "Materials"
+    ) {
       score += 10;
     }
 
@@ -320,23 +372,36 @@ export function RankByPreferences(
       score -= 20;
     }
 
-    const taxEfficiencyScore = fund.taxEfficiencyScore; 
+    const taxEfficiencyScore = fund.taxEfficiencyScore;
+
     // --- Tax Consideration Scoring ---
-    if (preferences.taxConsideration === "taxHighBracket" && taxEfficiencyScore >= 90) {
+    if (
+      preferences.taxConsideration === "taxHighBracket" &&
+      taxEfficiencyScore >= 90
+    ) {
       score += 10;
     }
-    if (preferences.taxConsideration === "taxEfficient" && taxEfficiencyScore >= 80) {
+    if (
+      preferences.taxConsideration === "taxEfficient" &&
+      taxEfficiencyScore >= 80
+    ) {
       score += 10;
     }
-    if (preferences.taxConsideration === "taxAdvantaged" && taxEfficiencyScore >= 70) {
+    if (
+      preferences.taxConsideration === "taxAdvantaged" &&
+      taxEfficiencyScore >= 70
+    ) {
       score += 10;
     }
-    if (preferences.taxConsideration === "taxHarvesting" && taxEfficiencyScore >= 60) {
+    if (
+      preferences.taxConsideration === "taxHarvesting" &&
+      taxEfficiencyScore >= 60
+    ) {
       score += 10;
     }
 
     // --- Liquidity Needs Scoring ---
-    score += calculateLiquidityScore(fund,Number(preferences.liquidityNeeds))
+    score += calculateLiquidityScore(fund, Number(preferences.liquidityNeeds));
 
     return { ...fund, preferenceScore: score };
   });
@@ -347,39 +412,47 @@ export function RankByPreferences(
 
 export function rankFundsByFinancialProfile(
   funds: Fund[],
-  profile: FinancialFormSchemaType
+  profile: FinancialFormSchemaType,
 ): Fund[] {
   return funds
     .map((fund) => {
       let score = 0;
 
-      if (fund.suitableGoals.some((goal) => goal.toLowerCase() === profile.primaryGoal.toLowerCase())) {
+      if (
+        fund.suitableGoals.some(
+          (goal) => goal.toLowerCase() === profile.primaryGoal.toLowerCase(),
+        )
+      ) {
         score += 20;
       }
 
-      const goalTimeFrame = Number(profile.goalTimeFrame)
+      const goalTimeFrame = Number(profile.goalTimeFrame);
+
       if (goalTimeFrame < 5) {
         if (fund.risk === "Low") score += 20;
         else if (fund.risk === "Moderate") score += 10;
-        else score -= 5; 
+        else score -= 5;
       } else {
         if (fund.risk === "High" || fund.risk === "Very-High") score += 20;
         else if (fund.risk === "Moderate") score += 10;
         else if (fund.risk === "Low") score += 5;
       }
 
-      const monthyIncome = Number(profile.monthyIncome)
-      const monthlyExpense = Number(profile.monthlyExpense) ? Number(profile.monthlyExpense) : 0;
+      const monthyIncome = Number(profile.monthyIncome);
+      const monthlyExpense = Number(profile.monthlyExpense)
+        ? Number(profile.monthlyExpense)
+        : 0;
       const netSavings = monthyIncome - monthlyExpense;
 
-      const savingsRatio =  netSavings / monthlyExpense
+      const savingsRatio = netSavings / monthlyExpense;
+
       if (savingsRatio >= 0.5) {
         if (fund.risk === "High" || fund.risk === "Very-High") {
           score += 10;
         } else if (fund.risk === "Moderate") {
           score += 5;
         } else if (fund.risk === "Low") {
-          score += 2; 
+          score += 2;
         }
       } else {
         if (fund.risk === "Low") {
@@ -390,7 +463,8 @@ export function rankFundsByFinancialProfile(
           score -= 10;
         }
       }
-      const netWorthRatio =  Number(profile.estimatedNetWorth) / monthlyExpense;
+      const netWorthRatio = Number(profile.estimatedNetWorth) / monthlyExpense;
+
       if (netWorthRatio > 100) {
         if (fund.risk === "High" || fund.risk === "Very-High") score += 10;
       } else {
@@ -407,16 +481,20 @@ export function rankFundsComposite(
   experienceData: ExperienceFormSchemaType,
   preferencesData: PreferencesFormSchemaType,
   financialData: FinancialFormSchemaType,
-  sectorToAvoid: string[]
+  sectorToAvoid: string[],
 ): Fund[] {
   return funds
     .map((fund) => {
       const riskScore = computeRiskScore(fund, experienceData);
-      const preferenceScore = computePreferenceScore(fund, preferencesData, sectorToAvoid);
+      const preferenceScore = computePreferenceScore(
+        fund,
+        preferencesData,
+        sectorToAvoid,
+      );
       const financialScore = computeFinancialScore(fund, financialData);
       const compositeScore = riskScore + preferenceScore + financialScore;
+
       return { ...fund, compositeScore };
     })
     .sort((a, b) => b.compositeScore - a.compositeScore);
 }
-

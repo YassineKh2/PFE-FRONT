@@ -1,4 +1,5 @@
-import { app } from "@/firebase/firebase";
+import { addToast } from "@heroui/toast";
+
 import { GetUserInformation, UpdatePreferences } from "@/services/User";
 import {
   AdditionalInformationFormSchemaType,
@@ -9,7 +10,6 @@ import {
   PreferencesFormSchemaType,
 } from "@/types/Onbording";
 import { User } from "@/types/User";
-import { addToast } from "@heroui/toast";
 
 export const saveData = async (
   uid: string,
@@ -17,7 +17,7 @@ export const saveData = async (
   FinancialFormData: FinancialFormSchemaType,
   ExperienceFormData: ExperienceFormSchemaType,
   PreferencesFormData: PreferencesFormSchemaType,
-  AdditionalInformationFormData: AdditionalInformationFormSchemaType
+  AdditionalInformationFormData: AdditionalInformationFormSchemaType,
 ): Promise<void> => {
   try {
     const UserPreferences: onbordingType = {
@@ -27,6 +27,7 @@ export const saveData = async (
       ...PreferencesFormData,
       ...AdditionalInformationFormData,
     };
+
     UpdatePreferences(uid, UserPreferences).then(() => {
       return true;
     });
@@ -41,8 +42,10 @@ export const getUserPreferences = async (uid: string): Promise<any> => {
     let user: User;
     let preferencesObject = {};
     const response = await GetUserInformation(uid);
+
     user = response;
     const pref = user.userPreferences;
+
     if (!pref) return;
 
     preferencesObject = {
@@ -73,6 +76,7 @@ export const getUserPreferences = async (uid: string): Promise<any> => {
         sectorsRestrictions: pref.sectorsRestrictions,
       },
     };
+
     return preferencesObject;
   } catch (error) {
     addToast({

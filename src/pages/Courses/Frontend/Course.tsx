@@ -1,12 +1,10 @@
-import Filter from "@/components/Chapters/Frontend/Filter";
-import FilterdCourses from "@/components/Chapters/Frontend/FilterdCourses";
-import { title } from "@/components/primitives";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import DefaultLayout from "@/layouts/default";
 import { GetCourse } from "@/services/Course";
 import { GetStaticImages } from "@/services/GetStaticFiles";
 import { ChapterType, CourseType } from "@/types/Courses";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import CourseHeader from "@/components/Courses/Frontend/ViewSingleCourse/CourseHeader";
 import WhatYouWillLearn from "@/components/Courses/Frontend/ViewSingleCourse/WhatYouWillLearn";
 import CourseChapters from "@/components/Courses/Frontend/ViewSingleCourse/CourseChapters";
@@ -19,6 +17,7 @@ function Course() {
   const [Chapters, setChapters] = useState<ChapterType[]>([] as ChapterType[]);
 
   const { id } = useParams<{ id: string }>();
+
   useEffect(() => {
     if (!id) return;
     GetCourse(id).then((response) => {
@@ -37,26 +36,26 @@ function Course() {
         <div className="flex flex-col lg:flex-row justify-between w-full gap-6 items-start">
           <div className="w-full lg:w-[70%] flex flex-col gap-8 ">
             <CourseHeader
-              image={GetStaticImages(course.image)}
               category={course.category}
-              level={course.level}
-              title={course.title}
               description={course.description}
               duration={course.duration}
-              students={452893}
+              image={GetStaticImages(course.image)}
+              level={course.level}
               rating={4.7}
+              students={452893}
+              title={course.title}
             />
             <WhatYouWillLearn />
             <CourseChapters Chapters={Chapters} />
             <InstructorInfo Instructor={course.instructor} />
           </div>
           <CourseSidebar
-            id={id || ""}
-            price={69.99}
             duration={course.duration}
-            level={course.level}
-            students={452893}
+            id={id || ""}
             lastUpdated={course.editedAt || "N/A"}
+            level={course.level}
+            price={69.99}
+            students={452893}
           />
         </div>
       </section>

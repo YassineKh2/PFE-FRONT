@@ -1,6 +1,6 @@
 //@ts-nocheck
-import React from "react";
-
+import { useState, useEffect, useRef } from "react";
+import { io, Socket } from "socket.io-client";
 const yesterday = new Date();
 
 yesterday.setDate(yesterday.getDate() - 1);
@@ -97,21 +97,23 @@ const mockMessages: Message[] = [
 
 import { Message } from "@/types/Chat";
 
+let socket: Socket | null = null;
+
 export const useChat = () => {
-  const [messages, setMessages] = React.useState<Message[]>(mockMessages);
-  const [newMessage, setNewMessage] = React.useState("");
-  const [isTyping, setIsTyping] = React.useState(false);
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState<Message[]>(mockMessages);
+  const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages change
-  React.useEffect(() => {
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
   // Simulate typing indicator
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       messages.length > 0 &&
       messages[messages.length - 1].sender.uid !== "current-user"
@@ -123,6 +125,26 @@ export const useChat = () => {
       return () => clearTimeout(timeout);
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (!socket) {
+      socket = io("http://127.0.0.1:5000", {
+        transports: ["websocket"],
+        autoConnect: true,
+      });
+
+      socket.on("join", (msg) => {
+        setMessages((prev) => [...prev, msg]);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        socket = null;
+      }
+    };
+  }, []);
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
@@ -141,10 +163,13 @@ export const useChat = () => {
     setMessages((prev) => [...prev, newMsg]);
     setNewMessage("");
 
+    if (socket) {
+      socket.emit("join", newMsg);
+    }
+
     // Simulate response
     setTimeout(() => {
       setIsTyping(true);
-
       setTimeout(
         () => {
           const responses = [
@@ -157,7 +182,6 @@ export const useChat = () => {
             "I agree with your point.",
             "Let's discuss this further tomorrow.",
           ];
-
           const responseMsg: Message = {
             uid: `msg-${Date.now()}`,
             content: responses[Math.floor(Math.random() * responses.length)],

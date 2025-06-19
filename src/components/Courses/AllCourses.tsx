@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import CourseTable from "./CourseTable";
+
 import { CourseType as Course } from "@/types/Courses";
 import { GetCourses } from "@/services/Course";
 
