@@ -4,14 +4,14 @@ import { ChatInterface } from "@/components/Chat/chat-interface";
 import { subtitle, title } from "@/components/primitives";
 import DashboardLayout from "@/layouts/dashboard";
 
-export default function Manager() {
+export default function ManagerChat() {
   return (
     <DashboardLayout>
       <h1 className={title({ size: "sm", boldness: "bold" })}>Manager</h1>
       <div className={subtitle({ size: "xs" }) + " text-gray-400"}>
         Connect with your manager here
       </div>
-      <div className="flex flex-col lg:flex-row w-full">
+      <div className="flex flex-col lg:flex-row w-full items-start">
         <Card className="w-full">
           <ChatInterface />
         </Card>

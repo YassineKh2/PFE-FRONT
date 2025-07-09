@@ -1,17 +1,18 @@
-import { useAuth } from "@/providers/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button } from "@heroui/button";
-import { title, subtitle } from "@/components/primitives";
 import { Divider } from "@heroui/divider";
 import { Chip } from "@heroui/chip";
 import { cn } from "@heroui/theme";
 import { Input } from "@heroui/input";
 import { Kbd } from "@heroui/kbd";
-import { SearchIcon } from "@/components/icons";
 import { Tab, Tabs } from "@heroui/tabs";
 import { useEffect, useState } from "react";
+
+import { SearchIcon } from "@/components/icons";
+import { title, subtitle } from "@/components/primitives";
+import { useAuth } from "@/providers/AuthProvider";
 import { Fund } from "@/types/MutualFunds";
 import funds from "@/database/MutualFunds.json";
 import DefaultLayout from "@/layouts/dashboard";
@@ -29,7 +30,10 @@ function SavedFunds() {
     const savedFunds = localStorage.getItem(`savedFunds_${userId}`);
     const fundisins: string[] = savedFunds ? JSON.parse(savedFunds) : [];
     //@ts-ignore
-    const savedFundsData = funds.funds.filter((fund: Fund) => fundisins.includes(fund.isin));
+    const savedFundsData = funds.funds.filter((fund: Fund) =>
+      fundisins.includes(fund.isin),
+    );
+
     //@ts-ignore
     setMutualFunds(savedFundsData);
     //@ts-ignore
@@ -42,8 +46,9 @@ function SavedFunds() {
 
   useEffect(() => {
     const filteredFunds = AllMutualFunds.filter((fund) =>
-      fund.name.toLowerCase().includes(SearchFund.toLowerCase())
+      fund.name.toLowerCase().includes(SearchFund.toLowerCase()),
     );
+
     setMutualFunds(filteredFunds);
   }, [SearchFund, AllMutualFunds]);
 
@@ -56,10 +61,10 @@ function SavedFunds() {
     localStorage.setItem(`savedFunds_${userId}`, JSON.stringify(fundisins));
 
     setMutualFunds((prevFunds) =>
-      prevFunds.filter((fund) => fund.isin !== isin)
+      prevFunds.filter((fund) => fund.isin !== isin),
     );
     setAllMutualFunds((prevFunds) =>
-      prevFunds.filter((fund) => fund.isin !== isin)
+      prevFunds.filter((fund) => fund.isin !== isin),
     );
   }
 
@@ -72,32 +77,20 @@ function SavedFunds() {
 
   return (
     <>
-      {!userLoggedIn && <Navigate to={"/"} replace={true} />}
+      {!userLoggedIn && <Navigate replace={true} to={"/"} />}
 
       <DefaultLayout>
-        <div className="flex justify-between items-center">
-          <div className="inline-block max-w-lg text-center mb-2 justify-center">
-            <span
-              className={title({
-                size: "lg",
-              })}
-            >
-              Your 
-            </span>
-            <span className={title({ color: "pink", size: "lg" })}>
-              {" "}
-              Saved Funds
-            </span>
-          </div>
+        <div className="flex items-start justify-between w-full">
+          <h1 className={title({ size: "sm", boldness: "bold" })}>
+            Saved Funds
+          </h1>
           <Input
             aria-label="Search"
+            className="max-w-xs hidden lg:inline-block"
             classNames={{
               inputWrapper: "bg-default-100",
               input: "text-sm",
             }}
-            value={SearchFund}
-            onChange={(e) => setSearchFund(e.target.value)}
-            className="max-w-xs hidden lg:inline-block"
             endContent={
               <Kbd className="hidden lg:inline-block" keys={["command"]}>
                 M
@@ -109,33 +102,39 @@ function SavedFunds() {
               <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
             }
             type="search"
+            value={SearchFund}
+            onChange={(e) => setSearchFund(e.target.value)}
           />
         </div>
-        <p className={subtitle()}>
-          Here you can find all the mutual funds you have saved and remove the
-          ones you no longer wish to keep track of.
-        </p>
+        <div className={subtitle({ size: "xs" }) + " text-gray-400"}>
+          View and manage your saved mutual funds here. Remove any funds you no
+          longer want to monitor.
+        </div>
+
         {MutualFunds.length === 0 ? (
           <div className="mt-12 flex flex-col items-center justify-center">
             <span className={title({ size: "sm" })}>No funds found </span>
             <img
-              src="/undraw_heartbroken_ocfa.svg"
-              alt="sad image"
+              alt="sad"
               className="size-96"
+              src="/undraw_heartbroken_ocfa.svg"
             />
           </div>
         ) : (
           <>
             {MutualFunds.map((fund) => (
-              <div key={fund.isin} className="mt-5 flex flex-col gap-2 max-w-6xl">
+              <div
+                key={fund.isin}
+                className="mt-5 flex flex-col gap-2 max-w-6xl"
+              >
                 <Card>
                   <CardHeader className="flex justify-between">
                     <div className="flex items-center gap-2">
                       <Icon
+                        className="text-success-800 bg-success-200 rounded-2xl "
+                        height="48"
                         icon="healthicons:low-income-level"
                         width="48"
-                        height="48"
-                        className="text-success-800 bg-success-200 rounded-2xl "
                       />
                       <div>
                         <p className="text-tiny uppercase font-bold">
@@ -160,10 +159,10 @@ function SavedFunds() {
                       className="bg-white dark:bg-[#18181B] hover:bg-gray-200"
                     >
                       <Icon
+                        color="#fdba74"
+                        height="24"
                         icon="material-symbols:star-rounded"
                         width="24"
-                        height="24"
-                        color="#fdba74"
                         onClick={() => {
                           RemoveFund(fund.isin);
                         }}
@@ -264,7 +263,9 @@ function SavedFunds() {
                         <hr className="my-2 border-dotted border-1" />
                         <div className="flex justify-between gap-2 mt-4">
                           <p>Min SIP:</p>
-                          <p className="font-semibold">{fund.minInvestment || "-"}</p>
+                          <p className="font-semibold">
+                            {fund.minInvestment || "-"}
+                          </p>
                         </div>
                         <hr className="my-2 border-dotted border-1" />
                         <div className="flex justify-between gap-2 mt-4">
@@ -342,7 +343,7 @@ function SavedFunds() {
                           />
                         }
                         variant="light"
-                      ></Chip>
+                      />
                     </div>
                   </Card>
                   <Card className="md:w-screen border border-transparent dark:border-default-100">
@@ -401,30 +402,30 @@ function SavedFunds() {
                             Returns
                           </dt>
                           <Tabs
-                            onSelectionChange={(key) => {
-                              handleTabChange(fund.isin, String(key));
-                            }}
-                            selectedKey={
-                              ReturnRates[fund.isin] || "0" + fund.isin
-                            }
-                            size="sm"
                             aria-label={"Return rate for " + fund.isin}
-                            radius="lg"
-                            defaultSelectedKey={"0" + fund.isin}
                             className="absolute right-4"
+                            defaultSelectedKey={"0" + fund.isin}
                             disabledKeys={
                               new Set(
                                 [
                                   !fund.returns["1Y"] && "1" + fund.isin,
                                   !fund.returns["3Y"] && "2" + fund.isin,
                                   !fund.returns["5Y"] && "3" + fund.isin,
-                                ].filter((key): key is string => Boolean(key))
+                                ].filter((key): key is string => Boolean(key)),
                               )
                             }
+                            radius="lg"
+                            selectedKey={
+                              ReturnRates[fund.isin] || "0" + fund.isin
+                            }
+                            size="sm"
+                            onSelectionChange={(key) => {
+                              handleTabChange(fund.isin, String(key));
+                            }}
                           >
-                            <Tab key={"1" + fund.isin} title="1Y"></Tab>
-                            <Tab key={"2" + fund.isin} title="3Y"></Tab>
-                            <Tab key={"3" + fund.isin} title="5Y"></Tab>
+                            <Tab key={"1" + fund.isin} title="1Y" />
+                            <Tab key={"2" + fund.isin} title="3Y" />
+                            <Tab key={"3" + fund.isin} title="5Y" />
                           </Tabs>
                         </div>
                         <dd className="text-2xl font-semibold text-default-700">
@@ -435,7 +436,6 @@ function SavedFunds() {
                               : ReturnRates[fund.isin]?.startsWith("2")
                                 ? fund.returns["3Y"]
                                 : fund.returns["5Y"]}
-                          
                         </dd>
                       </div>
                       <Chip

@@ -65,7 +65,7 @@ function MyCourses() {
           </div>
           <div className="xl:w-[50%] space-y-4">
             <UpcomingCourses />
-            <RecentActivity id={currentUser.uid}/>
+            <RecentActivity id={currentUser.uid} />
           </div>
         </div>
       </div>

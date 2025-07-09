@@ -13,12 +13,38 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 import { Fund } from "@/types/MutualFunds";
+import { useAuth } from "@/providers/AuthProvider";
+import {
+  AddAvailableFunds,
+  BuyFunds,
+  GetAvailableFunds,
+} from "@/services/Deposit";
 function Investement({ mutualFund }: { mutualFund: Fund }) {
   const [AmountInvested, setAmountInvest] = useState<number | number[]>(2000);
   const [InvestementType, setInvestementType] = useState<number>(0);
   const [PeriodInvested, setPeriodInvested] = useState<number>(0);
   const [TotalInvestement, setTotalInvestement] = useState<number>(24000);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenBuy,
+    onOpen: onOpenBuy,
+    onOpenChange: onOpenChangeBuy,
+    onClose: onCloseBuy,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAddFunds,
+    onOpen: onOpenAddFunds,
+    onOpenChange: onOpenChangeAddFunds,
+    onClose: onCloseAddFunds,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenAddFundsModal,
+    onOpen: onOpenAddFundsModal,
+    onOpenChange: onOpenChangeAddFundsModal,
+    onClose: onCloseAddFundsModal,
+  } = useDisclosure();
+  const [addFundsAmount, setAddFundsAmount] = useState(100);
 
   const [ApproximatedGain, setApproximatedGain] = useState<{
     gain: number;
@@ -26,6 +52,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
   }>();
 
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     calculateTotalInvestement();
@@ -94,9 +121,45 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
     if (cleaned) return Number(cleaned[0]);
   };
 
-  const buyfund = () => {
-    onOpen();
+  const CheckDeposit = () => {
+    if (!currentUser?.uid || !currentUser?.depositTier) {
+      onOpen();
+
+      return;
+    }
+    onOpenBuy();
   };
+
+  function CheckFunds() {
+    GetAvailableFunds(currentUser.uid).then((response) => {
+      if (response.data < Number(AmountInvested)) {
+        onOpenAddFunds();
+
+        return;
+      }
+      buyfund();
+    });
+  }
+
+  function AddFunds() {
+    AddAvailableFunds(currentUser.uid, addFundsAmount).then(() => {
+      onCloseAddFundsModal();
+    });
+  }
+
+  function buyfund() {
+    const data = {
+      isin: mutualFund.isin,
+      name: mutualFund.name,
+      amount_invested: AmountInvested,
+      nav_price: mutualFund.latestnav,
+    };
+
+    BuyFunds(currentUser.uid, data).then(() => {
+      onCloseBuy();
+      navigate("/dashboard/home");
+    });
+  }
 
   return (
     <>
@@ -144,21 +207,21 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
             <Button
               color={PeriodInvested === 0 ? "primary" : "default"}
               size="sm"
-              onClick={() => setPeriodInvested(0)}
+              onPress={() => setPeriodInvested(0)}
             >
               1 Year
             </Button>
             <Button
               color={PeriodInvested === 1 ? "primary" : "default"}
               size="sm"
-              onClick={() => setPeriodInvested(1)}
+              onPress={() => setPeriodInvested(1)}
             >
               3 Years
             </Button>
             <Button
               color={PeriodInvested === 2 ? "primary" : "default"}
               size="sm"
-              onClick={() => setPeriodInvested(2)}
+              onPress={() => setPeriodInvested(2)}
             >
               5 Years
             </Button>
@@ -203,7 +266,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
           </div>
         </div>
 
-        <Button className="w-full" color="primary" onPress={buyfund}>
+        <Button className="w-full" color="primary" onPress={CheckDeposit}>
           Start Investing
         </Button>
         <Divider />
@@ -239,6 +302,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
           </div>
         </div>
       </div>
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <>
@@ -281,6 +345,197 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
                     Login
                   </Link>
                 </p>
+              </div>
+            </ModalFooter>
+          </>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenBuy} onOpenChange={onOpenChangeBuy}>
+        <ModalContent>
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <h1 className="w-full text-xl mt-2 text-default-800 block max-w-full text-center">
+                Confirm Investment
+              </h1>
+            </ModalHeader>
+            <ModalBody>
+              <div className="flex flex-col gap-4">
+                <p className="text-center text-default-600">
+                  You are about to invest in{" "}
+                  <span className="font-semibold">{mutualFund.name}</span>.
+                  Please review the details below.
+                </p>
+                <div className="bg-gray-100 rounded-md p-4 text-sm flex flex-col gap-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Investment Type</span>
+                    <span className="font-semibold">
+                      {InvestementType === 0 ? "Monthly SIP" : "One Time"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Amount</span>
+                    <span className="font-semibold">
+                      €{(AmountInvested as number).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Fund</span>
+                    <span className="font-semibold">{mutualFund.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">NAV</span>
+                    <span className="font-semibold">
+                      {mutualFund.latestnav ? `€${mutualFund.latestnav}` : "-"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <div className="flex justify-end gap-2 w-full">
+                <Button variant="bordered" onPress={onCloseBuy}>
+                  Cancel
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    CheckFunds();
+                  }}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </ModalFooter>
+          </>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenAddFunds} onOpenChange={onOpenChangeAddFunds}>
+        <ModalContent>
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <div className="flex justify-start gap-2 items-center text-danger-500">
+                <div className="bg-danger-100 rounded-full p-1">
+                  <Icon
+                    height="20"
+                    icon="solar:danger-circle-linear"
+                    width="20"
+                  />
+                </div>
+                <p>Insufficient Funds</p>
+              </div>
+              <p className="rounded-full text-sm text-gray-600 font-normal">
+                You don&apos;t have sufficient funds in your account to complete
+                this transaction.
+              </p>
+            </ModalHeader>
+            <ModalBody>
+              <div className="bg-warning-100 rounded-md p-4 text-sm flex flex-col gap-2 mb-4 text-warning-700">
+                <div className="flex items-center gap-2">
+                  <Icon
+                    className=" text-warning-600"
+                    height="20"
+                    icon="mynaui:danger-hexagon"
+                    width="20"
+                  />
+
+                  <p className="font-semibold  text-warning-800">
+                    Transaction Details
+                  </p>
+                </div>
+                <div className="flex justify-between">
+                  <span>Required amount</span>
+                  <span className="font-semibold">€100</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Current balance</span>
+                  <span className="font-semibold">€0</span>
+                </div>
+                <div className="flex justify-between text-warning-800">
+                  <span>Shortfall</span>
+                  <span className="font-semibold">€100</span>
+                </div>
+              </div>
+              <p className="text-gray-500 text-xs">
+                Please add funds to your account to proceed with this
+                investment. You can deposit funds using various payment methods
+                including UPI, Net Banking, or Credit/Debit Card.
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <div className="flex justify-center items-center gap-3 w-full">
+                <Button
+                  className="w-full"
+                  variant="bordered"
+                  onPress={onCloseAddFunds}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="bg-gradient-to-r from-[#E7649C] to-[#fc3c61] text-white w-full"
+                  onPress={onOpenChangeAddFundsModal}
+                >
+                  Add Funds Now
+                </Button>
+              </div>
+            </ModalFooter>
+          </>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={isOpenAddFundsModal}
+        onOpenChange={onOpenChangeAddFundsModal}
+      >
+        <ModalContent>
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <h1 className="w-full text-xl mt-2 text-default-800 block max-w-full">
+                Add Funds to Your Account
+              </h1>
+              <p className="font-normal text-sm text-gray-600 mb-4">
+                Add money to your account to proceed with your investment.
+              </p>
+            </ModalHeader>
+            <ModalBody>
+              <div className="flex flex-col gap-2">
+                <label
+                  className="text-sm font-semibold"
+                  htmlFor="add-funds-amount"
+                >
+                  Amount
+                </label>
+                <NumberInput
+                  hideStepper
+                  className="w-full"
+                  id="add-funds-amount"
+                  minValue={100}
+                  value={addFundsAmount}
+                  variant="bordered"
+                  onChange={(val) => setAddFundsAmount(Number(val))}
+                />
+                <span className="text-xs text-gray-500">
+                  Minimum deposit: 100
+                </span>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <div className="flex justify-end gap-2 w-full">
+                <Button
+                  variant="bordered"
+                  onPress={() => onCloseAddFundsModal()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    AddFunds();
+                  }}
+                >
+                  Add Funds
+                </Button>
               </div>
             </ModalFooter>
           </>

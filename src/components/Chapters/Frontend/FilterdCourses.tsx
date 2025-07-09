@@ -26,7 +26,7 @@ function FilterdCourses({
 }) {
   const [SearchTerm, setSearchTerm] = useState<string>("");
   const [ProgressList, setProgressList] = useState<ProgressType[]>(
-    [] as ProgressType[]
+    [] as ProgressType[],
   );
 
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ function FilterdCourses({
 
           if (InDashboard) {
             const progressObj = ProgressList.find(
-              (p) => p.courseId === course.id
+              (p) => p.courseId === course.id,
             );
 
             percent = progressObj?.progress || 0;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Input, ScrollShadow } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
@@ -13,7 +13,10 @@ export const ChatInterface: React.FC = () => {
     sendMessage,
     isTyping,
     scrollRef,
+    otherUser,
   } = useChat();
+  const [showJitsi, setShowJitsi] = useState(false);
+  const jitsiRoom = `morgenfund-chat-room`;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -24,16 +27,43 @@ export const ChatInterface: React.FC = () => {
 
   return (
     <div className="flex flex-col h-[87vh] max-h-[87vh] w-full">
+      {/* Jitsi Modal */}
+      {showJitsi && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg w-[90vw] max-w-2xl h-[80vh] flex flex-col">
+            <div className="flex justify-between items-center p-2 border-b">
+              <span className="font-semibold">Video Meeting</span>
+              <button
+                className="text-lg font-bold"
+                onClick={() => setShowJitsi(false)}
+              >
+                ×
+              </button>
+            </div>
+            <iframe
+              allow="camera; microphone; fullscreen; display-capture"
+              className="flex-1 w-full border-0 rounded-b-lg"
+              src={`https://meet.jit.si/${jitsiRoom}`}
+              title="Jitsi Meeting"
+            />
+          </div>
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center justify-between border-b border-default-200 bg-content1 px-4 py-3">
         <div className="flex items-center gap-3">
           <Avatar
             isBordered
             size="sm"
-            src="https://img.heroui.chat/image/avatar?w=200&h=200&u=1"
+            src={
+              otherUser?.photoURL ||
+              "https://img.heroui.chat/image/avatar?w=200&h=200&u=1"
+            }
           />
           <div>
-            <h2 className="text-medium font-semibold">Sarah Johnson</h2>
+            <h2 className="text-medium font-semibold">
+              {otherUser?.name || "Unknown User"}
+            </h2>
             <div className="flex items-baseline gap-1">
               <div className="p-1 rounded-full bg-green-500" />
               <p className="text-tiny text-default-500">
@@ -43,10 +73,12 @@ export const ChatInterface: React.FC = () => {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button isIconOnly size="sm" variant="light">
-            <Icon icon="lucide:phone" width={18} />
-          </Button>
-          <Button isIconOnly size="sm" variant="light">
+          <Button
+            isIconOnly
+            size="sm"
+            variant="light"
+            onPress={() => setShowJitsi(true)}
+          >
             <Icon icon="lucide:video" width={18} />
           </Button>
           <Button isIconOnly size="sm" variant="light">

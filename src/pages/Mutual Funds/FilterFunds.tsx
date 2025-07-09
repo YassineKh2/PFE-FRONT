@@ -1,7 +1,8 @@
+import { useState } from "react";
+
 import Filter from "@/components/MutualFunds/Filter";
 import FilterdFunds from "@/components/MutualFunds/FilterdFunds";
 import DefaultLayout from "@/layouts/default";
-import { useState } from "react";
 
 export default function FilterFunds() {
   const [filters, setFilters] = useState<{

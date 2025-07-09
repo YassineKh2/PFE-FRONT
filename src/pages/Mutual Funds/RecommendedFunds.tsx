@@ -9,17 +9,21 @@ function RecommendedFunds() {
         <div className="inline-block text-center justify-center">
           <span
             className={title({
-              size: "lg",boldness:'bold'
+              size: "lg",
+              boldness: "bold",
             })}
           >
             Your
           </span>
-          <span className={title({ color: "pink", size: "lg",boldness:'bold' })}>
+          <span
+            className={title({ color: "pink", size: "lg", boldness: "bold" })}
+          >
             {" "}
             Recommended Funds
           </span>
           <p className={subtitle()}>
-            Here you can find funds that we believe are best suited for your investment goals and preferences.
+            Here you can find funds that we believe are best suited for your
+            investment goals and preferences.
           </p>
         </div>
         <div className="flex justify-between w-full gap-6">

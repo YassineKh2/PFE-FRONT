@@ -39,11 +39,11 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
 
           {dateMessages.map((message, index) => (
             <MessageBubble
-              key={message.id}
+              key={index}
               message={message}
               showAvatar={
                 index === 0 ||
-                dateMessages[index - 1]?.sender.uid !== message.sender.uid
+                dateMessages[index - 1]?.sender.id !== message.sender.id
               }
             />
           ))}

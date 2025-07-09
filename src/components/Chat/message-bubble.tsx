@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar } from "@heroui/react";
 
 import { Message } from "@/types/Chat";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface MessageBubbleProps {
   message: Message;
@@ -12,7 +13,8 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
   showAvatar,
 }) => {
-  const isCurrentUser = message.sender.uid === "current-user";
+  const { currentUser } = useAuth();
+  const isCurrentUser = message.sender.id === currentUser?.uid;
   const time = new Date(message.timestamp).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -29,7 +31,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           src={message.sender.photoURL || ""}
         />
       ) : (
-        <div className="w-8" /> // Spacer for alignment
+        <div className="w-8" />
       )}
 
       <div
@@ -37,7 +39,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       >
         {showAvatar && !isCurrentUser && (
           <span className="mb-1 ml-1 text-tiny font-medium text-default-600">
-            {message.sender.displayName}
+            {message.sender.name}
           </span>
         )}
 

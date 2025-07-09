@@ -41,6 +41,7 @@ export const Navbar = ({
 
   let minutes;
   let seconds;
+
   if (countdown) {
     minutes = Math.floor(countdown / 60);
     seconds = countdown % 60;

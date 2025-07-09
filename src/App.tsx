@@ -30,10 +30,12 @@ import Quiz from "./pages/Courses/Frontend/Quiz";
 import CompareFunds from "./pages/Mutual Funds/CompareFunds";
 import Deposit from "./pages/Deposit/Deposit";
 import CreateDeposit from "./pages/Deposit/CreateDeposit";
-import Manager from "./pages/Manager/Manager";
+import ManagerChat from "./pages/Manager/ManagerChat";
+import MyDeposit from "./pages/Deposit/Backend/MyDeposit";
+import ClientList from "./pages/Manager/ClientList";
 
 import IndexPage from "@/pages/index";
-import MyDeposit from "./pages/Deposit/Backend/MyDeposit";
+import Home from "./pages/DashboardHome/Home";
 
 const ProtectedRoutes = () => {
   const { userLoggedIn } = useAuth();
@@ -46,6 +48,14 @@ const AdminRoutes = () => {
   const isAdmin = currentUser.role === "admin";
 
   return isAdmin ? <Outlet /> : <Navigate to="/login" />;
+};
+
+const ManagerRoutes = () => {
+  const { currentUser } = useAuth();
+  const isManagerOrAdmin =
+    currentUser.role === "manager" || currentUser.role === "admin";
+
+  return isManagerOrAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
 function App() {
@@ -87,10 +97,18 @@ function App() {
         <Route element={<SavedFunds />} path="dashboard/savedfunds" />
 
         {/* Manager Paths  */}
-        <Route element={<Manager />} path="dashboard/manager" />
+        <Route element={<ManagerChat />} path="dashboard/managerchat" />
+
+        {/* Dashboard Home Paths  */}
+        <Route element={<Home />} path="dashboard/home" />
 
         {/* Deposit Paths  */}
         <Route element={<MyDeposit />} path="dashboard/mydeposit" />
+
+        {/* Manager Only Paths  */}
+        <Route element={<ManagerRoutes />}>
+          <Route element={<ClientList />} path="dashboard/clients" />
+        </Route>
 
         {/* Admin Dashboard Routes */}
         <Route element={<AdminRoutes />}>

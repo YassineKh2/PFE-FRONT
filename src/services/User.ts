@@ -123,3 +123,15 @@ export async function RefuseCourse(id: string) {
 
   return response.data;
 }
+
+export async function GetManagerId(id: string) {
+  const response: { data: any } = await BACKEND.get(`/manager/${id}`);
+
+  return response.data;
+}
+
+export async function GetManagedUsers(id: string) {
+  const response: { data: any } = await BACKEND.get(`/managedusers/${id}`);
+
+  return response.data;
+}

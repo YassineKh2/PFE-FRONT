@@ -53,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = userdata.data();
 
       user.role = data?.role;
+      user.displayName = user.displayName || data?.name;
       user.depositTier = data?.depositTier;
 
       setCurrentUser({ ...user });
