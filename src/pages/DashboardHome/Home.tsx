@@ -9,6 +9,7 @@ import Linebar from "@/components/DashboardHome/Linebar";
 import Holding from "@/components/Manager/Holding";
 import AssetAllocation from "@/components/Manager/AssetAllocation";
 import RecentTransactions from "@/components/DashboardHome/RecentTransactions";
+import QuickActions from "@/components/DashboardHome/QuickActions";
 
 const depositTiers = [
   {
@@ -201,62 +202,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Card className="w-full p-5 flex flex-col lg:flex-row justify-between items-center overflow-auto">
-          <p className="font-semibold text-lg">Quick Actions</p>
-          <div className="grid grid-cols-2 gap-2 lg:flex lg:flex-row lg:justify-between">
-            <Button
-              color="primary"
-              size="sm"
-              startContent={<Icon icon="mdi:trending-up" width={20} />}
-            >
-              Invest Now
-            </Button>
-            <Button
-              size="sm"
-              startContent={<Icon icon="mdi:cash-minus" width={20} />}
-              variant="bordered"
-            >
-              Withdraw
-            </Button>
-            <Button
-              size="sm"
-              startContent={<Icon icon="mdi:swap-horizontal" width={20} />}
-              variant="bordered"
-            >
-              Switch Funds
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon icon="mdi:chart-bell-curve-cumulative" width={20} />
-              }
-              variant="bordered"
-            >
-              Rebalance
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon
-                  icon="carbon:ibm-consulting-advantage-assistant"
-                  width={20}
-                />
-              }
-              variant="bordered"
-            >
-              Chat With Manager
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon icon="mdi:file-download-outline" width={20} />
-              }
-              variant="bordered"
-            >
-              Download Report
-            </Button>
-          </div>
-        </Card>
+        <QuickActions />
         <Cards userid={currentUser.uid} />
 
         <div className="flex flex-col lg:flex-row justify-between w-full gap-6">

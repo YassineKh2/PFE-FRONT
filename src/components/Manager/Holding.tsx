@@ -1,6 +1,7 @@
 import { Card } from "@heroui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { UserAssetDetails } from "@/types/Deposit";
 import { GetUserAssetsInfo } from "@/services/Deposit";
@@ -9,6 +10,7 @@ function Holding({ userid }: { userid: string }) {
   const [portfolioFunds, setportfolioFunds] = useState(
     [] as UserAssetDetails[],
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetUserAssetsInfo(userid).then((response) => {
@@ -35,9 +37,12 @@ function Holding({ userid }: { userid: string }) {
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <h3 className="font-semibold text-gray-900">
+                  <Link
+                    className="font-semibold text-gray-900 hover:text-primary-600"
+                    to={`/fund/${fund.isin}`}
+                  >
                     {fund.fund_name}
-                  </h3>
+                  </Link>
                   <p className="text-sm text-gray-600">
                     {fund.fund_category} • {fund.risk} Risk
                   </p>
