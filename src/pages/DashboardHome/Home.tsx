@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Button, Card, CardBody } from "@heroui/react";
+import { Button, Card } from "@heroui/react";
+import { useState } from "react";
 
 import { subtitle, title } from "@/components/primitives";
 import DashboardLayout from "@/layouts/dashboard";
@@ -10,6 +11,7 @@ import Holding from "@/components/Manager/Holding";
 import AssetAllocation from "@/components/Manager/AssetAllocation";
 import RecentTransactions from "@/components/DashboardHome/RecentTransactions";
 import QuickActions from "@/components/DashboardHome/QuickActions";
+import QuickStats from "@/components/DashboardHome/QuickStats";
 
 const depositTiers = [
   {
@@ -109,70 +111,7 @@ const depositTiers = [
 
 export default function Home() {
   const { currentUser } = useAuth();
-
-  // Fake portfolio funds data
-  const portfolioFunds = [
-    {
-      id: 1,
-      shortName: "L&T Midcap",
-      category: "Equity",
-      risk: "High",
-      value: 45000,
-      todayChange: 2.2,
-      units: 358.2,
-      currentPrice: 125.75,
-      gains: 5420,
-      gainsPercentage: 13.7,
-    },
-    {
-      id: 2,
-      shortName: "HDFC Equity",
-      category: "Equity",
-      risk: "Medium",
-      value: 35000,
-      todayChange: -0.5,
-      units: 350,
-      currentPrice: 100,
-      gains: 735,
-      gainsPercentage: -2.1,
-    },
-    {
-      id: 3,
-      shortName: "SBI Blue Chip",
-      category: "Equity",
-      risk: "Low",
-      value: 28750,
-      todayChange: 1.1,
-      units: 239.6,
-      currentPrice: 120,
-      gains: 3250,
-      gainsPercentage: 12.8,
-    },
-    {
-      id: 4,
-      shortName: "Axis Growth",
-      category: "Equity",
-      risk: "High",
-      value: 17000,
-      todayChange: -1.2,
-      units: 170,
-      currentPrice: 100,
-      gains: 1200,
-      gainsPercentage: 7.6,
-    },
-    {
-      id: 5,
-      shortName: "Axis Growth",
-      category: "Equity",
-      risk: "High",
-      value: 17000,
-      todayChange: -1.2,
-      units: 170,
-      currentPrice: 100,
-      gains: 1200,
-      gainsPercentage: 7.6,
-    },
-  ];
+  const [viewAll, setviewAll] = useState(false);
 
   return (
     <DashboardLayout>
@@ -300,36 +239,7 @@ export default function Home() {
                 </ul>
               </div>
             </Card>
-            <Card>
-              <CardBody className="space-y-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <Icon
-                    className="text-primary-500"
-                    icon="bx:stats"
-                    width={22}
-                  />
-                  <p className="text-xl font-bold">Quick Stats</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Total Invested</span>
-                  <span className="font-semibold">125,750€</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Number of Funds</span>
-                  <span className="font-semibold">{portfolioFunds.length}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Best Performer</span>
-                  <span className="font-semibold text-green-600">
-                    L&T Midcap (+13.7%)
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Portfolio Age</span>
-                  <span className="font-semibold">2 years 4 months</span>
-                </div>
-              </CardBody>
-            </Card>
+            <QuickStats userid={currentUser.uid} />
           </div>
         </div>
 
@@ -346,7 +256,11 @@ export default function Home() {
                   Recent Transactions
                 </span>
               </div>
-              <Button size="sm" variant="bordered">
+              <Button
+                size="sm"
+                variant="bordered"
+                onPress={() => setviewAll((prev) => !prev)}
+              >
                 <Icon
                   className="h-4 w-4 mr-2"
                   icon="mdi:eye-outline"
@@ -355,7 +269,7 @@ export default function Home() {
                 View All
               </Button>
             </div>
-            <RecentTransactions userid={currentUser.uid} />
+            <RecentTransactions userid={currentUser.uid} viewAll={viewAll} />
           </Card>
         </div>
       </div>

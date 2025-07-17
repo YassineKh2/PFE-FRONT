@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
-import DefaultLayout from "@/layouts/default";
-import "chart.js/auto";
-import Linebar from "@/components/MutualFunds/Linebar";
+import Banner from "@/components/MutualFunds/Banner";
 import FundInfo from "@/components/MutualFunds/FundInfo";
-import Investement from "@/components/MutualFunds/Investement";
+import FundManagment from "@/components/MutualFunds/FundManagment";
 import HoldingList from "@/components/MutualFunds/HoldingList";
+import Investement from "@/components/MutualFunds/Investement";
+import Linebar from "@/components/MutualFunds/Linebar";
 import navDetails from "@/database/HistoricalNAV.json";
 import mfDetails from "@/database/MutualFunds.json";
-import { Fund } from "@/types/MutualFunds";
-import { SystemPoints } from "@/types/User";
+import DefaultLayout from "@/layouts/default";
 import { useAuth } from "@/providers/AuthProvider";
-import FundManagment from "@/components/MutualFunds/FundManagment";
+import { GetUserInformation, UpdateSystemPreferences } from "@/services/User";
+import { Fund } from "@/types/MutualFunds";
+import { SystemPoints, User } from "@/types/User";
+import "chart.js/auto";
 
 function MutalFund() {
-  const { id } = useParams();
   const [mutualFund, setMutualFund] = useState<any>();
+  const [AsManager, setAsManager] = useState(false);
   const [mutualFundDetails, setMutualFundDetails] = useState<Fund>({} as Fund);
+  const [ClientData, setClientData] = useState<User>({} as User);
+
   const { currentUser } = useAuth();
+
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const clientId = searchParams.get("clientId") || "";
+  const managerId = searchParams.get("managerId");
+
+  useEffect(() => {
+    if (
+      managerId &&
+      clientId &&
+      currentUser.role === "manager" &&
+      managerId === currentUser.uid
+    ) {
+      setAsManager(true);
+      GetUserInformation(clientId).then((data) => {
+        setClientData(data);
+      });
+    }
+  }, [currentUser, managerId, clientId]);
 
   useEffect(() => {
     if (!id) {
@@ -48,35 +71,47 @@ function MutalFund() {
         asset: mutualFundDetails.category.toLowerCase(),
         sector: mutualFundDetails.sector.toLowerCase(),
       };
-      // UpdateSystemPreferences(currentUser.uid, PointsToAdd);
+
+      UpdateSystemPreferences(currentUser.uid, PointsToAdd);
     }, 60000);
 
     return () => clearTimeout(timer);
   }, [mutualFundDetails]);
 
   return (
-    <DefaultLayout>
-      {!mutualFund ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="flex flex-col  justify-center gap-4 py-8 md:py-10">
-          <FundInfo mutualFund={mutualFundDetails} />
-          <div className="flex md:flex-row justify-between gap-4 ">
-            <div className="flex flex-col w-[70%] gap-4">
-              <Linebar
-                mutualFund={mutualFund}
-                mutualFundDetails={mutualFundDetails}
-              />
-              <FundManagment mutualFund={mutualFundDetails} />
-              <HoldingList />
-            </div>
-            <div className="w-[30%]">
-              <Investement mutualFund={mutualFundDetails} />
+    <>
+      {AsManager && <Banner name={ClientData.name} />}
+      <DefaultLayout>
+        {!mutualFund ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="flex flex-col  justify-center gap-4 py-8 md:py-10">
+            <FundInfo
+              AsManager={AsManager}
+              ClientId={clientId}
+              mutualFund={mutualFundDetails}
+            />
+            <div className="flex md:flex-row justify-between gap-4 ">
+              <div className="flex flex-col w-[70%] gap-4">
+                <Linebar
+                  mutualFund={mutualFund}
+                  mutualFundDetails={mutualFundDetails}
+                />
+                <FundManagment mutualFund={mutualFundDetails} />
+                <HoldingList />
+              </div>
+              <div className="w-[30%]">
+                <Investement
+                  AsManager={AsManager}
+                  ClientId={clientId}
+                  mutualFund={mutualFundDetails}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </DefaultLayout>
+        )}
+      </DefaultLayout>
+    </>
   );
 }
 

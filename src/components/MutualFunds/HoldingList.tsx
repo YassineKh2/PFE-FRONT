@@ -12,9 +12,9 @@ function HoldingList() {
       <p className="text-2xl dark:text-white font-semibold">Holding List</p>
 
       <Table
-        className="mt-4"
         removeWrapper
         aria-label="Example static collection table "
+        className="mt-4"
       >
         <TableHeader>
           <TableColumn>Name</TableColumn>

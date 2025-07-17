@@ -17,6 +17,8 @@ import { Fund } from "@/types/MutualFunds";
 import { useAuth } from "@/providers/AuthProvider";
 import { SystemPoints } from "@/types/User";
 import { UpdateSystemPreferences } from "@/services/User";
+import { GetSingleAssetInfo, SellAsset } from "@/services/Deposit";
+import { UserAssetDetails } from "@/types/Deposit";
 
 function renderStars(rating: number) {
   return [1, 2, 3, 4, 5].map((i) => {
@@ -50,9 +52,19 @@ function renderStars(rating: number) {
     }
   });
 }
-export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
+export default function FundInfo({
+  mutualFund,
+  AsManager,
+  ClientId,
+}: {
+  mutualFund: Fund;
+  AsManager?: boolean;
+  ClientId?: string;
+}) {
   const [IsSaved, setIsSaved] = useState<Boolean>(false);
   const [SellFunds, setSellFunds] = useState(0);
+  const [AssetInfo, setAssetInfo] = useState({} as UserAssetDetails);
+  const [idUser, setidUser] = useState("");
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { currentUser } = useAuth();
 
@@ -70,6 +82,21 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
     let savedFundsTable = JSON.parse(savedFunds) as String[];
 
     setIsSaved(savedFundsTable.includes(mutualFund.isin));
+  }, []);
+
+  useEffect(() => {
+    let userUID: string;
+
+    // if the user is a manager, we get the clientId from the props
+    if (AsManager) userUID = ClientId || "";
+    else userUID = currentUser.uid;
+
+    setidUser(userUID);
+
+    if (!userUID) return;
+    GetSingleAssetInfo(userUID, { isin: mutualFund.isin }).then((data) => {
+      setAssetInfo(data);
+    });
   }, []);
 
   const SaveFund = () => {
@@ -95,7 +122,7 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
       sector: mutualFund.sector.toLowerCase(),
     };
 
-    UpdateSystemPreferences(currentUser.uid, PointsToAdd);
+    if (!AsManager) UpdateSystemPreferences(currentUser.uid, PointsToAdd);
   };
 
   const RemoveFund = () => {
@@ -126,7 +153,7 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
       sector: mutualFund.sector.toLowerCase(),
     };
 
-    UpdateSystemPreferences(currentUser.uid, PointsToAdd);
+    if (!AsManager) UpdateSystemPreferences(currentUser.uid, PointsToAdd);
   };
 
   const addToCompare = () => {
@@ -135,7 +162,13 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
   };
 
   function SellFundsFunc() {
-    throw new Error("Function not implemented.");
+    SellAsset(idUser, {
+      isin: mutualFund.isin,
+      shares: SellFunds,
+    }).then(() => {
+      if (AsManager) navigate("/dashboard/clients");
+      else navigate("/dashboard/home");
+    });
   }
 
   return (
@@ -156,20 +189,22 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button
-              color="primary"
-              startContent={
-                <Icon
-                  height="20"
-                  icon="material-symbols:sell-outline"
-                  width="20"
-                />
-              }
-              variant="solid"
-              onPress={onOpen}
-            >
-              Sell Shares
-            </Button>
+            {AssetInfo.amount_invested > 0 && (
+              <Button
+                color="primary"
+                startContent={
+                  <Icon
+                    height="20"
+                    icon="material-symbols:sell-outline"
+                    width="20"
+                  />
+                }
+                variant="solid"
+                onPress={onOpen}
+              >
+                Sell Shares
+              </Button>
+            )}
             <Button
               startContent={<Icon height="20" icon="ix:compare" width="20" />}
               variant="bordered"
@@ -268,13 +303,15 @@ export default function FundInfo({ mutualFund }: { mutualFund: Fund }) {
                   hideStepper
                   className="w-full"
                   id="add-funds-amount"
+                  maxValue={AssetInfo.amount_invested || 100}
                   minValue={100}
                   value={SellFunds}
                   variant="bordered"
                   onChange={(val) => setSellFunds(Number(val))}
                 />
                 <span className="text-xs text-gray-500">
-                  Minimum amount: 100
+                  You have a total of {Math.floor(AssetInfo.amount_invested)}€{" "}
+                  invested
                 </span>
               </div>
             </ModalBody>

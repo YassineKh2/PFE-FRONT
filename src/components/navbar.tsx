@@ -117,6 +117,14 @@ export const Navbar = () => {
                 <DropdownItem
                   key="savedfunds"
                   onPress={() => {
+                    navigate("/dashboard/home");
+                  }}
+                >
+                  Home
+                </DropdownItem>
+                <DropdownItem
+                  key="savedfunds"
+                  onPress={() => {
                     navigate("/dashboard/savedfunds");
                   }}
                 >
@@ -129,7 +137,7 @@ export const Navbar = () => {
                     navigate("/dashboard/courses/overview");
                   }}
                 >
-                  My Courses
+                  Courses
                 </DropdownItem>
                 <DropdownItem key="settings">Settings</DropdownItem>
                 <DropdownItem key="configurations">Configurations</DropdownItem>

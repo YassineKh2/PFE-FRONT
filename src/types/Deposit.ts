@@ -42,3 +42,28 @@ export type UserAssetDetails = {
   gains_percentage: number;
   todayChange: number;
 };
+
+export type QuickStats = {
+  total_invested: number;
+  num_funds: number;
+  best_performer: string;
+  portfolio_age: string;
+};
+
+export type UserAssets = {
+  user_id: string;
+  available_funds: number;
+  assets: {
+    isin: string;
+    name: string;
+    shares: number;
+    amount_invested: number;
+  }[];
+};
+
+export type ManagerStats = {
+  total_clients: number;
+  avg_performance: string;
+  active_orders: number;
+  total_aum: number;
+};

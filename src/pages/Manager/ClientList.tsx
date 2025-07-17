@@ -9,15 +9,29 @@ import { useAuth } from "@/providers/AuthProvider";
 import { User as UserType } from "@/types/User";
 import { GetManagedUsers } from "@/services/User";
 import FilteredClients from "@/components/Manager/FilteredClients";
+import { GetManagedUsersAssets, GetManagerStats } from "@/services/Deposit";
+import { ManagerStats, UserAssets as UserAssetsType } from "@/types/Deposit";
 
 function ClientList() {
   const [Clients, setClients] = useState<UserType[]>([] as UserType[]);
+  const [UserAssets, SetUserAssets] = useState<UserAssetsType[]>(
+    [] as UserAssetsType[],
+  );
+  const [ManagerStats, SetManagerStats] = useState<ManagerStats>(
+    {} as ManagerStats,
+  );
   const [SearchTerm, setSearchTerm] = useState<string>();
   const { currentUser } = useAuth();
 
   useEffect(() => {
     GetManagedUsers(currentUser.uid).then((response) => {
       setClients(response.managedUsers);
+    });
+    GetManagedUsersAssets(currentUser.uid).then((response) => {
+      SetUserAssets(response);
+    });
+    GetManagerStats(currentUser.uid).then((response) => {
+      SetManagerStats(response);
     });
   }, []);
 
@@ -55,8 +69,11 @@ function ClientList() {
         />
       </div>
       <div className="flex flex-col w-full gap-12 mt-8 lg:mt-0">
-        <Cards />
-        <FilteredClients filteredClients={filteredClients} />
+        <Cards ManagerStats={ManagerStats} />
+        <FilteredClients
+          ClientAssets={UserAssets}
+          filteredClients={filteredClients}
+        />
       </div>
     </DashboardLayout>
   );

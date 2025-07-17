@@ -1,19 +1,30 @@
 import { Icon } from "@iconify/react";
 import { Chip } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Log } from "@/types/Log";
 import { GetLogs } from "@/services/Logs";
 
-function RecentTransactions({ userid }: { userid: string }) {
+function RecentTransactions({
+  userid,
+  viewAll,
+}: {
+  userid: string;
+  viewAll: boolean;
+}) {
   const [recentTransactions, setrecentTransactions] = useState([] as Log[]);
 
   useEffect(() => {
     GetLogs(userid).then((response) => {
-      setrecentTransactions(response);
+      let sorted = [...response].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      );
+
+      if (!viewAll) sorted = sorted.slice(0, 5);
+
+      setrecentTransactions(sorted);
     });
-  }, []);
+  }, [userid, viewAll]);
 
   const getTransactionIcon = (type: string) => {
     const icons: Record<string, string> = {
@@ -88,7 +99,7 @@ function RecentTransactions({ userid }: { userid: string }) {
                   isPositive(tx.action) ? "text-green-600" : "text-gray-900"
                 }`}
               >
-                {isPositive(tx.type) ? "+" : "-"}€{tx.amount.toLocaleString()}
+                {isPositive(tx.action) ? "+" : "-"}€{tx.amount.toLocaleString()}
               </p>
             </div>
             <Chip {...getBadgeProps(tx.action)} size="sm">

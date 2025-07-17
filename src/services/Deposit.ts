@@ -1,6 +1,14 @@
 import axios from "axios";
 
-import { Asset, Deposit, PortfolioMetrics, UserAssetDetails } from "@/types/Deposit";
+import {
+  Asset,
+  Deposit,
+  ManagerStats,
+  PortfolioMetrics,
+  QuickStats,
+  UserAssetDetails,
+  UserAssets,
+} from "@/types/Deposit";
 
 const BACKEND = axios.create({
   baseURL: "http://127.0.0.1:5000/deposit",
@@ -82,6 +90,45 @@ export async function GetPortfolioMetrics(id: string) {
 export async function GetUserAssetsInfo(id: string) {
   const response: { data: UserAssetDetails[] } = await BACKEND.get(
     "/userAssetsInfo/" + id,
+  );
+
+  return response.data;
+}
+export async function GetSingleAssetInfo(id: string, data: { isin: string }) {
+  const response: { data: UserAssetDetails } = await BACKEND.post(
+    "/singleAssetInfo/" + id,
+    data,
+  );
+
+  return response.data;
+}
+
+export async function SellAsset(
+  id: string,
+  data: { isin: string; shares: number },
+) {
+  const response: { data: any } = await BACKEND.post("/sellAsset/" + id, data);
+
+  return response.data;
+}
+
+export async function GetQuickStats(id: string) {
+  const response: { data: QuickStats } = await BACKEND.get("/quickStats/" + id);
+
+  return response.data;
+}
+
+export async function GetManagedUsersAssets(id: string) {
+  const response: { data: UserAssets[] } = await BACKEND.get(
+    "/managedUsersAssets/" + id,
+  );
+
+  return response.data;
+}
+
+export async function GetManagerStats(id: string) {
+  const response: { data: ManagerStats } = await BACKEND.get(
+    "/managerStats/" + id,
   );
 
   return response.data;

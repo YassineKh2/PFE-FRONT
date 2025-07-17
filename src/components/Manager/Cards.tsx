@@ -1,32 +1,41 @@
 import { Card } from "@heroui/card";
 import { Icon } from "@iconify/react";
 
-export default function Cards() {
+export default function Cards({
+  ManagerStats,
+}: {
+  ManagerStats: {
+    total_clients: number;
+    avg_performance: string;
+    active_orders: number;
+    total_aum: number;
+  };
+}) {
   const managerStats = [
     {
       title: "Total Clients",
-      value: 3,
+      value: ManagerStats.total_clients,
       sub: null,
       iconName: "solar:users-group-rounded-linear",
       color: "secondary",
     },
     {
       title: "Total AUM",
-      value: "€371.25K",
+      value: `€${ManagerStats.total_aum}`,
       sub: null,
       iconName: "solar:wallet-money-linear",
       color: "warning",
     },
     {
       title: "Avg Performance",
-      value: "+1.8%",
+      value: ManagerStats.avg_performance + " %",
       sub: null,
       iconName: "solar:chart-2-linear",
       color: "success",
     },
     {
       title: "Active Orders",
-      value: 12,
+      value: ManagerStats.active_orders,
       sub: null,
       iconName: "solar:document-linear",
       color: "primary",

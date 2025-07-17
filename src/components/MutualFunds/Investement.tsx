@@ -19,11 +19,23 @@ import {
   BuyFunds,
   GetAvailableFunds,
 } from "@/services/Deposit";
-function Investement({ mutualFund }: { mutualFund: Fund }) {
+import { GetUserInformation } from "@/services/User";
+import { User } from "@/types/User";
+function Investement({
+  mutualFund,
+  AsManager,
+  ClientId,
+}: {
+  mutualFund: Fund;
+  AsManager?: boolean;
+  ClientId?: string;
+}) {
   const [AmountInvested, setAmountInvest] = useState<number | number[]>(2000);
   const [InvestementType, setInvestementType] = useState<number>(0);
   const [PeriodInvested, setPeriodInvested] = useState<number>(0);
   const [TotalInvestement, setTotalInvestement] = useState<number>(24000);
+  const [UserData, SetUserData] = useState({} as User);
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenBuy,
@@ -53,6 +65,19 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
 
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    let userUID: string;
+
+    // if the user is a manager, we get the clientId from the props
+    if (AsManager) userUID = ClientId || "";
+    else userUID = currentUser.uid;
+
+    if (!userUID) return;
+    GetUserInformation(userUID).then((data) => {
+      SetUserData(data);
+    });
+  }, []);
 
   useEffect(() => {
     calculateTotalInvestement();
@@ -122,6 +147,11 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
   };
 
   const CheckDeposit = () => {
+    if (AsManager) {
+      onOpenBuy();
+
+      return;
+    }
     if (!currentUser?.uid || !currentUser?.depositTier) {
       onOpen();
 
@@ -131,8 +161,9 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
   };
 
   function CheckFunds() {
-    GetAvailableFunds(currentUser.uid).then((response) => {
+    GetAvailableFunds(UserData.id).then((response) => {
       if (response.data < Number(AmountInvested)) {
+        console.log(response.data, AmountInvested, UserData);
         onOpenAddFunds();
 
         return;
@@ -142,7 +173,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
   }
 
   function AddFunds() {
-    AddAvailableFunds(currentUser.uid, addFundsAmount).then(() => {
+    AddAvailableFunds(UserData.id, addFundsAmount).then(() => {
       onCloseAddFundsModal();
     });
   }
@@ -155,7 +186,7 @@ function Investement({ mutualFund }: { mutualFund: Fund }) {
       nav_price: mutualFund.latestnav,
     };
 
-    BuyFunds(currentUser.uid, data).then(() => {
+    BuyFunds(UserData.id, data).then(() => {
       onCloseBuy();
       navigate("/dashboard/home");
     });
